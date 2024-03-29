@@ -1,13 +1,11 @@
-import { Outlet } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyles';
-import LoginPage from './pages/Login/LoginPage';
+import { Outlet } from 'react-router';
 
 function App() {
   return (
     <>
       <GlobalStyle />
       <Outlet />
-      <LoginPage />
     </>
   );
 }
