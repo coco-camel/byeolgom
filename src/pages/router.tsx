@@ -2,7 +2,8 @@ import App from '../App';
 import LoginPage from './Login/LoginPage';
 import { createBrowserRouter } from 'react-router-dom';
 import Main from './Main/Main';
-import PastContent from './PastContent/PastContent';
+import PastContents from './PastContent/PastContents';
+import PastContentDetail from './PastContent/PastContentDetail';
 
 export const router = createBrowserRouter([
   {
@@ -17,8 +18,12 @@ export const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: '/pastcontent',
-        element: <PastContent />,
+        path: '/pastcontents',
+        element: <PastContents />,
+      },
+      {
+        path: '/pastcontents/:whosecontent/:worryid',
+        element: <PastContentDetail />,
       },
     ],
   },
