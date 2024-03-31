@@ -1,8 +1,8 @@
 declare global {
-    interface Window {
-        Cypress: unknown;
-        naver: any;
-    }
+  interface Window {
+    Cypress: unknown;
+    naver: any;
+  }
 }
 
 export {};

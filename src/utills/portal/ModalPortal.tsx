@@ -1,12 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 interface ModalPortalProps {
   children: React.ReactNode;
 }
 
 const ModalPortal: React.FC<ModalPortalProps> = ({ children }) => {
-  const el = document.getElementById("modal-root");
+  const el = document.getElementById('modal-root');
   if (!el) {
     return null;
   }

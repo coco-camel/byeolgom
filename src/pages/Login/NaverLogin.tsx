@@ -1,34 +1,42 @@
-import { useEffect } from "react";
+import styled from 'styled-components';
 
 function NaverLogin() {
-  
-  const { naver } = window as any;
-      const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
-      console.log(NAVER_CLIENT_ID);
+  const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
 
-      const CALLBACK_URL = "http://localhost:3000/naver_callback"
-      console.log(CALLBACK_URL);
-      
-      const initializeNaverLogin = () => {
-        const naverLogin = new naver.LoginWithNaverId({
-          clientId: NAVER_CLIENT_ID,
-          callbackUrl: CALLBACK_URL, 
-          isPopup: false, // popup 형식으로 띄울것인지 설정
-          loginButton: { color: 'white', type: 1, height: '47' }, //버튼의 스타일, 타입, 크기를 지정
-        });
-        naverLogin.init();
-      };
-        
-      useEffect(() => {
-        initializeNaverLogin();
-      }, []);
+  const STATE = false;
+
+  const CALLBACK_URL = 'http://localhost:3000/login/callback';
+
+  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_url=${CALLBACK_URL}`;
+
+  const onClicktoNaver = () => {
+    location.replace(`${NAVER_AUTH_URL}`);
+  };
 
   return (
-<>
-<div id='naverIdLogin' />
-</>
-  )
+    <div>
+      <Naver>
+        <button className="Naver" onClick={onClicktoNaver}>
+          네이버 로그인
+        </button>
+      </Naver>
+    </div>
+  );
 }
 
-export default NaverLogin
+export default NaverLogin;
 
+const Naver = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .Naver {
+    background-color: #2db400;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+  }
+`;
