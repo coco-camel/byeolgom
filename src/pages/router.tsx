@@ -1,7 +1,8 @@
 import App from '../App';
-import LoginPage from './Login/LoginPage';
-import { createBrowserRouter } from 'react-router-dom';
 import Main from './Main/Main';
+import LoginPage from './Login/LoginPage';
+import KakaoRedirect from './Login/kakaoLogin/KakaoRedirect';
+import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage />,
+      },
+      {
+        path: '/auth/kakao/oAuth',
+        element: <KakaoRedirect />,
       },
     ],
   },
