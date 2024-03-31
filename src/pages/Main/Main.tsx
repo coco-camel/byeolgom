@@ -6,8 +6,8 @@ function Main() {
     <>
       <MainPage>
         <p className="title">MainPage</p>
-      <Link to={'/login'}>로그인이동</Link>
-        </MainPage>
+        <Link to={'/login'}>로그인이동</Link>
+      </MainPage>
     </>
   );
 }
@@ -15,11 +15,11 @@ function Main() {
 export default Main;
 
 const MainPage = styled.div`
-margin-left: 30px;
+  margin-left: 30px;
 
-.title {
-  font-weight: bold;
-  font-size: 24px;
-  margin-top: 250px;
-}
-`
+  .title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: 250px;
+  }
+`;

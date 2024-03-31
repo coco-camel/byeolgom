@@ -3,6 +3,8 @@ import Main from './Main/Main';
 import LoginPage from './Login/LoginPage';
 import KakaoRedirect from './Login/kakaoLogin/KakaoRedirect';
 import { createBrowserRouter } from 'react-router-dom';
+import PastContents from './PastContent/PastContents';
+import PastContentDetail from './PastContent/PastContentDetail';
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ export const router = createBrowserRouter([
       {
         path: '/auth/kakao/oAuth',
         element: <KakaoRedirect />,
+      },
+      {
+        path: '/pastcontents',
+        element: <PastContents />,
+      },
+      {
+        path: '/pastcontents/:whosecontent/:worryid',
+        element: <PastContentDetail />,
       },
     ],
   },
