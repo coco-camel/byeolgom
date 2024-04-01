@@ -56,7 +56,8 @@ button {
     background: none;
     border:none;
     cursor: pointer;
-    outline:none
+    outline:none;
+	color: white;
 }
 a {
 	text-decoration: none;
@@ -65,6 +66,12 @@ a {
 		text-decoration: none;
 	}
     color: #222;
+}
+
+body {
+	/* background-image: url(); */
+	background-color: #575757;
+	color:white;
 }
 `;
 
