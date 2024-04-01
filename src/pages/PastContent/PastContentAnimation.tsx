@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-
+import image30 from '../../../public/assets/image30.svg';
 interface AnimationProps {
   $sec: number;
   $startAngle: number;
@@ -10,13 +10,13 @@ function PastContentAnimation() {
     <>
       <TestDiv>
         <Animation $sec={15} $startAngle={0}>
-          ㅇㅇㅇㅇㅇ
+          <img src={image30} />
         </Animation>
         <Animation $sec={26} $startAngle={120}>
-          ㅇㅇㅇㅇㅇ
+          <img src={image30} />
         </Animation>
         <Animation $sec={37} $startAngle={240}>
-          ㅇㅇㅇㅇㅇ
+          <img src={image30} />
         </Animation>
       </TestDiv>
     </>

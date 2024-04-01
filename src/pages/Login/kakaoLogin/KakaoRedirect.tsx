@@ -17,8 +17,7 @@ function KakaoRedirect() {
       .post(`/kakao`, {
         code: CODE,
       })
-      .then((res) => console.log(res.data));
-    console.log(CODE);
+      .then((res) => console.log(res));
   };
 
   return <RedirectContainer>Redirect 페이지입니다</RedirectContainer>;

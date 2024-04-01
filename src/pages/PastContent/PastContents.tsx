@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
+import PastContentAnimation from './PastContentAnimation';
 
 interface worryList {
   worryId: number;
@@ -62,6 +63,7 @@ function PastContents() {
               );
             })}
         </div>
+        <PastContentAnimation />
       </div>
     </>
   );
