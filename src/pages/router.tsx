@@ -5,6 +5,7 @@ import KakaoRedirect from './Login/kakaoLogin/KakaoRedirect';
 import { createBrowserRouter } from 'react-router-dom';
 import PastContents from './PastContent/PastContents';
 import PastContentDetail from './PastContent/PastContentDetail';
+import SendContents from './SendContent/SendContents';
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
       {
         path: '/pastcontents/:whosecontent/:worryid',
         element: <PastContentDetail />,
+      },
+      {
+        path: '/sendcontents',
+        element: <SendContents />,
       },
     ],
   },
