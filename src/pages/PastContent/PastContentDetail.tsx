@@ -14,6 +14,7 @@ function PastContentDetail() {
     const fetchData = async () => {
       const data = await worriesDetail(params);
       setPastContent(data);
+      console.log(data);
     };
     fetchData();
   }, [params]);
@@ -33,7 +34,6 @@ function PastContentDetail() {
               </div>
             );
           })}
-          <div></div>
         </div>
       )}
     </>

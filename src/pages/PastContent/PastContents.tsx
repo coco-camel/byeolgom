@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
-import PastContentAnimation from './PastContentAnimation';
 
 interface worryList {
   worryId: number;
@@ -18,21 +17,22 @@ function PastContents() {
   const onClickMyWorries = async () => {
     setWhoseContent('mySolvedWorry');
     const data = await myWorries();
-    setListSelect(data);
-    console.log(data);
+    setListSelect(data.worries);
+    console.log(data.worries);
   };
 
   const onClickYourWorries = async () => {
     setWhoseContent('myHelpedSolvedWorry');
     const data = await yourWorries();
-    setListSelect(data);
-    console.log(data);
+    setListSelect(data.worries);
+    console.log(data.worries);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await myWorries();
-      setListSelect(data);
+      setListSelect(data.worries);
+      console.log(data.worries);
     };
 
     fetchData();
@@ -63,7 +63,6 @@ function PastContents() {
               );
             })}
         </div>
-        <PastContentAnimation />
       </div>
     </>
   );
