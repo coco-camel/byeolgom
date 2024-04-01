@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { sendContent } from '../../api/sendContentApi';
-
-interface ColorSelectButtonProps {
-  Black?: boolean;
-  Red?: boolean;
-  Blue?: boolean;
-  Green?: boolean;
-}
 
 function SendContents() {
   const [content, setContent] = useState<string>('');
@@ -16,6 +9,8 @@ function SendContents() {
   const [userId, setUserId] = useState<number>(1);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fontColor, setFontColor] = useState<string>('black');
+
+  const colors = ['black', 'red', 'blue', 'green'];
 
   const handleIconClick = (selectedIcon: string) => {
     setIcon(selectedIcon);
@@ -52,30 +47,17 @@ function SendContents() {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <button
-              style={{
-                border: selectedIcon === 'A' ? '2px solid blue' : 'none',
-              }}
-              onClick={() => handleIconClick('A')}
-            >
-              A
-            </button>
-            <button
-              style={{
-                border: selectedIcon === 'B' ? '2px solid blue' : 'none',
-              }}
-              onClick={() => handleIconClick('B')}
-            >
-              B
-            </button>
-            <button
-              style={{
-                border: selectedIcon === 'C' ? '2px solid blue' : 'none',
-              }}
-              onClick={() => handleIconClick('C')}
-            >
-              C
-            </button>
+            {['A', 'B', 'C'].map((icon) => (
+              <button
+                key={icon}
+                style={{
+                  border: selectedIcon === icon ? '2px solid blue' : 'none',
+                }}
+                onClick={() => handleIconClick(icon)}
+              >
+                {icon}
+              </button>
+            ))}
           </div>
         </div>
       )}
@@ -87,34 +69,14 @@ function SendContents() {
         style={{ color: fontColor }}
       />
       <div>
-        <ColorSelectButton
-          style={{
-            border: fontColor === 'black' ? '2px solid blue' : 'none',
-          }}
-          Black
-          onClick={() => handleColorChange('black')}
-        />
-        <ColorSelectButton
-          style={{
-            border: fontColor === 'red' ? '2px solid blue' : 'none',
-          }}
-          Red
-          onClick={() => handleColorChange('red')}
-        />
-        <ColorSelectButton
-          style={{
-            border: fontColor === 'blue' ? '2px solid blue' : 'none',
-          }}
-          Blue
-          onClick={() => handleColorChange('blue')}
-        />
-        <ColorSelectButton
-          style={{
-            border: fontColor === 'green' ? '2px solid blue' : 'none',
-          }}
-          Green
-          onClick={() => handleColorChange('green')}
-        />
+        {colors.map((color) => (
+          <ColorSelectButton
+            key={color}
+            isSelected={fontColor === color}
+            color={color}
+            onClick={() => handleColorChange(color)}
+          />
+        ))}
       </div>
       <button onClick={handleContentSubmit}>Send Content</button>
     </div>
@@ -123,44 +85,22 @@ function SendContents() {
 
 export default SendContents;
 
-const ColorSelectButton = styled.button<ColorSelectButtonProps>`
+const ColorSelectButton = styled.button<{ isSelected: boolean; color: string }>`
   width: 25px;
   height: 25px;
   border-radius: 25px;
 
-  ${(props) =>
-    props.Black &&
-    css`
-      background-color: black;
-      &:hover {
-        background-color: black;
-      }
-    `}
+  background-color: ${(props) => props.color};
+  border: ${(props) => (props.isSelected ? '2px solid blue' : 'none')};
 
-  ${(props) =>
-    props.Red &&
-    css`
-      background-color: red;
-      &:hover {
-        background-color: #d20000;
-      }
-    `}
-
-    ${(props) =>
-    props.Blue &&
-    css`
-      background-color: blue;
-      &:hover {
-        background-color: #0000db;
-      }
-    `}
-
-    ${(props) =>
-    props.Green &&
-    css`
-      background-color: green;
-      &:hover {
-        background-color: #006b00;
-      }
-    `}
+  &:hover {
+    background-color: ${(props) =>
+      props.color === 'red'
+        ? '#d20000'
+        : props.color === 'blue'
+          ? '#0000db'
+          : props.color === 'green'
+            ? '#006b00'
+            : props.color};
+  }
 `;
