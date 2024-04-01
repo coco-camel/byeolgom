@@ -27,6 +27,8 @@ const MainLayout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 200px;
+  height: 100vh;
 `;
 
 const MainContent = styled.div`
@@ -42,10 +44,11 @@ const MainWrap = styled.div`
   border-radius: 10px;
   padding: 20px;
   width: 320px;
-  height: 568px;
-  background-color: #292929;
+  min-width: 320px;
+  min-height: 568px;
+  background-color: #ffffff;
   @media (max-width: 640px) {
-    width: 100vh;
+    width: 100vw;
     height: 100vh;
   }
 `;
