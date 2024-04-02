@@ -35,7 +35,7 @@ function Footer() {
 
 export default Footer;
 const Sendwrap = styled.div`
-  position: fixed;
+  position: absolute;
   margin-bottom: 50px;
 `;
 

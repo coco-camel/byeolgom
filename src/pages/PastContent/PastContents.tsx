@@ -4,6 +4,7 @@ import { myWorries, yourWorries } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
 import rocket from '/assets/rocket.svg';
+import star from '/assets/star.svg';
 import chevronLeft from '/assets/chevronLeft.svg';
 
 interface worryList {
@@ -69,7 +70,10 @@ function PastContents() {
                   key={index}
                 >
                   <PastContentWrap>
-                    <img src={rocket} style={{ width: '20px' }} />
+                    <img
+                      src={whoseContent === 'mySolvedWorry' ? rocket : star}
+                      style={{ width: '24px' }}
+                    />
                     <PastContentContainer>
                       <div>{formatDate(list.createdAt)}</div>
                       <div className="content">{list.content}</div>
@@ -94,7 +98,9 @@ const PastContentContainer = styled.div`
 
 const LockerListWrap = styled.div`
   width: 100%;
+  height: 350px;
   padding: 0 10px;
+  overflow: auto;
   box-sizing: border-box;
   &::-webkit-scrollbar {
     display: none;
