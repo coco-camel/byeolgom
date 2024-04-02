@@ -1,11 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
-import { formatDate } from '../../utills/formatDate/formatDate';
-import { Link } from 'react-router-dom';
-import rocket from '/assets/rocket.svg';
-import star from '/assets/star.svg';
-import chevronLeft from '/assets/chevronLeft.svg';
+import PastContentsList from './PastContentsList';
 
 interface worryList {
   worryId: number;
@@ -17,95 +13,102 @@ interface worryList {
 function PastContents() {
   const [listsSelect, setListSelect] = useState<worryList[]>([]);
   const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
+
+  const [isPageEnd, setIsPageEnd] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const pageIndexRef = useRef<number>(0);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  const getList = useCallback(async () => {
+    if (isPageEnd || isLoading) return;
+    setIsLoading(true);
+    try {
+      const response =
+        whoseContent === 'mySolvedWorry'
+          ? await myWorries(pageIndexRef.current)
+          : await yourWorries(pageIndexRef.current);
+      if (response && response.worries) {
+        const { worries } = response;
+        setListSelect((prevScraps) => [...prevScraps, ...worries]);
+        setIsPageEnd(worries.length < 10);
+        pageIndexRef.current++;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
+  }, [isLoading, isPageEnd, whoseContent]);
+
+  const handleObserver = useCallback(
+    ([entry]: IntersectionObserverEntry[]) => {
+      if (entry.isIntersecting && !isPageEnd && !isLoading) {
+        getList();
+      }
+    },
+    [getList, isPageEnd, isLoading],
+  );
+
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+
+    const option = {
+      root: null,
+      rootMargin: '30px',
+      threshold: 0,
+    };
+
+    const observer = new IntersectionObserver(handleObserver, option);
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [handleObserver]);
+
   const onClickMyWorries = async () => {
     setWhoseContent('mySolvedWorry');
-    const data = await myWorries();
+    pageIndexRef.current = 0;
+    setIsPageEnd(false);
+    const data = await myWorries(pageIndexRef.current);
     setListSelect(data.worries);
-    console.log(data.worries);
   };
 
   const onClickYourWorries = async () => {
     setWhoseContent('myHelpedSolvedWorry');
-    const data = await yourWorries();
+    pageIndexRef.current = 0;
+    setIsPageEnd(false);
+    const data = await yourWorries(pageIndexRef.current);
     setListSelect(data.worries);
-    console.log(data.worries);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await myWorries();
-      setListSelect(data.worries);
-      console.log(data.worries);
-    };
-
-    fetchData();
-  }, []);
-
   return (
-    <>
-      <div>
-        <LockerTitle>
-          <h1>보관함</h1>
-        </LockerTitle>
-        <LockerTabWrap>
-          <Button
-            className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
-            onClick={onClickMyWorries}
-          >
-            나의 고민
-          </Button>
-          <Button
-            className={whoseContent === 'myHelpedSolvedWorry' ? 'active' : ''}
-            onClick={onClickYourWorries}
-          >
-            익명의 고민
-          </Button>
-        </LockerTabWrap>
-        <LockerListWrap>
-          {listsSelect &&
-            listsSelect.map((list, index) => {
-              return (
-                <Link
-                  to={`/pastcontents/${whoseContent}/${list.worryId}`}
-                  key={index}
-                >
-                  <PastContentWrap>
-                    <img
-                      src={whoseContent === 'mySolvedWorry' ? rocket : star}
-                      style={{ width: '24px' }}
-                    />
-                    <PastContentContainer>
-                      <div>{formatDate(list.createdAt)}</div>
-                      <div className="content">{list.content}</div>
-                    </PastContentContainer>
-                    <img src={chevronLeft} />
-                  </PastContentWrap>
-                </Link>
-              );
-            })}
-        </LockerListWrap>
-      </div>
-    </>
+    <div>
+      <LockerTitle>
+        <h1>보관함</h1>
+      </LockerTitle>
+      <LockerTabWrap>
+        <Button
+          className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
+          onClick={onClickMyWorries}
+        >
+          나의 고민
+        </Button>
+        <Button
+          className={whoseContent === 'myHelpedSolvedWorry' ? 'active' : ''}
+          onClick={onClickYourWorries}
+        >
+          익명의 고민
+        </Button>
+      </LockerTabWrap>
+      <PastContentsList
+        listsSelect={listsSelect}
+        whoseContent={whoseContent}
+        ref={loadMoreRef}
+      />
+    </div>
   );
 }
 
 export default PastContents;
-const PastContentContainer = styled.div`
-  flex-grow: 1;
-  margin: 0 10px;
-  overflow: hidden;
-`;
-
-const LockerListWrap = styled.div`
-  width: 100%;
-  height: 350px;
-  padding: 0 10px;
-  overflow: auto;
-  box-sizing: border-box;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
 
 const Button = styled.button`
   font-size: 16px;
@@ -131,6 +134,12 @@ const Button = styled.button`
     color: #2f2f2f;
     border-bottom: 2px solid #2f2f2f;
   }
+  @media (max-width: 640px) {
+    font-size: 1.1rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 `;
 
 const LockerTabWrap = styled.div`
@@ -148,17 +157,11 @@ const LockerTitle = styled.div`
   margin: 10px 0;
   h1 {
     font-size: 16px;
-  }
-`;
-
-const PastContentWrap = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
-  .content {
-    max-width: 80%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    @media (max-width: 640px) {
+      font-size: 1.1rem;
+    }
+    @media (max-width: 480px) {
+      font-size: 1rem;
+    }
   }
 `;
