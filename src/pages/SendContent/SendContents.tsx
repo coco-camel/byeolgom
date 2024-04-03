@@ -72,7 +72,7 @@ function SendContents() {
         {colors.map((color) => (
           <ColorSelectButton
             key={color}
-            isSelected={fontColor === color}
+            selected={fontColor === color}
             color={color}
             onClick={() => handleColorChange(color)}
           />
@@ -85,13 +85,13 @@ function SendContents() {
 
 export default SendContents;
 
-const ColorSelectButton = styled.button<{ isSelected: boolean; color: string }>`
+const ColorSelectButton = styled.button<{ selected: boolean; color: string }>`
   width: 25px;
   height: 25px;
   border-radius: 25px;
 
   background-color: ${(props) => props.color};
-  border: ${(props) => (props.isSelected ? '2px solid blue' : 'none')};
+  border: ${(props) => (props.selected ? '2px solid blue' : 'none')};
 
   &:hover {
     background-color: ${(props) =>

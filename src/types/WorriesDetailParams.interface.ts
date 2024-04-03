@@ -1,4 +1,5 @@
 export interface WorriesDetailParams {
-  whosecontent: string;
+  whosecontent?: string;
+  commentid?: string;
   worryid: string;
 }
