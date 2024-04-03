@@ -71,11 +71,25 @@ const LockerListWrap = styled.div`
   overflow: auto;
   box-sizing: border-box;
   &::-webkit-scrollbar {
-    display: none;
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
   @media (max-width: 640px) {
     width: 90vw;
-    height: 75vh;
+    height: 80vh;
     div {
       font-size: 1.1rem;
     }

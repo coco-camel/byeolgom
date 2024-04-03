@@ -11,7 +11,8 @@ interface worryList {
 }
 
 function PastContents() {
-  const [listsSelect, setListSelect] = useState<worryList[]>([]);
+  const [myWorryList, setMyWorryList] = useState<worryList[]>([]);
+  const [yourWorryList, setYourWorryList] = useState<worryList[]>([]);
   const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
 
   const [isPageEnd, setIsPageEnd] = useState<boolean>(false);
@@ -27,10 +28,13 @@ function PastContents() {
         whoseContent === 'mySolvedWorry'
           ? await myWorries(pageIndexRef.current)
           : await yourWorries(pageIndexRef.current);
-      if (response && response.worries) {
-        const { worries } = response;
-        setListSelect((prevScraps) => [...prevScraps, ...worries]);
-        setIsPageEnd(worries.length < 10);
+      if (response) {
+        if (whoseContent === 'mySolvedWorry') {
+          setMyWorryList((prev) => [...prev, ...response]);
+        } else {
+          setYourWorryList((prev) => [...prev, ...response]);
+        }
+        setIsPageEnd(response.length < 10);
         pageIndexRef.current++;
       }
     } catch (error) {
@@ -64,20 +68,26 @@ function PastContents() {
     return () => observer.disconnect();
   }, [handleObserver]);
 
-  const onClickMyWorries = async () => {
-    setWhoseContent('mySolvedWorry');
+  const onClickWorries = async (whoseContentValue: string) => {
+    setWhoseContent(whoseContentValue);
     pageIndexRef.current = 0;
     setIsPageEnd(false);
-    const data = await myWorries(pageIndexRef.current);
-    setListSelect(data.worries);
-  };
-
-  const onClickYourWorries = async () => {
-    setWhoseContent('myHelpedSolvedWorry');
-    pageIndexRef.current = 0;
-    setIsPageEnd(false);
-    const data = await yourWorries(pageIndexRef.current);
-    setListSelect(data.worries);
+    setIsLoading(true);
+    try {
+      const response = await (
+        whoseContentValue === 'mySolvedWorry' ? myWorries : yourWorries
+      )(pageIndexRef.current);
+      if (response) {
+        if (whoseContentValue === 'mySolvedWorry') {
+          setMyWorryList(response);
+        } else {
+          setYourWorryList(response);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -88,19 +98,21 @@ function PastContents() {
       <LockerTabWrap>
         <Button
           className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
-          onClick={onClickMyWorries}
+          onClick={() => onClickWorries('mySolvedWorry')}
         >
           나의 고민
         </Button>
         <Button
           className={whoseContent === 'myHelpedSolvedWorry' ? 'active' : ''}
-          onClick={onClickYourWorries}
+          onClick={() => onClickWorries('myHelpedSolvedWorry')}
         >
           익명의 고민
         </Button>
       </LockerTabWrap>
       <PastContentsList
-        listsSelect={listsSelect}
+        listsSelect={
+          whoseContent === 'mySolvedWorry' ? myWorryList : yourWorryList
+        }
         whoseContent={whoseContent}
         ref={loadMoreRef}
       />

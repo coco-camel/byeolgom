@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import PastContentAnimation from '../PastContent/PastContentAnimation';
 
 function Main() {
   return (
@@ -7,6 +8,7 @@ function Main() {
       <MainPage>
         <p className="title">MainPage</p>
         <Link to={'/login'}>로그인이동</Link>
+        <PastContentAnimation />
       </MainPage>
     </>
   );
