@@ -37,21 +37,31 @@ const TestDiv = styled.div`
   max-height: 300px;
 `;
 
-const animation = ($startAngle: number) => keyframes`
+const animation = ($startAngle: number, $translateX: string) => keyframes`
   0% {
-    transform: rotate(${$startAngle}deg) translateX(20vw) rotate(180deg);
+    transform: rotate(${$startAngle}deg) translateX(${$translateX}) rotate(180deg);
   }
   100% {
-    transform: rotate(${$startAngle + 360}deg) translateX(20vw) rotate(180deg);
+    transform: rotate(${$startAngle + 360}deg) translateX(${$translateX}) rotate(180deg);
   }
 `;
 
 const Animation = styled.div<AnimationProps>`
   width: 100%;
   height: 100%;
-  animation: ${(props) => animation(props.$startAngle)}
+  position: fixed;
+  animation: ${(props) => animation(props.$startAngle, '150px')}
     ${(props) => props.$sec}s infinite linear;
   &:hover {
     animation-play-state: paused;
+  }
+
+  @media (max-width: 640px) {
+    animation: ${(props) => animation(props.$startAngle, '300px')}
+      ${(props) => props.$sec}s infinite linear;
+  }
+  @media (max-width: 480px) {
+    animation: ${(props) => animation(props.$startAngle, '150px')}
+      ${(props) => props.$sec}s infinite linear;
   }
 `;
