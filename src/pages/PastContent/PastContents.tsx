@@ -1,94 +1,68 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
 import PastContentsList from './PastContentsList';
-
-interface worryList {
-  worryId: number;
-  icon: string;
-  content: string;
-  createdAt: Date;
-}
+import { Worry } from '../../types/WorryContent.interface';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 function PastContents() {
-  const [myWorryList, setMyWorryList] = useState<worryList[]>([]);
-  const [yourWorryList, setYourWorryList] = useState<worryList[]>([]);
   const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
-
-  const [isPageEnd, setIsPageEnd] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const pageIndexRef = useRef<number>(0);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  const getList = useCallback(async () => {
-    if (isPageEnd || isLoading) return;
-    setIsLoading(true);
-    try {
-      const response =
-        whoseContent === 'mySolvedWorry'
-          ? await myWorries(pageIndexRef.current)
-          : await yourWorries(pageIndexRef.current);
-      if (response) {
-        if (whoseContent === 'mySolvedWorry') {
-          setMyWorryList((prev) => [...prev, ...response]);
-        } else {
-          setYourWorryList((prev) => [...prev, ...response]);
-        }
-        setIsPageEnd(response.length < 10);
-        pageIndexRef.current++;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  }, [isLoading, isPageEnd, whoseContent]);
+  const getPastContent = async (pageParam: number) => {
+    const data = await (
+      whoseContent === 'mySolvedWorry' ? myWorries : yourWorries
+    )(pageParam);
+    return {
+      result: data,
+      nextPage: pageParam + 1,
+      isLast: data.length < 10,
+      hasNextPage: data.length === 10,
+    };
+  };
 
-  const handleObserver = useCallback(
-    ([entry]: IntersectionObserverEntry[]) => {
-      if (entry.isIntersecting && !isPageEnd && !isLoading) {
-        getList();
-      }
+  const {
+    data: pastContent,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['worries', whoseContent],
+    queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.isLast) return lastPage.nextPage;
     },
-    [getList, isPageEnd, isLoading],
-  );
+    staleTime: 1000 * 20,
+  });
+
+  const pastContents = useMemo(() => {
+    let list: Worry[] = [];
+    pastContent?.pages.forEach(({ result }) => {
+      list = [...list, ...result];
+    });
+    return list;
+  }, [pastContent]);
 
   useEffect(() => {
-    if (!loadMoreRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '100px',
+        threshold: 0,
+      },
+    );
 
-    const option = {
-      root: null,
-      rootMargin: '30px',
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver(handleObserver, option);
-
-    observer.observe(loadMoreRef.current);
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
 
     return () => observer.disconnect();
-  }, [handleObserver]);
-
-  const onClickWorries = async (whoseContentValue: string) => {
-    setWhoseContent(whoseContentValue);
-    pageIndexRef.current = 0;
-    setIsPageEnd(false);
-    setIsLoading(true);
-    try {
-      const response = await (
-        whoseContentValue === 'mySolvedWorry' ? myWorries : yourWorries
-      )(pageIndexRef.current);
-      if (response) {
-        if (whoseContentValue === 'mySolvedWorry') {
-          setMyWorryList(response);
-        } else {
-          setYourWorryList(response);
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  };
+  }, [hasNextPage, fetchNextPage]);
 
   return (
     <div>
@@ -98,21 +72,19 @@ function PastContents() {
       <LockerTabWrap>
         <Button
           className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
-          onClick={() => onClickWorries('mySolvedWorry')}
+          onClick={() => setWhoseContent('mySolvedWorry')}
         >
           나의 고민
         </Button>
         <Button
           className={whoseContent === 'myHelpedSolvedWorry' ? 'active' : ''}
-          onClick={() => onClickWorries('myHelpedSolvedWorry')}
+          onClick={() => setWhoseContent('myHelpedSolvedWorry')}
         >
           익명의 고민
         </Button>
       </LockerTabWrap>
       <PastContentsList
-        listsSelect={
-          whoseContent === 'mySolvedWorry' ? myWorryList : yourWorryList
-        }
+        listsSelect={pastContents}
         whoseContent={whoseContent}
         ref={loadMoreRef}
       />

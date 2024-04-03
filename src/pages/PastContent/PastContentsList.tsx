@@ -89,7 +89,7 @@ const LockerListWrap = styled.div`
   }
   @media (max-width: 640px) {
     width: 90vw;
-    height: 80vh;
+    height: 75vh;
     div {
       font-size: 1.1rem;
     }
