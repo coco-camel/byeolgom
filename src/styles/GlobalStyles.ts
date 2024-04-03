@@ -57,7 +57,6 @@ button {
     border:none;
     cursor: pointer;
     outline:none;
-	color: white;
 }
 a {
 	text-decoration: none;
@@ -70,8 +69,8 @@ a {
 
 body {
 	/* background-image: url(); */
-	background-color: #575757;
-	color:white;
+	background-color: #2f3438;
+	color: black;
 }
 `;
 
