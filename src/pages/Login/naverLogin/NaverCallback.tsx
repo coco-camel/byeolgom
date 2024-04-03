@@ -1,26 +1,19 @@
 import { useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { authInstance } from '../../../api/api';
-
 import styled from 'styled-components';
 
-function KakaoRedirect() {
+function NaverRedirect() {
   const location = useLocation();
   const CODE = location.search.split('=')[1];
   console.log(CODE);
 
   const sendAuthorizationCode = useCallback(() => {
     authInstance
-      .post(`/kakao`, {
+      .post(`/naver`, {
         code: CODE,
       })
-      .then((res) => {
-        window.localStorage.setItem('access_Token', res.data.accessToken);
-        return res;
-      })
-      .then((res) => {
-        window.localStorage.setItem('refresh_Token', res.data.refreshToken);
-      });
+      .then((res) => console.log(res));
   }, [CODE]);
 
   useEffect(() => {
@@ -29,10 +22,10 @@ function KakaoRedirect() {
     }
   }, [location.search, sendAuthorizationCode]);
 
-  return <RedirectContainer>카카오 Redirect 페이지입니다</RedirectContainer>;
+  return <RedirectContainer>네이버 Redirect 페이지입니다</RedirectContainer>;
 }
 
-export default KakaoRedirect;
+export default NaverRedirect;
 
 const RedirectContainer = styled.div`
   display: flex;

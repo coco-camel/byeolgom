@@ -1,5 +1,5 @@
 import KakaoLogin from './kakaoLogin/KakaoLogin';
-import NaverLogin from './NaverLogin';
+import NaverLogin from './naverLogin/NaverLogin';
 
 function LoginPage() {
   return (
