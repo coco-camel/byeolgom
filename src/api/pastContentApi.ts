@@ -10,6 +10,9 @@ export const myWorries = async (page: number) => {
         limit: 10,
       },
     });
+    console.log(page);
+    console.log('mm');
+    console.log(res.data.worries);
     return res.data.worries;
   } catch (error) {
     throw new Error('');
@@ -24,6 +27,9 @@ export const yourWorries = async (page: number) => {
         limit: 10,
       },
     });
+    console.log(page);
+    console.log('yy');
+    console.log(res.data.worries);
     return res.data.worries;
   } catch (error) {
     throw new Error('');
