@@ -12,11 +12,15 @@ authInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
-    if (error.res.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const newAccessToken = await refreshAccessToken();
-      originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-      return authInstance(originalRequest);
+      try {
+        const newAccessToken = await refreshAccessToken();
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        return authInstance(originalRequest);
+      } catch (refreshError) {
+        return Promise.reject(refreshError);
+      }
     }
     return Promise.reject(error);
   },
@@ -31,7 +35,7 @@ const refreshAccessToken = async () => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${refreshToken}`,
+          Authorization: `${refreshToken}`,
         },
       },
     );
@@ -40,5 +44,24 @@ const refreshAccessToken = async () => {
     return res.data.accessToken;
   } catch (err) {
     console.error('엑세스 토큰 새로고침에 실패하였습니다', err);
+    throw err;
   }
 };
+
+authInstance.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const newAccessToken = await refreshAccessToken();
+        originalRequest.headers['Authorization'] = `${newAccessToken}`;
+        return authInstance(originalRequest);
+      } catch (refreshError) {
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
