@@ -8,6 +8,21 @@ export const authInstance = axios.create({
   baseURL: import.meta.env.VITE_STARBEAR_SERVER_URL,
 });
 
+authInstance.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem('access_Token');
+    if (accessToken) {
+      config.headers['Authorization'] = `${accessToken}`;
+    } else {
+      delete config.headers['Authorization'];
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
 authInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -47,21 +62,3 @@ const refreshAccessToken = async () => {
     throw err;
   }
 };
-
-authInstance.interceptors.response.use(
-  (res) => res,
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        const newAccessToken = await refreshAccessToken();
-        originalRequest.headers['Authorization'] = `${newAccessToken}`;
-        return authInstance(originalRequest);
-      } catch (refreshError) {
-        return Promise.reject(refreshError);
-      }
-    }
-    return Promise.reject(error);
-  },
-);
