@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from './Footer';
-
+import background from '/assets/background.svg';
 const Layout = () => {
   return (
     <MainLayout>
@@ -46,7 +46,8 @@ const MainWrap = styled.div`
   width: 320px;
   min-width: 320px;
   min-height: 568px;
-  background-color: #2f364f;
+  background-image: url(${background});
+  background-size: cover;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;
