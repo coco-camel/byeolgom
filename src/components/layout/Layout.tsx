@@ -46,7 +46,7 @@ const MainWrap = styled.div`
   width: 320px;
   min-width: 320px;
   min-height: 568px;
-  background-color: #ffffff;
+  background-color: #2f364f;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;
