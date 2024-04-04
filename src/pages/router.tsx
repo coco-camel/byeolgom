@@ -2,6 +2,7 @@ import App from '../App';
 import Main from './Main/Main';
 import LoginPage from './Login/LoginPage';
 import KakaoRedirect from './Login/kakaoLogin/KakaoRedirect';
+import NaverRedirect from './Login/naverLogin/NaverCallback';
 import { createBrowserRouter } from 'react-router-dom';
 import PastContents from './PastContent/PastContents';
 import PastContentDetail from './PastContent/PastContentDetail';
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
           {
             path: '/login',
             element: <LoginPage />,
+          },
+          {
+            path: '/auth/naver/oAuth',
+            element: <NaverRedirect />,
           },
           {
             path: '/auth/kakao/oAuth',

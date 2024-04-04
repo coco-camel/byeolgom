@@ -10,7 +10,7 @@ function KakaoRedirect() {
 
   const sendAuthorizationCode = useCallback(() => {
     authInstance
-      .post(`/kakao`, {
+      .post(`/naver`, {
         code: CODE,
       })
       .then((res) => {

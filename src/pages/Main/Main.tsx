@@ -20,6 +20,7 @@ export default Main;
 
 const MainPage = styled.div`
   margin-left: 30px;
+  color: white;
 
   .title {
     font-weight: bold;

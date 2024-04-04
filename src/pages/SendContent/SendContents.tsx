@@ -6,7 +6,6 @@ function SendContents() {
   const [content, setContent] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
-  const [userId, setUserId] = useState<number>(1);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fontColor, setFontColor] = useState<string>('black');
 
@@ -23,13 +22,12 @@ function SendContents() {
 
   const handleContentSubmit = async () => {
     try {
-      const contentData = { content, icon, userId, fontColor };
+      const contentData = { content, icon, fontColor };
       const response = await sendContent(contentData);
       console.log(response);
       setContent('');
       setIcon('');
       setSelectedIcon('');
-      setUserId(1);
       setShowModal(!showModal);
       setFontColor('black');
     } catch (error) {
@@ -72,7 +70,7 @@ function SendContents() {
         {colors.map((color) => (
           <ColorSelectButton
             key={color}
-            isSelected={fontColor === color}
+            selected={fontColor === color}
             color={color}
             onClick={() => handleColorChange(color)}
           />
@@ -85,13 +83,13 @@ function SendContents() {
 
 export default SendContents;
 
-const ColorSelectButton = styled.button<{ isSelected: boolean; color: string }>`
+const ColorSelectButton = styled.button<{ selected: boolean; color: string }>`
   width: 25px;
   height: 25px;
   border-radius: 25px;
 
   background-color: ${(props) => props.color};
-  border: ${(props) => (props.isSelected ? '2px solid blue' : 'none')};
+  border: ${(props) => (props.selected ? '2px solid blue' : 'none')};
 
   &:hover {
     background-color: ${(props) =>
