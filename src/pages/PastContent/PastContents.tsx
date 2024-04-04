@@ -4,6 +4,7 @@ import { myWorries, yourWorries } from '../../api/pastContentApi';
 import PastContentsList from './PastContentsList';
 import { Worry } from '../../types/WorryContent.interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import _ from 'lodash';
 
 function PastContents() {
   const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
@@ -44,10 +45,15 @@ function PastContents() {
   }, [pastContent]);
 
   useEffect(() => {
+    const handleLoadMore = _.throttle(() => {
+      if (hasNextPage) {
+        fetchNextPage();
+      }
+    }, 500);
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
+          handleLoadMore();
         }
       },
       {
@@ -61,7 +67,10 @@ function PastContents() {
       observer.observe(loadMoreRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      handleLoadMore.cancel();
+    };
   }, [hasNextPage, fetchNextPage]);
 
   return (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PastContentAnimation from '../PastContent/PastContentAnimation';
+import MyElement3D from '../../components/3dMotion/MyElement3D';
 
 function Main() {
   return (
@@ -9,6 +10,7 @@ function Main() {
         <p className="title">MainPage</p>
         <Link to={'/login'}>로그인이동</Link>
         <PastContentAnimation />
+        <MyElement3D />
       </MainPage>
     </>
   );
