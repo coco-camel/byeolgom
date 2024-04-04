@@ -58,7 +58,7 @@ const Animation = styled.div<AnimationProps>`
   }
 
   @media (max-width: 640px) {
-    animation: ${(props) => animation(props.$startAngle, '300px')}
+    animation: ${(props) => animation(props.$startAngle, '220px')}
       ${(props) => props.$sec}s infinite linear;
   }
   @media (max-width: 480px) {
