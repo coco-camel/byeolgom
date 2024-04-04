@@ -3,14 +3,17 @@ import { authInstance } from './api';
 import { WorriesDetailParams } from '../types/WorriesDetailParams.interface';
 
 export const sendContent = async (contentData: ContentData) => {
-  const { content, icon, userId, fontColor } = contentData;
+  const { content, icon, fontColor } = contentData;
+
+  const token = localStorage.getItem('access_Token');
+  const userId = token ? JSON.parse(atob(token.split('.')[1])).userId : null;
 
   try {
     const res = await authInstance.post('/worries', {
       content,
       icon,
-      userId,
       fontColor,
+      userId: userId,
     });
     return res.data;
   } catch (error) {
@@ -31,7 +34,7 @@ export const sendReply = async (
   params: WorriesDetailParams,
   contentData: ContentData,
 ) => {
-  const { content, userId, fontColor } = contentData;
+  const { content, fontColor } = contentData;
 
   try {
     let postAddress = `/worries/${params.worryid}/comments`;
@@ -41,7 +44,6 @@ export const sendReply = async (
 
     const res = await authInstance.post(postAddress, {
       content,
-      userId,
       fontColor,
     });
     return res.data;

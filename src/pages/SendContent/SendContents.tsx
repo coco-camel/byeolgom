@@ -6,7 +6,6 @@ function SendContents() {
   const [content, setContent] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
   const [selectedIcon, setSelectedIcon] = useState<string>('');
-  const [userId, setUserId] = useState<number>(1);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [fontColor, setFontColor] = useState<string>('black');
 
@@ -23,13 +22,12 @@ function SendContents() {
 
   const handleContentSubmit = async () => {
     try {
-      const contentData = { content, icon, userId, fontColor };
+      const contentData = { content, icon, fontColor };
       const response = await sendContent(contentData);
       console.log(response);
       setContent('');
       setIcon('');
       setSelectedIcon('');
-      setUserId(1);
       setShowModal(!showModal);
       setFontColor('black');
     } catch (error) {
