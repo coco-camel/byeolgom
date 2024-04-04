@@ -10,13 +10,13 @@ function PastContentAnimation() {
     <>
       <TestDiv>
         <Animation $sec={15} $startAngle={0}>
-          <img src={image30} />
+          <img src={image30} width={30} height={30} />
         </Animation>
-        <Animation $sec={26} $startAngle={120}>
-          <img src={image30} />
+        <Animation $sec={12} $startAngle={120}>
+          <img src={image30} width={30} height={30} />
         </Animation>
-        <Animation $sec={37} $startAngle={240}>
-          <img src={image30} />
+        <Animation $sec={37} $startAngle={70}>
+          <img src={image30} width={30} height={30} />
         </Animation>
       </TestDiv>
     </>
@@ -35,6 +35,7 @@ const TestDiv = styled.div`
   transform: translate(-50%, -50%);
   max-width: 300px;
   max-height: 300px;
+  z-index: 999;
 `;
 
 const animation = ($startAngle: number, $translateX: string) => keyframes`
