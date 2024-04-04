@@ -4,15 +4,12 @@ import { authInstance } from './api';
 
 export const myWorries = async (page: number) => {
   try {
-    const res = await authInstance.get('/mySolvedWorry/1', {
+    const res = await authInstance.get('/mySolvedWorry', {
       params: {
         page,
         limit: 10,
       },
     });
-    console.log(page);
-    console.log('mm');
-    console.log(res.data.worries);
     return res.data.worries;
   } catch (error) {
     throw new Error('');
@@ -21,15 +18,12 @@ export const myWorries = async (page: number) => {
 
 export const yourWorries = async (page: number) => {
   try {
-    const res = await authInstance.get('/myHelpedSolvedWorry/1', {
+    const res = await authInstance.get('/myHelpedSolvedWorry', {
       params: {
         page,
         limit: 10,
       },
     });
-    console.log(page);
-    console.log('yy');
-    console.log(res.data.worries);
     return res.data.worries;
   } catch (error) {
     throw new Error('');
