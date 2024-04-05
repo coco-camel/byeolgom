@@ -8,33 +8,32 @@ import styled from 'styled-components';
 import PastContentComment from './PastContentComment';
 
 function PastContentDetail() {
-  const [pastContentDatail, setPastContentDatail] = useState<PastContent>();
-
+  const [pastContentDetail, setPastContentDetail] = useState<PastContent>();
   const params = useParams() as Readonly<WorriesDetailParams>;
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await worriesDetail(params);
-      setPastContentDatail(data);
+      setPastContentDetail(data);
     };
     fetchData();
   }, [params]);
 
   return (
     <>
-      {pastContentDatail && (
+      {pastContentDetail && (
         <div>
           <PastContentWrap>
-            <div>{pastContentDatail.icon}</div>
+            <div>{pastContentDetail.icon}</div>
             <PastContentContainer>
               <PastContentTitle>
-                {formatDate(pastContentDatail.createdAt)}
+                {formatDate(pastContentDetail.createdAt)}
               </PastContentTitle>
-              <PastContentTitle>{pastContentDatail.content}</PastContentTitle>
+              <PastContentTitle>{pastContentDetail.content}</PastContentTitle>
             </PastContentContainer>
           </PastContentWrap>
           <LockerListWrap>
-            {pastContentDatail.comments.map((item, index) => (
+            {pastContentDetail.comments.map((item, index) => (
               <PastContentComment key={index} comment={item} />
             ))}
           </LockerListWrap>

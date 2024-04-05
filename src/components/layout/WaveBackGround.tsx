@@ -27,7 +27,7 @@ function WaveBackGround() {
 export default WaveBackGround;
 
 const AniWrap = styled.div`
-  z-index: 0;
+  z-index: -10;
 `;
 
 const Wave = styled.div<WaveProps>`
