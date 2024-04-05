@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
 import background from '/assets/background.svg';
 const Layout = () => {
+  const { isLoggedIn } = useAuthStore();
+
   return (
     <MainLayout>
       <MainContent>
@@ -15,7 +18,7 @@ const Layout = () => {
       </MainContent>
       <MainWrap>
         <Outlet />
-        <Footer />
+        {isLoggedIn && <Footer />}
       </MainWrap>
     </MainLayout>
   );

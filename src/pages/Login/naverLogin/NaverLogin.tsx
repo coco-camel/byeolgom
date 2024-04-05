@@ -18,29 +18,28 @@ function NaverLogin() {
   };
 
   return (
-    <div>
-      <Naver>
-        <button className="Naver" onClick={onClicktoNaver}>
-          네이버 로그인
-        </button>
-      </Naver>
-    </div>
+    <NaverConstainer>
+      <Button className="Naver" onClick={onClicktoNaver}>
+        네이버 로그인
+      </Button>
+    </NaverConstainer>
   );
 }
 
 export default NaverLogin;
 
-const Naver = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+const NaverConstainer = styled.div`
+  margin: auto;
+  margin-top: 10px;
+  width: fit-content;
+  height: fit-content;
+`;
 
-  .Naver {
-    background-color: #2db400;
-    border-radius: 10px;
-    padding: 15px;
-    color: white;
-    font-weight: bold;
-    font-size: 15px;
-  }
+const Button = styled.button`
+  background-color: #2db400;
+  border-radius: 50px;
+  padding: 15px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
 `;
