@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Footer from './Footer';
 import background from '/assets/background.svg';
 import WaveBackGround from './WaveBackGround';
+import StarBackGround from './StarBackGround';
 
 const Layout = () => {
   const { isLoggedIn } = useAuthStore();
@@ -20,6 +21,7 @@ const Layout = () => {
       </MainContent>
       <MainWrap>
         <Outlet />
+        <StarBackGround />
         <WaveBackGround />
         {isLoggedIn && <Footer />}
       </MainWrap>
