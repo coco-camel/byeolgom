@@ -70,7 +70,7 @@ a {
 body {
 	/* background-image: url(); */
 	background-color: #2f3438;
-	color: black;
+	color: white;
 }
 `;
 

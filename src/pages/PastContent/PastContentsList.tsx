@@ -34,10 +34,12 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                   style={{ width: '24px' }}
                 />
                 <PastContentContainer>
-                  <PastContentDate>
+                  <PastContentTitle>
                     {formatDate(list.createdAt)}
-                  </PastContentDate>
-                  <PastContent className="content">{list.content}</PastContent>
+                  </PastContentTitle>
+                  <PastContentTitle className="content">
+                    {list.content}
+                  </PastContentTitle>
                 </PastContentContainer>
                 <img src={chevronLeft} />
               </PastContentWrap>
@@ -50,13 +52,13 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
 );
 
 export default PastContentsList;
+
 const LoadMoreDiv = styled.div`
   height: 10px;
 `;
-const PastContent = styled.div`
-  padding: 5px 0;
-`;
-const PastContentDate = styled.div`
+
+const PastContentTitle = styled.div`
+  color: #e2e2e2;
   padding: 5px 0;
 `;
 const PastContentContainer = styled.div`
@@ -69,6 +71,7 @@ const LockerListWrap = styled.div`
   width: 100%;
   height: 370px;
   overflow: auto;
+  padding: 0 20px;
   box-sizing: border-box;
   &::-webkit-scrollbar {
     width: 12px;
