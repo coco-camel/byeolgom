@@ -3,6 +3,8 @@ import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
 import background from '/assets/background.svg';
+import WaveBackGround from './WaveBackGround';
+
 const Layout = () => {
   const { isLoggedIn } = useAuthStore();
 
@@ -18,6 +20,7 @@ const Layout = () => {
       </MainContent>
       <MainWrap>
         <Outlet />
+        <WaveBackGround />
         {isLoggedIn && <Footer />}
       </MainWrap>
     </MainLayout>
@@ -42,15 +45,18 @@ const MainContent = styled.div`
   }
 `;
 const MainWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   overflow: auto;
   border-radius: 10px;
-  padding: 20px;
   width: 320px;
   min-width: 320px;
   min-height: 568px;
   background-image: url(${background});
   background-size: cover;
+  overflow: hidden;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;
