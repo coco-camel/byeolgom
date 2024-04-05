@@ -1,12 +1,21 @@
 import { useRef, useState, useEffect } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader } from 'three';
+import { TextureLoader, Texture, Mesh } from 'three';
 import starImage from '/assets/star.png';
 import unionImage from '/assets/union.png';
 import { Canvas } from '@react-three/fiber';
 import styled from 'styled-components';
 
-const CentralImage = ({ texture }) => {
+interface StarProps {
+  texture: Texture;
+  offsetTime: number;
+}
+
+interface CentralImageProps {
+  texture: Texture;
+}
+
+const CentralImage = ({ texture }: CentralImageProps) => {
   return (
     <mesh position={[0, 0, 0]}>
       <planeGeometry args={[6, 6]} />
@@ -15,10 +24,12 @@ const CentralImage = ({ texture }) => {
   );
 };
 
-const Star = ({ texture, offsetTime }) => {
-  const ref = useRef();
+const Star = ({ texture, offsetTime }: StarProps) => {
+  const ref = useRef<Mesh>(null);
 
   useFrame((state) => {
+    if (!ref.current) return;
+
     const speedFactor = 0.3;
     const time = state.clock.getElapsedTime() * speedFactor + offsetTime / 1.5;
     const radiusX = 4; // 별이 도는 x축의 반지름을 절반으로 줄임
@@ -40,7 +51,7 @@ const Star = ({ texture, offsetTime }) => {
 function MyElement3D() {
   const textureStar = useLoader(TextureLoader, starImage);
   const textureUnion = useLoader(TextureLoader, unionImage);
-  const [stars, setStars] = useState([]);
+  const [stars, setStars] = useState<Array<{ offsetTime: number }>>([]);
   useEffect(() => {
     setStars(
       [0, 1, 2, 3, 4].map((offset) => ({
