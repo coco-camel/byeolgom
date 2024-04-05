@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore } from '../../store/authStore';
@@ -19,8 +18,6 @@ function Main() {
   return (
     <>
       <MainPage>
-        <p className="title">MainPage</p>
-        <Link to={'/login'}>로그인이동</Link>
         <PastContentAnimation />
         <MyElement3D />
       </MainPage>
