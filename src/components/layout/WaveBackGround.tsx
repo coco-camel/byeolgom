@@ -39,12 +39,17 @@ const Wave = styled.div<WaveProps>`
   animation: ${rotateAnimation} ${(props) => props.$animationDuration} linear
     infinite;
 
-  @media screen and (max-width: 640px) {
-    right: -190%;
+  @media screen and (min-width: 401px) and (max-width: 640px) {
+    right: -120%;
     width: 2000px;
     height: 2000px;
   }
 
+  @media screen and (max-width: 400px) {
+    right: -190%;
+    width: 2000px;
+    height: 2000px;
+  }
   @media screen and (min-width: 641px) {
     right: -90%;
     width: 1000px;
