@@ -16,19 +16,15 @@ const rotateAnimation = keyframes`
 
 function WaveBackGround() {
   return (
-    <AniWrap>
+    <>
       <Wave $top="70%" $animationDuration="50s" />
       <Wave $top="72%" $animationDuration="30s" />
       <Wave $top="80%" $animationDuration="60s" />
-    </AniWrap>
+    </>
   );
 }
 
 export default WaveBackGround;
-
-const AniWrap = styled.div`
-  z-index: -10;
-`;
 
 const Wave = styled.div<WaveProps>`
   position: absolute;

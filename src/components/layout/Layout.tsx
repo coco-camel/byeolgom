@@ -20,10 +20,10 @@ const Layout = () => {
         <div>설명~~~</div>
       </MainContent>
       <MainWrap>
-        <Outlet />
         <StarBackGround />
         <WaveBackGround />
         {isLoggedIn && <Footer />}
+        <Outlet />
       </MainWrap>
     </MainLayout>
   );
@@ -46,6 +46,7 @@ const MainContent = styled.div`
     display: none;
   }
 `;
+
 const MainWrap = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,7 +60,6 @@ const MainWrap = styled.div`
   background-image: url(${background});
   background-size: cover;
   overflow: hidden;
-  z-index: -99;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;

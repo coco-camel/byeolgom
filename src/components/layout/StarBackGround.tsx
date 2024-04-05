@@ -8,19 +8,17 @@ interface StarsProps {
 
 function StarBackGround() {
   return (
-    <StarBackGroundContainer>
+    <>
       <Stars $left="10%" $top="20%" $delay="0s" />
       <Stars $left="60%" $top="25%" $delay="0.5s" />
       <Stars $left="90%" $top="30%" $delay="1s" />
       <Stars $left="67%" $top="8%" $delay="1.5s" />
-    </StarBackGroundContainer>
+    </>
   );
 }
 
 export default StarBackGround;
-const StarBackGroundContainer = styled.div`
-  z-index: -10;
-`;
+
 const twinkle = keyframes`
   0% {
     opacity: 1;
