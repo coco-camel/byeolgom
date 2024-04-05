@@ -1,12 +1,16 @@
 import { useEffect, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { authInstance } from '../../../api/api';
+import { useAuthStore } from '../../../store/authStore';
 import styled from 'styled-components';
 
 function KakaoRedirect() {
   const location = useLocation();
-  const CODE = location.search.split('=')[1];
-  console.log(CODE);
+  const navigate = useNavigate();
+  const { setLoginState } = useAuthStore();
+
+  const CODE = new URLSearchParams(location.search).get('code');
+  console.log('네이버 인가코드 ========', CODE);
 
   const sendAuthorizationCode = useCallback(() => {
     authInstance
@@ -14,11 +18,16 @@ function KakaoRedirect() {
         code: CODE,
       })
       .then((res) => {
+        setLoginState(res.data.accessToken, res.data.refreshToken);
         window.localStorage.setItem('access_Token', res.data.accessToken);
         window.localStorage.setItem('refresh_Token', res.data.refreshToken);
-        return res;
+        navigate('/');
+        console.log('네이버 로그인에 성공하였습니다.');
+      })
+      .catch((err) => {
+        console.error('네이버 로그인에 실패하였습니다.', err);
       });
-  }, [CODE]);
+  }, [CODE, navigate, setLoginState]);
 
   useEffect(() => {
     if (location.search) {
@@ -26,7 +35,7 @@ function KakaoRedirect() {
     }
   }, [location.search, sendAuthorizationCode]);
 
-  return <RedirectContainer>카카오 Redirect 페이지입니다</RedirectContainer>;
+  return <RedirectContainer>네이버 Redirect 페이지입니다</RedirectContainer>;
 }
 
 export default KakaoRedirect;
