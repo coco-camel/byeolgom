@@ -15,29 +15,27 @@ function KakaoLogin() {
   console.log('Kakao Auth URL =', KAKAO_AUTH_URL);
 
   return (
-    <div>
-      <Kakao>
-        <button className="Kakao" onClick={onClickToKakao}>
-          카카오톡으로 로그인
-        </button>
-      </Kakao>
-    </div>
+    <KakaoConstainer>
+      <Button className="Kakao" onClick={onClickToKakao}>
+        카카오톡으로 로그인
+      </Button>
+    </KakaoConstainer>
   );
 }
 
 export default KakaoLogin;
 
-const Kakao = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 350px;
+const KakaoConstainer = styled.div`
+  margin: auto;
+  width: fit-content;
+  height: fit-content;
+`;
 
-  .Kakao {
-    background-color: #f9e000;
-    border-radius: 10px;
-    padding: 15px;
-    color: #624a3d;
-    font-weight: bold;
-    font-size: 15px;
-  }
+const Button = styled.button`
+  background-color: #f9e000;
+  border-radius: 50px;
+  padding: 15px;
+  color: #624a3d;
+  font-weight: bold;
+  font-size: 15px;
 `;
