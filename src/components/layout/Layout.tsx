@@ -59,6 +59,7 @@ const MainWrap = styled.div`
   background-image: url(${background});
   background-size: cover;
   overflow: hidden;
+  z-index: -99;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;
