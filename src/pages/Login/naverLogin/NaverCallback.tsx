@@ -2,15 +2,15 @@ import { useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authInstance } from '../../../api/api';
 import { useAuthStore } from '../../../store/authStore';
+import Spinner from '../../../../public/assets/Spinner.gif';
 import styled from 'styled-components';
 
-function KakaoRedirect() {
+function NaverRedirect() {
   const location = useLocation();
   const navigate = useNavigate();
   const { setLoginState } = useAuthStore();
 
   const CODE = new URLSearchParams(location.search).get('code');
-  console.log('네이버 인가코드 ========', CODE);
 
   const sendAuthorizationCode = useCallback(() => {
     authInstance
@@ -18,7 +18,7 @@ function KakaoRedirect() {
         code: CODE,
       })
       .then((res) => {
-        setLoginState(res.data.accessToken, res.data.refreshToken);
+        setLoginState();
         window.localStorage.setItem('access_Token', res.data.accessToken);
         window.localStorage.setItem('refresh_Token', res.data.refreshToken);
         navigate('/');
@@ -35,14 +35,19 @@ function KakaoRedirect() {
     }
   }, [location.search, sendAuthorizationCode]);
 
-  return <RedirectContainer>네이버 Redirect 페이지입니다</RedirectContainer>;
+  return (
+    <RedirectContainer>
+      <img src={Spinner} alt="로딩" width="10%" />
+    </RedirectContainer>
+  );
 }
 
-export default KakaoRedirect;
+export default NaverRedirect;
 
 const RedirectContainer = styled.div`
   display: flex;
   justify-content: center;
+  color: white;
   margin-top: 340px;
   font-weight: 500;
 `;

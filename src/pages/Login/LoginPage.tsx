@@ -33,7 +33,5 @@ const LoginButtonContainer = styled.div`
 
 const LoginWrapper = styled.div`
   margin-top: 100%;
-  display: block;
-  white-space: nowrap;
   align-items: center;
 `;
