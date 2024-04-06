@@ -5,7 +5,7 @@ import KakaoRedirect from './Login/kakaoLogin/KakaoRedirect';
 import NaverRedirect from './Login/naverLogin/NaverCallback';
 import { createBrowserRouter } from 'react-router-dom';
 import PastContents from './PastContent/PastContents';
-import PastContentDetail from './PastContent/PastContentDetail';
+import PastContentDetail from './PastContnetDetail/PastContentDetail';
 import SendContents from './SendContent/SendContents';
 import SettingPage from './MyPage/SettingPage';
 import Layout from '../components/layout/Layout';

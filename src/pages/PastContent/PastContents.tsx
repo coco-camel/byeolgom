@@ -26,6 +26,7 @@ function PastContents() {
     data: pastContent,
     fetchNextPage,
     hasNextPage,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: ['worries', whoseContent],
     queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
@@ -92,11 +93,15 @@ function PastContents() {
           익명의 고민
         </Button>
       </LockerTabWrap>
-      <PastContentsList
-        listsSelect={pastContents}
-        whoseContent={whoseContent}
-        ref={loadMoreRef}
-      />
+      {isLoading ? (
+        <div>isLoading...</div>
+      ) : (
+        <PastContentsList
+          listsSelect={pastContents}
+          whoseContent={whoseContent}
+          ref={loadMoreRef}
+        />
+      )}
     </div>
   );
 }
@@ -109,23 +114,13 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   padding-bottom: 10px;
-  color: #767676;
+  color: #313131;
   width: 50%;
-  border-bottom: 2px solid #767676;
-
-  &:hover {
-    color: #2f2f2f;
-    border-bottom: 2px solid #2f2f2f;
-  }
-
-  &:focus {
-    outline: none;
-    border-bottom: 2px solid #2f2f2f;
-  }
+  border-bottom: 2px solid #313131;
 
   &.active {
-    color: #2f2f2f;
-    border-bottom: 2px solid #2f2f2f;
+    color: #e2e2e2;
+    border-bottom: 2px solid #e2e2e2;
   }
   @media (max-width: 640px) {
     font-size: 1.1rem;
@@ -147,7 +142,7 @@ const LockerTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0;
+  margin: 20px 0;
   h1 {
     font-size: 16px;
     @media (max-width: 640px) {

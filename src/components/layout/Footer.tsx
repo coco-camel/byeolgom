@@ -1,27 +1,88 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import locker from '/assets/locker.svg';
+import hoverLocker from '/assets/hoverLocker.svg';
 import home from '/assets/home.svg';
+import hoverHome from '/assets/hoverHome.svg';
 import rocket from '/assets/rocket.svg';
 import setting from '/assets/setting.svg';
+import hoverSetting from '/assets/hoverSetting.svg';
 import chat from '/assets/chat.svg';
+import hoverChat from '/assets/hoverChat.svg';
 import { Link } from 'react-router-dom';
 
 function Footer() {
+  const [hoveredButton, setHoveredButton] = useState<string>('');
+  const [clickedButton, setClickedButton] = useState<string>('');
+
+  const handleButtonHover = (buttonName: string) => {
+    if (!clickedButton) {
+      setHoveredButton(buttonName);
+    }
+  };
+
+  const handleButtonLeave = () => {
+    setHoveredButton('');
+  };
+
+  const handleButtonClick = (buttonName: string) => {
+    setClickedButton((prevButton) =>
+      prevButton === buttonName ? '' : buttonName,
+    );
+    setHoveredButton(buttonName);
+  };
+
   return (
     <FooterArea>
       <FooterInner>
         <Link to={'/'}>
-          <img src={home} />
+          <HoverableImage
+            src={
+              hoveredButton === 'home' || clickedButton === 'home'
+                ? hoverHome
+                : home
+            }
+            onMouseEnter={() => handleButtonHover('home')}
+            onMouseLeave={handleButtonLeave}
+            onClick={() => handleButtonClick('home')}
+          />
         </Link>
         <Link to={'/pastcontents'}>
-          <img src={locker} />
+          <HoverableImage
+            src={
+              hoveredButton === 'locker' || clickedButton === 'locker'
+                ? hoverLocker
+                : locker
+            }
+            onMouseEnter={() => handleButtonHover('locker')}
+            onMouseLeave={handleButtonLeave}
+            onClick={() => handleButtonClick('locker')}
+          />
         </Link>
         <div></div>
         <Link to={'/'}>
-          <img src={chat} />
+          <HoverableImage
+            src={
+              hoveredButton === 'chat' || clickedButton === 'chat'
+                ? hoverChat
+                : chat
+            }
+            onMouseEnter={() => handleButtonHover('chat')}
+            onMouseLeave={handleButtonLeave}
+            onClick={() => handleButtonClick('chat')}
+          />
         </Link>
-        <Link to={'/mypage'}>
-          <img src={setting} />
+        <Link to={'/'}>
+          <HoverableImage
+            src={
+              hoveredButton === 'setting' || clickedButton === 'setting'
+                ? hoverSetting
+                : setting
+            }
+            onMouseEnter={() => handleButtonHover('setting')}
+            onMouseLeave={handleButtonLeave}
+            onClick={() => handleButtonClick('setting')}
+          />
         </Link>
         <Sendwrap>
           <Link to={'/sendcontents'}>
@@ -41,10 +102,10 @@ const Sendwrap = styled.div`
 
 const FooterArea = styled.footer`
   width: 100%;
-  color: #2f3438;
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 100;
 `;
 const FooterInner = styled.div`
   display: grid;
@@ -56,5 +117,12 @@ const FooterInner = styled.div`
   width: 100%;
   padding: 15px 15px;
   gap: 20px;
-  background: rgba(222, 222, 222, 0.6);
+  background: #2f4768;
+`;
+
+const HoverableImage = styled.img`
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
