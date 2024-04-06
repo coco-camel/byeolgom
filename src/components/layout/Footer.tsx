@@ -20,7 +20,7 @@ function Footer() {
         <Link to={'/'}>
           <img src={chat} />
         </Link>
-        <Link to={'/'}>
+        <Link to={'/mypage'}>
           <img src={setting} />
         </Link>
         <Sendwrap>

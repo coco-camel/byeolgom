@@ -7,6 +7,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import PastContents from './PastContent/PastContents';
 import PastContentDetail from './PastContent/PastContentDetail';
 import SendContents from './SendContent/SendContents';
+import SettingPage from './MyPage/SettingPage';
 import Layout from '../components/layout/Layout';
 
 export const router = createBrowserRouter([
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
           {
             path: '/sendcontents',
             element: <SendContents />,
+          },
+          {
+            path: '/mypage',
+            element: <SettingPage />,
           },
         ],
       },
