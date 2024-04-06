@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { startTransition, useEffect } from 'react';
 import { useAuthStore } from '../../store/authStore';
 import PastContentAnimation from '../PastContent/PastContentAnimation';
 import MyElement3D from '../../components/3dMotion/MyElement3D.jsx';
@@ -11,7 +11,9 @@ function Main() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      navigate('/login');
+      startTransition(() => {
+        navigate('/login');
+      });
     }
   }, [isLoggedIn, navigate]);
 

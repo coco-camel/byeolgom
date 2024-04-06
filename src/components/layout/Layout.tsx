@@ -48,9 +48,6 @@ const MainContent = styled.div`
 `;
 
 const MainWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   position: relative;
   overflow: auto;
   border-radius: 10px;
@@ -60,6 +57,7 @@ const MainWrap = styled.div`
   background-image: url(${background});
   background-size: cover;
   overflow: hidden;
+  z-index: 0;
   @media (max-width: 640px) {
     width: 100vw;
     height: 100vh;

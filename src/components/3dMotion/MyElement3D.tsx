@@ -1,10 +1,12 @@
-import { useRef, useState, useEffect } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
-import { TextureLoader, Texture, Mesh } from 'three';
-import starImage from '/assets/star.png';
-import unionImage from '/assets/union.png';
-import { Canvas } from '@react-three/fiber';
+import { useRef, useState, useEffect, Suspense } from 'react';
+import { useFrame, Canvas } from '@react-three/fiber';
+import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
+import { Texture } from 'three';
+
+// Assets
+const starImagePath = '/assets/star.png';
+const unionImagePath = '/assets/union.png';
 
 interface StarProps {
   texture: Texture;
@@ -15,49 +17,44 @@ interface CentralImageProps {
   texture: Texture;
 }
 
-const CentralImage = ({ texture }: CentralImageProps) => {
-  return (
-    <mesh position={[0, 0, 0]}>
-      <planeGeometry args={[6, 6]} />
-      <meshStandardMaterial map={texture} transparent={true} />
-    </mesh>
-  );
-};
+const CentralImage: React.FC<CentralImageProps> = ({ texture }) => (
+  <mesh position={[0, 0, 0]}>
+    <planeGeometry args={[6, 6]} />
+    <meshStandardMaterial map={texture} transparent />
+  </mesh>
+);
 
-const Star = ({ texture, offsetTime }: StarProps) => {
+const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
   const ref = useRef<Mesh>(null);
 
-  useFrame((state) => {
-    if (!ref.current) return;
-
-    const speedFactor = 0.3;
-    const time = state.clock.getElapsedTime() * speedFactor + offsetTime / 1.5;
-    const radiusX = 4; // 별이 도는 x축의 반지름을 절반으로 줄임
-    const radiusZ = 1.5; // z축의 반지름은 그대로 유지
-
-    // 별의 x, y, z 위치를 계산
-    ref.current.position.x = radiusX * Math.sin(time); // x축 이동 범위를 줄임
-    ref.current.position.y = (radiusX * Math.sin(time)) / 2;
-    ref.current.position.z = radiusZ * Math.cos(time); // z축 이동 범위는 그대로 유지
+  useFrame(({ clock }) => {
+    const time = clock.getElapsedTime() * 0.3 + offsetTime;
+    if (ref.current) {
+      ref.current.position.x = 4 * Math.sin(time);
+      ref.current.position.y = (4 * Math.sin(time)) / 2;
+      ref.current.position.z = 1.5 * Math.cos(time);
+    }
   });
+
   return (
     <mesh ref={ref}>
       <planeGeometry args={[0.6, 0.6]} />
-      <meshStandardMaterial color="#ffffff" map={texture} transparent={true} />
+      <meshStandardMaterial color="#ffffff" map={texture} transparent />
     </mesh>
   );
 };
 
-function MyElement3D() {
-  const textureStar = useLoader(TextureLoader, starImage);
-  const textureUnion = useLoader(TextureLoader, unionImage);
-  const [stars, setStars] = useState<Array<{ offsetTime: number }>>([]);
+const MyElement3D: React.FC = () => {
+  const [textureStar, setTextureStar] = useState<Texture | null>(null);
+  const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
+
   useEffect(() => {
-    setStars(
-      [0, 1, 2, 3, 4].map((offset) => ({
-        offsetTime: (offset * (2 * Math.PI)) / 5,
-      })),
-    );
+    new TextureLoader().load(starImagePath, (texture) => {
+      setTextureStar(texture);
+    });
+    new TextureLoader().load(unionImagePath, (texture) => {
+      setTextureUnion(texture);
+    });
   }, []);
 
   return (
@@ -65,18 +62,21 @@ function MyElement3D() {
       <Canvas>
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 5, 5]} />
-        <CentralImage texture={textureUnion} />
-        {stars.map((star, index) => (
-          <Star
-            key={index}
-            texture={textureStar}
-            offsetTime={star.offsetTime}
-          />
-        ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          {textureUnion && <CentralImage texture={textureUnion} />}
+          {textureStar &&
+            [0, 1, 2, 3, 4].map((offset, index) => (
+              <Star
+                key={index}
+                texture={textureStar}
+                offsetTime={(offset * (2 * Math.PI)) / 5}
+              />
+            ))}
+        </Suspense>
       </Canvas>
     </AnimationGroup>
   );
-}
+};
 
 export default MyElement3D;
 
