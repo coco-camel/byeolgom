@@ -105,6 +105,7 @@ const FooterArea = styled.footer`
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 100;
 `;
 const FooterInner = styled.div`
   display: grid;

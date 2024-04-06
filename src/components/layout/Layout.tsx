@@ -20,10 +20,10 @@ const Layout = () => {
         <div>설명~~~</div>
       </MainContent>
       <MainWrap>
-        <Outlet />
         <StarBackGround />
         <WaveBackGround />
         {isLoggedIn && <Footer />}
+        <Outlet />
       </MainWrap>
     </MainLayout>
   );
@@ -46,6 +46,7 @@ const MainContent = styled.div`
     display: none;
   }
 `;
+
 const MainWrap = styled.div`
   position: relative;
   overflow: auto;

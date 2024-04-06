@@ -16,19 +16,15 @@ const rotateAnimation = keyframes`
 
 function WaveBackGround() {
   return (
-    <AniWrap>
+    <>
       <Wave $top="70%" $animationDuration="50s" />
       <Wave $top="72%" $animationDuration="30s" />
       <Wave $top="80%" $animationDuration="60s" />
-    </AniWrap>
+    </>
   );
 }
 
 export default WaveBackGround;
-
-const AniWrap = styled.div`
-  z-index: -10;
-`;
 
 const Wave = styled.div<WaveProps>`
   position: absolute;
@@ -39,12 +35,17 @@ const Wave = styled.div<WaveProps>`
   animation: ${rotateAnimation} ${(props) => props.$animationDuration} linear
     infinite;
 
-  @media screen and (max-width: 640px) {
-    right: -190%;
+  @media screen and (min-width: 401px) and (max-width: 640px) {
+    right: -120%;
     width: 2000px;
     height: 2000px;
   }
 
+  @media screen and (max-width: 400px) {
+    right: -190%;
+    width: 2000px;
+    height: 2000px;
+  }
   @media screen and (min-width: 641px) {
     right: -90%;
     width: 1000px;
