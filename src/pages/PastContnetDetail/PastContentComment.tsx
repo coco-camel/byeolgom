@@ -36,6 +36,7 @@ const CommentContent = styled.div<{ $count: number }>`
   width: 70%;
   margin-top: 15px;
   border-radius: 10px;
+  min-width: 130px;
   word-wrap: break-word;
   background-color: ${(props) =>
     props.$count % 2 === 0 ? '#b7b7b7' : '#616161'};
