@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
+import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
-import star from '/assets/star.svg';
+import rocketC from '/assets/rocketC.svg';
+import star1 from '/assets/star1.svg';
 import chevronLeft from '/assets/chevronLeft.svg';
 import { forwardRef } from 'react';
 
@@ -20,6 +22,11 @@ interface worryList {
 
 const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
   ({ listsSelect, whoseContent }, ref) => {
+    const rocket: { [key: string]: string } = {
+      rocketA: rocketA,
+      rocketB: rocketB,
+      rocketC: rocketC,
+    };
     return (
       <LockerListWrap>
         {listsSelect &&
@@ -30,16 +37,16 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
             >
               <PastContentWrap>
                 <img
-                  src={whoseContent === 'mySolvedWorry' ? rocketB : star}
+                  src={
+                    whoseContent === 'mySolvedWorry'
+                      ? rocket[`rocket${list.icon}`]
+                      : star1
+                  }
                   style={{ width: '24px' }}
                 />
                 <PastContentContainer>
-                  <PastContentTitle>
-                    {formatDate(list.createdAt)}
-                  </PastContentTitle>
-                  <PastContentTitle className="content">
-                    {list.content}
-                  </PastContentTitle>
+                  <div>{formatDate(list.createdAt)}</div>
+                  <div className="content">{list.content}</div>
                 </PastContentContainer>
                 <img src={chevronLeft} />
               </PastContentWrap>
@@ -57,14 +64,18 @@ const LoadMoreDiv = styled.div`
   height: 10px;
 `;
 
-const PastContentTitle = styled.div`
-  color: #e2e2e2;
-  padding: 5px 0;
-`;
 const PastContentContainer = styled.div`
   flex-grow: 1;
   margin: 0 10px;
   overflow: hidden;
+  div {
+    color: #e2e2e2;
+    font-size: 16px;
+    padding: 3px 0;
+  }
+  :nth-child(1) {
+    font-size: 12px;
+  }
 `;
 
 const LockerListWrap = styled.div`
@@ -107,7 +118,7 @@ const LockerListWrap = styled.div`
 const PastContentWrap = styled.div`
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 15px 0;
   .content {
     max-width: 80%;
     overflow: hidden;

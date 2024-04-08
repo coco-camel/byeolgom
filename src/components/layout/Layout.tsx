@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
@@ -7,14 +7,18 @@ import background from '/assets/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
 import Modal from '../modal/Modal';
+import Header from './Header';
 
 const Layout = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const { isLoggedIn } = useAuthStore();
+  const location = useLocation();
 
   const handleOpenModal = () => {
     setShowModal(true);
   };
+
+  const showHeader = location.pathname === '/' || location.pathname === 'login';
 
   return (
     <MainLayout>
@@ -27,6 +31,7 @@ const Layout = () => {
         <div>설명~~~</div>
       </MainContent>
       <MainWrap>
+        {showHeader && <Header />}
         {showModal && <Modal />}
         <StarBackGround />
         <WaveBackGround />
