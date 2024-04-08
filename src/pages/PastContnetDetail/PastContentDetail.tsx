@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { worriesDetail } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
-import styled from 'styled-components';
 import PastContentComment from './PastContentComment';
-import Trophy from '/assets/Trophy.svg';
+import styled from 'styled-components';
+import chevronLeft from '/assets/chevronLeft.svg';
 
 function PastContentDetail() {
   const params = useParams() as Readonly<WorriesDetailParams>;
@@ -36,7 +36,7 @@ function PastContentDetail() {
         <div>
           <PastContentHeader>
             <button onClick={handleBackNavigation}>
-              <img src={Trophy} />
+              <img src={chevronLeft} width={20} height={20} />
             </button>
           </PastContentHeader>
           <PastContentWrap>

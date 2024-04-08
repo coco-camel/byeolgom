@@ -5,7 +5,7 @@ import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
 import star1 from '/assets/star1.svg';
-import chevronLeft from '/assets/chevronLeft.svg';
+import chevronRight from '/assets/chevronRight.svg';
 import { forwardRef } from 'react';
 
 interface PastContentsListProps {
@@ -48,7 +48,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                   <div>{formatDate(list.createdAt)}</div>
                   <div className="content">{list.content}</div>
                 </PastContentContainer>
-                <img src={chevronLeft} />
+                <img src={chevronRight} />
               </PastContentWrap>
             </Link>
           ))}

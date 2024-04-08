@@ -38,7 +38,7 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
 
   return (
     <mesh ref={ref}>
-      <planeGeometry args={[0.6, 0.6]} />
+      <planeGeometry args={[1, 1]} />
       <meshStandardMaterial color="#ffffff" map={texture} transparent />
     </mesh>
   );

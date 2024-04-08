@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import Trophy from '/assets/Trophy.svg';
+import trophy from '/assets/trophy.svg';
+import countRocket from '/assets/countRocket.svg';
 import { useAuthStore } from '../../store/authStore';
 function Header() {
   const { isLoggedIn } = useAuthStore();
@@ -7,12 +8,12 @@ function Header() {
     <HeaderArea>
       <HeaderInner>
         <button>
-          <img src={Trophy} />
+          <img src={trophy} />
         </button>
         <WorryCount>
           {isLoggedIn ? (
             <>
-              <img src={Trophy} />
+              <img src={countRocket} />
               <span>xCount</span>
             </>
           ) : (
