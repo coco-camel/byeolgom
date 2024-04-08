@@ -13,9 +13,7 @@ function KakaoLogin() {
 
   return (
     <KakaoConstainer>
-      <Button className="Kakao" onClick={onClickToKakao}>
-        카카오톡으로 로그인
-      </Button>
+      <Button className="Kakao" onClick={onClickToKakao}></Button>
     </KakaoConstainer>
   );
 }
@@ -28,11 +26,9 @@ const KakaoConstainer = styled.div`
 `;
 
 const Button = styled.button`
-  width: 190%;
-  background-color: #f9e000;
-  border-radius: 50px;
-  padding: 15px;
-  color: #624a3d;
-  font-weight: bold;
-  font-size: 15px;
+  background-image: url('https://i.ibb.co/2cdRQ7x/kakao-login-large-wide.png');
+  background-size: 100%;
+  width: 200px;
+  height: 30px;
+  cursor: pointer;
 `;

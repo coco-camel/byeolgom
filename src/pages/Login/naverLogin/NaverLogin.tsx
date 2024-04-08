@@ -15,9 +15,7 @@ function NaverLogin() {
 
   return (
     <NaverConstainer>
-      <Button className="Naver" onClick={onClicktoNaver}>
-        네이버 로그인
-      </Button>
+      <Button className="Naver" onClick={onClicktoNaver}></Button>
     </NaverConstainer>
   );
 }
@@ -31,11 +29,9 @@ const NaverConstainer = styled.div`
 `;
 
 const Button = styled.button`
-  width: 260%;
-  background-color: #2db400;
-  border-radius: 50px;
-  padding: 15px;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
+  background-image: url('https://i.ibb.co/Pj8Mfpv/naver-login-large-wide.png');
+  background-size: 100%;
+  width: 200px;
+  height: 30px;
+  cursor: pointer;
 `;

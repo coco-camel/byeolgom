@@ -16,22 +16,41 @@ function LoginPage() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <LoginButtonContainer>
-      <LoginWrapper>
+    <LoginContainer>
+      <Logo>
+        <img className="Logo" src="https://i.ibb.co/tJf5988/image.png" />
+      </Logo>
+      <LoginButtonContainer>
         <KakaoLogin />
         <NaverLogin />
-      </LoginWrapper>
-    </LoginButtonContainer>
+      </LoginButtonContainer>
+    </LoginContainer>
   );
 }
 
 export default LoginPage;
 
-const LoginButtonContainer = styled.div`
-  position: relative;
+const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 568px;
+  width: 100%;
 `;
 
-const LoginWrapper = styled.div`
-  margin-top: 100%;
-  align-items: center;
+const Logo = styled.div`
+  width: 100%;
+  text-align: center;
+
+  .Logo {
+    width: 100px;
+    margin: 0 auto;
+  }
+`;
+
+const LoginButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-top: 200px;
 `;
