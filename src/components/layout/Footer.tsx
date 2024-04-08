@@ -1,35 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import locker from '/assets/locker.svg';
 import hoverLocker from '/assets/hoverLocker.svg';
 import home from '/assets/home.svg';
 import hoverHome from '/assets/hoverHome.svg';
-import rocket from '/assets/rocket.svg';
+import rocketB from '/assets/rocketB.svg';
 import setting from '/assets/setting.svg';
 import hoverSetting from '/assets/hoverSetting.svg';
 import chat from '/assets/chat.svg';
 import hoverChat from '/assets/hoverChat.svg';
 import { Link } from 'react-router-dom';
 
-function Footer() {
-  const [hoveredButton, setHoveredButton] = useState<string>('');
+function Footer({ openModal }: { openModal: () => void }) {
   const [clickedButton, setClickedButton] = useState<string>('');
 
-  const handleButtonHover = (buttonName: string) => {
-    if (!clickedButton) {
-      setHoveredButton(buttonName);
-    }
-  };
-
-  const handleButtonLeave = () => {
-    setHoveredButton('');
-  };
+  useEffect(() => {
+    setClickedButton('home');
+  }, []);
 
   const handleButtonClick = (buttonName: string) => {
-    setClickedButton((prevButton) =>
-      prevButton === buttonName ? '' : buttonName,
-    );
-    setHoveredButton(buttonName);
+    if (clickedButton === buttonName) return;
+    setClickedButton(buttonName);
   };
 
   return (
@@ -37,57 +28,31 @@ function Footer() {
       <FooterInner>
         <Link to={'/'}>
           <HoverableImage
-            src={
-              hoveredButton === 'home' || clickedButton === 'home'
-                ? hoverHome
-                : home
-            }
-            onMouseEnter={() => handleButtonHover('home')}
-            onMouseLeave={handleButtonLeave}
+            src={clickedButton === 'home' ? hoverHome : home}
             onClick={() => handleButtonClick('home')}
           />
         </Link>
         <Link to={'/pastcontents'}>
           <HoverableImage
-            src={
-              hoveredButton === 'locker' || clickedButton === 'locker'
-                ? hoverLocker
-                : locker
-            }
-            onMouseEnter={() => handleButtonHover('locker')}
-            onMouseLeave={handleButtonLeave}
+            src={clickedButton === 'locker' ? hoverLocker : locker}
             onClick={() => handleButtonClick('locker')}
           />
         </Link>
         <div></div>
         <Link to={'/'}>
           <HoverableImage
-            src={
-              hoveredButton === 'chat' || clickedButton === 'chat'
-                ? hoverChat
-                : chat
-            }
-            onMouseEnter={() => handleButtonHover('chat')}
-            onMouseLeave={handleButtonLeave}
+            src={clickedButton === 'chat' ? hoverChat : chat}
             onClick={() => handleButtonClick('chat')}
           />
         </Link>
-        <Link to={'/'}>
+        <Link to={'/mypage'}>
           <HoverableImage
-            src={
-              hoveredButton === 'setting' || clickedButton === 'setting'
-                ? hoverSetting
-                : setting
-            }
-            onMouseEnter={() => handleButtonHover('setting')}
-            onMouseLeave={handleButtonLeave}
+            src={clickedButton === 'setting' ? hoverSetting : setting}
             onClick={() => handleButtonClick('setting')}
           />
         </Link>
         <Sendwrap>
-          <Link to={'/sendcontents'}>
-            <img src={rocket} />
-          </Link>
+          <img src={rocketB} onClick={openModal} />
         </Sendwrap>
       </FooterInner>
     </FooterArea>
@@ -95,6 +60,7 @@ function Footer() {
 }
 
 export default Footer;
+
 const Sendwrap = styled.div`
   position: absolute;
   margin-bottom: 50px;
@@ -123,6 +89,6 @@ const FooterInner = styled.div`
 const HoverableImage = styled.img`
   transition: transform 0.3s ease-in-out;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
   }
 `;
