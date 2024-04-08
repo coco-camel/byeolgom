@@ -1,13 +1,19 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { worriesDetail } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import styled from 'styled-components';
 import PastContentComment from './PastContentComment';
+import Trophy from '/assets/Trophy.svg';
 
 function PastContentDetail() {
   const params = useParams() as Readonly<WorriesDetailParams>;
+  const navigate = useNavigate();
+
+  const handleBackNavigation = () => {
+    navigate(-1);
+  };
 
   const {
     data: pastContentDetail,
@@ -28,13 +34,16 @@ function PastContentDetail() {
     <>
       {pastContentDetail && (
         <div>
+          <PastContentHeader>
+            <button onClick={handleBackNavigation}>
+              <img src={Trophy} />
+            </button>
+          </PastContentHeader>
           <PastContentWrap>
             <div>{pastContentDetail.icon}</div>
             <PastContentContainer>
-              <PastContentTitle>
-                {formatDate(pastContentDetail.createdAt)}
-              </PastContentTitle>
-              <PastContentTitle>{pastContentDetail.content}</PastContentTitle>
+              <div>{formatDate(pastContentDetail.createdAt)}</div>
+              <div>{pastContentDetail.content}</div>
             </PastContentContainer>
           </PastContentWrap>
           <CommentLayOut>
@@ -51,6 +60,12 @@ function PastContentDetail() {
 }
 
 export default PastContentDetail;
+const PastContentHeader = styled.div`
+  display: flex;
+  align-items: center;
+  height: 54px;
+  padding: 0 20px;
+`;
 const CommentLayOut = styled.div`
   display: flex;
   justify-content: center;
@@ -93,16 +108,13 @@ const CommentListWrap = styled.div`
   }
 `;
 
-const PastContentTitle = styled.div`
-  color: #e2e2e2;
-  padding: 5px 0;
-`;
-
 const PastContentContainer = styled.div`
   flex-grow: 1;
   margin: 0 10px;
   overflow: hidden;
   div {
+    color: #e2e2e2;
+    padding: 5px 0;
     @media (max-width: 640px) {
       font-size: 1.1rem;
     }
@@ -115,7 +127,6 @@ const PastContentWrap = styled.div`
   display: flex;
   align-items: center;
   background-color: #353535;
-  margin: 10px 0;
   padding: 0 20px;
   .content {
     max-width: 80%;

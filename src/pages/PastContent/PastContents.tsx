@@ -76,9 +76,9 @@ function PastContents() {
 
   return (
     <div>
-      <LockerTitle>
+      <PastContentHeader>
         <h1>보관함</h1>
-      </LockerTitle>
+      </PastContentHeader>
       <LockerTabWrap>
         <Button
           className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
@@ -93,27 +93,32 @@ function PastContents() {
           익명의 고민
         </Button>
       </LockerTabWrap>
-      {isLoading ? (
-        <div>isLoading...</div>
-      ) : (
-        <PastContentsList
-          listsSelect={pastContents}
-          whoseContent={whoseContent}
-          ref={loadMoreRef}
-        />
-      )}
+      <PastContentsContainer>
+        {isLoading ? (
+          <div>isLoading...</div>
+        ) : (
+          <PastContentsList
+            listsSelect={pastContents}
+            whoseContent={whoseContent}
+            ref={loadMoreRef}
+          />
+        )}
+      </PastContentsContainer>
     </div>
   );
 }
 
 export default PastContents;
-
+const PastContentsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 const Button = styled.button`
   font-size: 16px;
   font-weight: bold;
   border: none;
   cursor: pointer;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
   color: #313131;
   width: 50%;
   border-bottom: 2px solid #313131;
@@ -134,15 +139,15 @@ const LockerTabWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  height: 54px;
   width: 100%;
   box-sizing: border-box;
 `;
-const LockerTitle = styled.div`
+const PastContentHeader = styled.div`
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
   h1 {
     font-size: 16px;
     @media (max-width: 640px) {

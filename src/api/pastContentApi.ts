@@ -10,6 +10,7 @@ export const myWorries = async (page: number) => {
         limit: 10,
       },
     });
+    console.log(res.data.worries);
     return res.data.worries;
   } catch (error) {
     throw new Error('');
