@@ -5,8 +5,10 @@ import { WorriesDetailParams } from '../types/WorriesDetailParams.interface';
 export const sendContent = async (contentData: ContentData) => {
   const { content, icon, fontColor } = contentData;
 
-  const token = localStorage.getItem('access_Token');
-  const userId = token ? JSON.parse(atob(token.split('.')[1])).userId : null;
+  const accessToken = localStorage.getItem('access_Token');
+  const userId = accessToken
+    ? JSON.parse(atob(accessToken.split('.')[1])).userId
+    : null;
 
   try {
     const res = await authInstance.post('/worries', {
