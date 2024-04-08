@@ -1,23 +1,28 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { worriesDetail } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
-import { PastContent } from '../../types/PastContent.interface';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import styled from 'styled-components';
 import PastContentComment from './PastContentComment';
 
 function PastContentDetail() {
-  const [pastContentDetail, setPastContentDetail] = useState<PastContent>();
   const params = useParams() as Readonly<WorriesDetailParams>;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await worriesDetail(params);
-      setPastContentDetail(data);
-    };
-    fetchData();
-  }, [params]);
+  const {
+    data: pastContentDetail,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['pastContentDetail', params],
+    queryFn: () => worriesDetail(params),
+    staleTime: 1000 * 60,
+    gcTime: 1000 * 120,
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (isError) return <div>Error</div>;
 
   return (
     <>
@@ -32,11 +37,13 @@ function PastContentDetail() {
               <PastContentTitle>{pastContentDetail.content}</PastContentTitle>
             </PastContentContainer>
           </PastContentWrap>
-          <LockerListWrap>
-            {pastContentDetail.comments.map((item, index) => (
-              <PastContentComment key={index} comment={item} />
-            ))}
-          </LockerListWrap>
+          <CommentLayOut>
+            <CommentListWrap>
+              {pastContentDetail.comments.map((item, index) => (
+                <PastContentComment key={index} comment={item} />
+              ))}
+            </CommentListWrap>
+          </CommentLayOut>
         </div>
       )}
     </>
@@ -44,8 +51,11 @@ function PastContentDetail() {
 }
 
 export default PastContentDetail;
-
-const LockerListWrap = styled.div`
+const CommentLayOut = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const CommentListWrap = styled.div`
   width: 100%;
   height: 370px;
   overflow: auto;
