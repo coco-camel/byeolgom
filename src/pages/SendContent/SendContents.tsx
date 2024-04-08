@@ -2,19 +2,15 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { sendContent } from '../../api/sendContentApi';
 
-function SendContents() {
+interface SendContentsProps {
+  selectedIcon: string;
+}
+
+function SendContents({ selectedIcon }: SendContentsProps) {
   const [content, setContent] = useState<string>('');
-  const [icon, setIcon] = useState<string>('');
-  const [selectedIcon, setSelectedIcon] = useState<string>('');
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [fontColor, setFontColor] = useState<string>('black');
 
   const colors = ['black', 'red', 'blue', 'green'];
-
-  const handleIconClick = (selectedIcon: string) => {
-    setIcon(selectedIcon);
-    setSelectedIcon(selectedIcon);
-  };
 
   const handleColorChange = (color: string) => {
     setFontColor(color);
@@ -22,43 +18,18 @@ function SendContents() {
 
   const handleContentSubmit = async () => {
     try {
-      const contentData = { content, icon, fontColor };
+      const contentData = { content, icon: selectedIcon, fontColor };
       const response = await sendContent(contentData);
       console.log(response);
       setContent('');
-      setIcon('');
-      setSelectedIcon('');
-      setShowModal(!showModal);
       setFontColor('black');
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleModalToggle = () => {
-    setShowModal(!showModal);
-  };
-
   return (
-    <div>
-      <button onClick={handleModalToggle}>아이콘 선택</button>
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            {['A', 'B', 'C'].map((icon) => (
-              <button
-                key={icon}
-                style={{
-                  border: selectedIcon === icon ? '2px solid blue' : 'none',
-                }}
-                onClick={() => handleIconClick(icon)}
-              >
-                {icon}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+    <>
       <input
         type="text"
         value={content}
@@ -77,7 +48,7 @@ function SendContents() {
         ))}
       </div>
       <button onClick={handleContentSubmit}>Send Content</button>
-    </div>
+    </>
   );
 }
 

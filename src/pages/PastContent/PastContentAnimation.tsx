@@ -35,7 +35,7 @@ const TestDiv = styled.div`
   transform: translate(-50%, -50%);
   max-width: 300px;
   max-height: 300px;
-  z-index: 999;
+  z-index: 100;
 `;
 
 const animation = ($startAngle: number, $translateX: string) => keyframes`

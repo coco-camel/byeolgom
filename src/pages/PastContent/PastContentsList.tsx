@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
-import rocket from '/assets/rocket.svg';
+import rocketB from '/assets/rocketB.svg';
 import star from '/assets/star.svg';
 import chevronLeft from '/assets/chevronLeft.svg';
 import { forwardRef } from 'react';
@@ -30,7 +30,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
             >
               <PastContentWrap>
                 <img
-                  src={whoseContent === 'mySolvedWorry' ? rocket : star}
+                  src={whoseContent === 'mySolvedWorry' ? rocketB : star}
                   style={{ width: '24px' }}
                 />
                 <PastContentContainer>
