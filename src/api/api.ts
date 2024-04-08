@@ -31,7 +31,7 @@ authInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const newAccessToken = await refreshAccessToken();
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        originalRequest.headers['Authorization'] = `${newAccessToken}`;
         return authInstance(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);
@@ -41,19 +41,14 @@ authInstance.interceptors.response.use(
   },
 );
 
-const refreshAccessToken = async () => {
+export const refreshAccessToken = async () => {
   const refreshToken = window.localStorage.getItem('refresh_Token');
-
   try {
-    const res = await authInstance.post(
-      `/refresh`,
-      {},
-      {
-        headers: {
-          Authorization: `${refreshToken}`,
-        },
+    const res = await authInstance.post(`/refresh`, {
+      headers: {
+        Authorization: refreshToken,
       },
-    );
+    });
     window.localStorage.setItem('access_Token', res.data.accessToken);
     window.localStorage.setItem('refresh_Token', res.data.refreshToken);
     return res.data.accessToken;

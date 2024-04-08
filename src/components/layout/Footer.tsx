@@ -72,7 +72,7 @@ function Footer() {
             onClick={() => handleButtonClick('chat')}
           />
         </Link>
-        <Link to={'/'}>
+        <Link to={'/mypage'}>
           <HoverableImage
             src={
               hoveredButton === 'setting' || clickedButton === 'setting'

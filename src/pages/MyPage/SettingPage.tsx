@@ -23,6 +23,8 @@ function SettingPage() {
 
   return (
     <SettingContainer>
+      <p className="Theme">테마</p>
+      <p className="DarkMode">다크모드</p>
       <Button onClick={handleLogout}>로그아웃</Button>
     </SettingContainer>
   );
@@ -31,16 +33,24 @@ function SettingPage() {
 export default SettingPage;
 
 const SettingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  color: white;
+  display: block;
+
+  .Theme {
+    color: gray;
+    font-weight: 300;
+  }
+
+  .DarkMode {
+    color: white;
+    font-size: 21px;
+    font-weight: bold;
+  }
 `;
 
 const Button = styled.button`
   border: none;
   font-size: 15px;
   color: white;
-  margin-top: 80%;
   cursor: pointer;
   background: transparent;
 `;
