@@ -39,6 +39,7 @@ const Stars = styled.div<StarsProps>`
   background: transparent;
   left: ${(props) => props.$left};
   top: ${(props) => props.$top};
+  z-index: -1;
 
   &::before {
     content: '+';

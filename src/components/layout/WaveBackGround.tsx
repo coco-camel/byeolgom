@@ -31,6 +31,7 @@ const Wave = styled.div<WaveProps>`
   border-radius: 40%;
   background-color: white;
   opacity: 0.04;
+  z-index: -1;
   top: ${(props) => props.$top};
   animation: ${rotateAnimation} ${(props) => props.$animationDuration} linear
     infinite;
