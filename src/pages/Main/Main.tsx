@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { startTransition, useEffect } from 'react';
 import { useAuthStore } from '../../store/authStore';
-import PastContentAnimation from '../PastContent/PastContentAnimation';
+import PostArrived from '../../components/postArrived/PostArrived.js';
 import MyElement3D from '../../components/3dMotion/MyElement3D.jsx';
 import styled from 'styled-components';
 
@@ -20,7 +20,7 @@ function Main() {
   return (
     <>
       <MainPage>
-        <PastContentAnimation />
+        <PostArrived />
         <MyElement3D />
       </MainPage>
     </>
