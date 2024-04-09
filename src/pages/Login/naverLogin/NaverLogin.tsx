@@ -34,4 +34,12 @@ const Button = styled.button`
   width: 200px;
   height: 30px;
   cursor: pointer;
+  @media (max-width: 640px) {
+    width: 250px;
+    height: 36px;
+  }
+  @media (max-width: 480px) {
+    width: 200px;
+    height: 30px;
+  }
 `;
