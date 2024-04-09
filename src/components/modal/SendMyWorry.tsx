@@ -1,0 +1,114 @@
+import { useState, useEffect } from 'react';
+import rocketA from '/assets/rocketA.svg';
+import rocketB from '/assets/rocketB.svg';
+import rocketC from '/assets/rocketC.svg';
+import back from '/assets/back.svg';
+import SendContents from '../../pages/SendContent/SendContents';
+import { sendContent } from '../../api/sendContentApi';
+import {
+  ModalHeader,
+  BackButton,
+  SendButton,
+  AnimatedWrapper,
+  StyledImg,
+  WhiteBox,
+  ModalBox,
+  ModalOverlay,
+  RocketButton,
+} from './ContentStyle';
+
+function SendMyWorry({ closeModal }: { closeModal: () => void }) {
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedIcon, setSelectedIcon] = useState<string>('');
+  const [content, setContent] = useState<string>('');
+  const [fontColor, setFontColor] = useState<string>('');
+  const [isSendButtonDisabled, setIsSendButtonDisabled] =
+    useState<boolean>(true);
+
+  const handleContentSubmit = async () => {
+    try {
+      const contentData = { content, icon: selectedIcon, fontColor };
+      const response = await sendContent(contentData);
+      console.log(response);
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleIconClick = (icon: string) => {
+    setSelectedIcon(icon);
+    setShowModal(false);
+  };
+
+  const handleModalToggle = () => {
+    setShowModal(!showModal);
+  };
+
+  const getRocketImage = (icon: string) => {
+    switch (icon) {
+      case 'A':
+        return rocketA;
+      case 'B':
+        return rocketB;
+      case 'C':
+        return rocketC;
+      default:
+        return rocketA;
+    }
+  };
+
+  useEffect(() => {
+    setIsSendButtonDisabled(content.trim().length === 0);
+  }, [content]);
+
+  return (
+    <>
+      <ModalHeader>
+        <BackButton src={back} onClick={closeModal} />
+        <SendButton
+          onClick={handleContentSubmit}
+          disabled={isSendButtonDisabled}
+        >
+          전송하기
+        </SendButton>
+      </ModalHeader>
+      <AnimatedWrapper>
+        <StyledImg
+          src={getRocketImage(selectedIcon)}
+          onClick={handleModalToggle}
+        />
+        {showModal && (
+          <ModalBox>
+            <div>
+              <RocketButton
+                onClick={() => handleIconClick('A')}
+                src={rocketA}
+              />
+              <RocketButton
+                onClick={() => handleIconClick('B')}
+                src={rocketB}
+              />
+              <RocketButton
+                onClick={() => handleIconClick('C')}
+                src={rocketC}
+                $isLast
+              />
+            </div>
+          </ModalBox>
+        )}
+        <WhiteBox>
+          <SendContents
+            onSend={(content, fontColor) => {
+              setContent(content);
+              setFontColor(fontColor);
+            }}
+          />
+        </WhiteBox>
+      </AnimatedWrapper>
+      <ModalOverlay />
+    </>
+  );
+}
+
+export default SendMyWorry;

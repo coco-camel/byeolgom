@@ -4,7 +4,12 @@ import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
 import ellipse from '/assets/ellipse.svg';
 import { useEffect, useState } from 'react';
-import { postArrived } from '../../api/postArrived';
+import {
+  postArrived,
+  getWorryDetail,
+  getCommentDetail,
+} from '../../api/postArrived';
+
 interface AnimationProps {
   $sec: number;
   $startAngle: number;
@@ -16,8 +21,11 @@ interface PostArrivedItem {
   worryId: number;
   unRead: boolean;
 }
+
 function PostArrived() {
   const [postArrivedList, setPostArricedList] = useState<PostArrivedItem[]>();
+  const [detail, setDetail] = useState<PostArrivedItem | null>(null);
+
   const rocket: { [key: string]: string } = {
     rocketA: rocketA,
     rocketB: rocketB,
@@ -30,16 +38,38 @@ function PostArrived() {
     });
   }, []);
 
+  const handleClick = async (itemId: number, key: 'worryId' | 'commentId') => {
+    try {
+      if (key === 'worryId') {
+        const detail = await getWorryDetail({ worryid: itemId });
+        setDetail(detail);
+      } else if (key === 'commentId') {
+        const detail = await getCommentDetail({ commentid: itemId });
+        setDetail(detail);
+      }
+    } catch (error) {
+      console.error('Error fetching detail:', error);
+    }
+  };
+
   return (
     <>
       {postArrivedList &&
         postArrivedList.map((item) => (
-          <button key={item.worryId}>
+          <button
+            key={item.commentId !== null ? item.commentId : item.worryId}
+            onClick={() =>
+              handleClick(
+                item.commentId || item.worryId,
+                item.commentId !== null ? 'commentId' : 'worryId',
+              )
+            }
+          >
             <TestDiv>
               <Animation
                 $sec={Math.floor(Math.random() * (50 - 25 + 1)) + 25}
                 $startAngle={Math.floor(Math.random() * 360) + 1}
-                key={item.worryId}
+                key={item.commentId !== null ? item.commentId : item.worryId}
               >
                 <ImageContainer>
                   <img
@@ -53,11 +83,13 @@ function PostArrived() {
             </TestDiv>
           </button>
         ))}
+      {detail && <div>{/* Display your detailed information here */}</div>}
     </>
   );
 }
 
 export default PostArrived;
+
 const EllipseImage = styled.img`
   position: absolute;
 `;
