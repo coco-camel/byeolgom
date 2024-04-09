@@ -4,7 +4,7 @@ import locker from '/assets/locker.svg';
 import hoverLocker from '/assets/hoverLocker.svg';
 import home from '/assets/home.svg';
 import hoverHome from '/assets/hoverHome.svg';
-import rocketB from '/assets/rocketB.svg';
+import rocketA from '/assets/rocketA.svg';
 import setting from '/assets/setting.svg';
 import hoverSetting from '/assets/hoverSetting.svg';
 import chat from '/assets/chat.svg';
@@ -52,7 +52,7 @@ function Footer({ openModal }: { openModal: () => void }) {
           />
         </Link>
         <Sendwrap>
-          <img src={rocketB} onClick={openModal} />
+          <StyledImg src={rocketA} onClick={openModal} />
         </Sendwrap>
       </FooterInner>
     </FooterArea>
@@ -91,4 +91,8 @@ const HoverableImage = styled.img`
   &:hover {
     transform: scale(1.15);
   }
+`;
+
+const StyledImg = styled.img`
+  width: 55px;
 `;

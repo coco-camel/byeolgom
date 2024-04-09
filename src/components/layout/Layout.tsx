@@ -6,7 +6,7 @@ import Footer from './Footer';
 import background from '/assets/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
-import Modal from '../modal/Modal';
+import SendMyWorry from '../modal/SendMyWorry';
 import Header from './Header';
 
 const Layout = () => {
@@ -16,6 +16,10 @@ const Layout = () => {
 
   const handleOpenModal = () => {
     setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   const showHeader = location.pathname === '/' || location.pathname === 'login';
@@ -32,7 +36,7 @@ const Layout = () => {
       </MainContent>
       <MainWrap>
         {showHeader && <Header />}
-        {showModal && <Modal />}
+        {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         <StarBackGround />
         <WaveBackGround />
         {isLoggedIn && <Footer openModal={handleOpenModal} />}
