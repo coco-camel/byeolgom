@@ -77,7 +77,7 @@ const Wrapper = styled.div`
 
 const SettingContainer = styled.div`
   width: 100%;
-  height: 90%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -221,5 +221,4 @@ const LogoutButton = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 10px;
-  margin-top: 100px;
 `;
