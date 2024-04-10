@@ -53,8 +53,10 @@ const Layout = () => {
           currentUser={4}
         />
         {showModal && <SendMyWorry closeModal={handleCloseModal} />}
-        <StarBackGround />
-        <WaveBackGround />
+        <div>
+          <StarBackGround />
+          <WaveBackGround />
+        </div>
         {isLoggedIn && <Footer openModal={handleOpenModal} />}
         <Outlet />
       </MainWrap>
@@ -85,8 +87,8 @@ const MainWrap = styled.div`
   overflow: auto;
   border-radius: 10px;
   width: 320px;
+  height: 568px;
   min-width: 320px;
-  min-height: 568px;
   background-image: url(${background});
   background-size: cover;
   overflow: hidden;

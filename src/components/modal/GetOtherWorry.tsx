@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import back from '/assets/back.svg';
 import deleteWorry from '/assets/deleteWorry.svg';
@@ -16,7 +16,9 @@ import {
   StyledImg,
   WhiteBox,
   ModalOverlay,
+  SendButton,
 } from './ContentStyle';
+import { sendContentReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
 
 function GetOtherWorry({
@@ -28,8 +30,26 @@ function GetOtherWorry({
 }) {
   const [showDetail, setShowDetail] = useState(true);
   const [sendReply, setSendReply] = useState(false);
+  const [replyWrite, setReplyWrite] = useState(false);
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('');
+  const [isSendButtonDisabled, setIsSendButtonDisabled] =
+    useState<boolean>(true);
+
+  const handleContentSubmit = async () => {
+    try {
+      const contentData = { content, fontColor };
+      const params = { worryid: detail.worryId, commentid: detail.commentId };
+      if (detail.commentId !== null) {
+        params.commentid = detail.commentId;
+      }
+      const response = await sendContentReply(params, contentData);
+      console.log(response);
+      closeModal();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getRocketImage = (icon: string) => {
     switch (icon) {
@@ -48,7 +68,7 @@ function GetOtherWorry({
     try {
       await reportContent({ commentid: detail.commentId }, '불쾌한 언행');
     } catch (error) {
-      console.error('Error reporting content:', error);
+      console.error(error);
     }
   };
 
@@ -57,7 +77,7 @@ function GetOtherWorry({
       await deleteContent({ worryid: detail.worryId });
       closeModal();
     } catch (error) {
-      console.error('Error deleting content:', error);
+      console.error(error);
     }
   };
 
@@ -66,28 +86,50 @@ function GetOtherWorry({
     setSendReply(true);
   };
 
+  const handleInputClick = () => {
+    setReplyWrite(true);
+  };
+
+  const handleOutSideClick = () => {
+    setReplyWrite(false);
+  };
+
   const formattedDate = new Date(detail.createdAt)
     .toISOString()
     .replace(/T/, ' ')
     .replace(/:\d{2}\.\d{3}Z/, '')
     .replace(/-/g, '.');
 
+  useEffect(() => {
+    setIsSendButtonDisabled(content.trim().length === 0);
+  }, [content]);
+
   return (
     <>
       <ModalHeader>
         <BackButton src={back} onClick={closeModal} />
         {showDetail && <ReportImg src={report} onClick={handleReport} />}
+        {sendReply && (
+          <SendButton
+            onClick={handleContentSubmit}
+            disabled={isSendButtonDisabled}
+          >
+            전송하기
+          </SendButton>
+        )}
       </ModalHeader>
       <AnimatedWrapper>
         <StyledImg src={getRocketImage(detail.icon)} />
         <WhiteBox>
           {showDetail && <DateText>{formattedDate}</DateText>}
-          <ContentText
-            color={detail.fontColor}
-            marginTop={showDetail ? '60px' : '110px'}
-          >
-            {detail.content}
-          </ContentText>
+          {!replyWrite && (
+            <ContentText
+              color={detail.fontColor}
+              $marginTop={showDetail ? '60px' : '110px'}
+            >
+              {detail.content}
+            </ContentText>
+          )}
           {sendReply && (
             <>
               <LineImg src={sendLine} />
@@ -96,6 +138,9 @@ function GetOtherWorry({
                   setContent(content);
                   setFontColor(fontColor);
                 }}
+                onInputClick={handleInputClick}
+                placeholder={`답장을 입력해주세요.`}
+                containerHeight={replyWrite ? '66%' : '44%'}
               />
             </>
           )}
@@ -105,9 +150,17 @@ function GetOtherWorry({
               <DeleteImg src={deleteWorry} onClick={handleDelete} />
             </ButtonContainer>
           )}
+          {replyWrite && (
+            <StarButtonContainer>
+              <StarButton>
+                <Circle />
+                <StarText>답례 전송</StarText>
+              </StarButton>
+            </StarButtonContainer>
+          )}
         </WhiteBox>
       </AnimatedWrapper>
-      <ModalOverlay />
+      <ModalOverlay onClick={handleOutSideClick} />
     </>
   );
 }
@@ -119,10 +172,10 @@ const DateText = styled.div`
   margin-top: 65px;
 `;
 
-const ContentText = styled.div<{ marginTop?: string }>`
+const ContentText = styled.div<{ $marginTop?: string }>`
   font-size: 16px;
   margin-top: 60px;
-  margin-top: ${(props) => props.marginTop || '0px'};
+  margin-top: ${(props) => props.$marginTop || '0px'};
   color: ${(props) => props.color || '#FFFFFF'};
 `;
 
@@ -161,5 +214,39 @@ const ReportImg = styled.img`
 `;
 
 const LineImg = styled.img`
-  margin-top: 60px;
+  margin-top: 90px;
+`;
+
+const StarButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: 77%;
+
+  @media screen and (max-width: 641px) {
+    top: 71%;
+  }
+`;
+
+const StarButton = styled.button`
+  display: flex;
+  align-items: center;
+`;
+
+const Circle = styled.div`
+  width: 18px;
+  height: 18px;
+  border-radius: 25px;
+  border: 2px solid #b5b5bd;
+
+  &:active {
+    background-color: #e88439;
+  }
+`;
+
+const StarText = styled.div`
+  color: white;
+  font-size: 14px;
+  margin-left: 6px;
 `;

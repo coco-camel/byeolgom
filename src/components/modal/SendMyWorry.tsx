@@ -20,7 +20,7 @@ import {
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [selectedIcon, setSelectedIcon] = useState<string>('');
+  const [selectedIcon, setSelectedIcon] = useState<string>('A');
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
@@ -105,7 +105,8 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
               setContent(content);
               setFontColor(fontColor);
             }}
-            placeholder="어떤 고민이 있나요?\n자유롭게 입력해보세요."
+            placeholder={`어떤 고민이 있나요?\n자유롭게 입력해보세요.`}
+            containerHeight="75%"
           />
         </WhiteBox>
       </AnimatedWrapper>

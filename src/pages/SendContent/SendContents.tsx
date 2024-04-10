@@ -11,14 +11,16 @@ import {
 
 interface SendContentProps {
   onSend: (content: string, fontColor: string) => void;
+  onInputClick?: () => void;
   placeholder?: string;
   containerHeight?: string;
 }
 
 function SendContents({
   onSend,
+  onInputClick,
   placeholder = '',
-  containerHeight = '200px',
+  containerHeight = '33vh',
 }: SendContentProps) {
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('#EEEEEE');
@@ -39,6 +41,7 @@ function SendContents({
       <StyledInput
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onClick={onInputClick}
         placeholder={placeholder}
         style={{ color: fontColor }}
       />

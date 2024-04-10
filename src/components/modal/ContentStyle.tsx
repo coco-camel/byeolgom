@@ -45,6 +45,8 @@ export const AnimatedWrapper = styled.div`
   position: relative;
   z-index: 200;
   animation: ${slideIn} 0.3s ease-in-out;
+  width: 100%;
+  height: 100%;
 `;
 
 export const StyledImg = styled.img`
@@ -60,7 +62,7 @@ export const StyledImg = styled.img`
 export const WhiteBox = styled.div`
   position: absolute;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin-top: 50px;
   border-radius: 35px;
   background-color: #1e2734;
@@ -103,7 +105,7 @@ export const RocketButton = styled.img<RocketButtonProps>`
 
 export const SendContainer = styled.div<{ height?: string }>`
   width: 100%;
-  height: ${(props) => props.height || '33vh'};
+  height: ${(props) => props.height || '75%'};
   display: flex;
   align-content: center;
   justify-content: space-between;
@@ -111,7 +113,7 @@ export const SendContainer = styled.div<{ height?: string }>`
   align-items: center;
 
   @media screen and (max-width: 641px) {
-    height: 93vh;
+    height: ${(props) => props.height || '85%'};
   }
 `;
 
@@ -131,38 +133,32 @@ export const StyledInput = styled.textarea`
 `;
 
 export const BottomContainer = styled.div`
+  position: relative;
   bottom: 0;
   width: 100%;
-  height: 13%;
-  padding: 20px;
+  padding: 10px;
+  display: flex;
 `;
 
 export const TextColorButton = styled.img`
-  position: absolute;
   width: 24px;
-  z-index: 1;
-  margin-left: 1px;
+  z-index: 5;
+  margin-left: 10px;
+  top: 0;
   cursor: pointer;
-
-  @media screen and (max-width: 641px) {
-    bottom: 9%;
-  }
 `;
 
 export const ColorButtonContainer = styled.div`
   position: absolute;
   width: 25px;
   height: 136px;
-  bottom: 64.5%;
   display: flex;
   align-items: center;
   flex-direction: column;
   background-color: #b5b5bd66;
   border-radius: 20px;
-
-  @media screen and (max-width: 641px) {
-    bottom: 9%;
-  }
+  margin-left: 9px;
+  top: -101px;
 `;
 
 export const ColorSelectButton = styled.button<{
