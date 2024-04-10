@@ -4,6 +4,8 @@ import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
 import ellipse from '/assets/ellipse.svg';
 import { useEffect, useState } from 'react';
+import GetOtherWorry from '../modal/GetOtherWorry';
+import { WorryDetail } from '../../types/WorryDetail.interface';
 import {
   postArrived,
   getWorryDetail,
@@ -24,7 +26,8 @@ interface PostArrivedItem {
 
 function PostArrived() {
   const [postArrivedList, setPostArricedList] = useState<PostArrivedItem[]>();
-  const [detail, setDetail] = useState<PostArrivedItem | null>(null);
+  const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const rocket: { [key: string]: string } = {
     rocketA: rocketA,
@@ -43,13 +46,19 @@ function PostArrived() {
       if (key === 'worryId') {
         const detail = await getWorryDetail({ worryid: itemId });
         setDetail(detail);
+        setShowModal(true);
       } else if (key === 'commentId') {
         const detail = await getCommentDetail({ commentid: itemId });
         setDetail(detail);
+        setShowModal(true);
       }
     } catch (error) {
       console.error('Error fetching detail:', error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -57,7 +66,7 @@ function PostArrived() {
       {postArrivedList &&
         postArrivedList.map((item) => (
           <button
-            key={item.commentId !== null ? item.commentId : item.worryId}
+            key={item.worryId}
             onClick={() =>
               handleClick(
                 item.commentId || item.worryId,
@@ -69,7 +78,7 @@ function PostArrived() {
               <Animation
                 $sec={Math.floor(Math.random() * (50 - 25 + 1)) + 25}
                 $startAngle={Math.floor(Math.random() * 360) + 1}
-                key={item.commentId !== null ? item.commentId : item.worryId}
+                key={item.worryId}
               >
                 <ImageContainer>
                   <img
@@ -83,7 +92,11 @@ function PostArrived() {
             </TestDiv>
           </button>
         ))}
-      {detail && <div>{/* Display your detailed information here */}</div>}
+      {showModal && (
+        <DetailContainer>
+          <GetOtherWorry detail={detail} closeModal={handleCloseModal} />
+        </DetailContainer>
+      )}
     </>
   );
 }
@@ -144,4 +157,12 @@ const Animation = styled.div<AnimationProps>`
     animation: ${(props) => animation(props.$startAngle, '150px')}
       ${(props) => props.$sec}s infinite linear;
   }
+`;
+
+const DetailContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
 `;
