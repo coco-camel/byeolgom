@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-export const slideIn = keyframes`
+const slideIn = keyframes`
   from {
     bottom: -900px;
   }
@@ -99,4 +99,96 @@ export const RocketButton = styled.img<RocketButtonProps>`
   cursor: pointer;
   width: ${({ $isLast }) => ($isLast ? '45px' : '55px')};
   ${({ $isLast }) => !$isLast && 'margin-right: 20px;'};
+`;
+
+export const SendContainer = styled.div<{ height?: string }>`
+  width: 100%;
+  height: ${(props) => props.height || '33vh'};
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: 641px) {
+    height: 93vh;
+  }
+`;
+
+export const StyledInput = styled.textarea`
+  margin-top: 40px;
+  width: 70%;
+  height: 30%;
+  font-size: 16px;
+  text-align: center;
+  color: '#EEEEEE';
+  background-color: transparent;
+  overflow: auto;
+  white-space: pre-line;
+  resize: none;
+  border: none;
+  outline: none;
+`;
+
+export const BottomContainer = styled.div`
+  bottom: 0;
+  width: 100%;
+  height: 13%;
+  padding: 20px;
+`;
+
+export const TextColorButton = styled.img`
+  position: absolute;
+  width: 24px;
+  z-index: 1;
+  margin-left: 1px;
+  cursor: pointer;
+
+  @media screen and (max-width: 641px) {
+    bottom: 9%;
+  }
+`;
+
+export const ColorButtonContainer = styled.div`
+  position: absolute;
+  width: 25px;
+  height: 136px;
+  bottom: 64.5%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #b5b5bd66;
+  border-radius: 20px;
+
+  @media screen and (max-width: 641px) {
+    bottom: 9%;
+  }
+`;
+
+export const ColorSelectButton = styled.button<{
+  selected: boolean;
+  color: string;
+}>`
+  width: 20px;
+  height: 20px;
+  margin-top: 6px;
+  border-radius: 25px;
+
+  background-color: ${(props) => props.color};
+  border: ${(props) => (props.selected ? '1px solid #1E2734' : 'none')};
+
+  &:hover {
+    background-color: ${(props) =>
+      props.color === 'red'
+        ? '#d20000'
+        : props.color === 'yellow'
+          ? '#dbc900'
+          : props.color === 'blue'
+            ? '#0012b8'
+            : props.color};
+  }
+`;
+
+export const DummyBox = styled.div`
+  height: 50px;
 `;

@@ -5,17 +5,11 @@ import { WorriesDetailParams } from '../types/WorriesDetailParams.interface';
 export const sendContent = async (contentData: ContentData) => {
   const { content, icon, fontColor } = contentData;
 
-  const accessToken = localStorage.getItem('access_Token');
-  const userId = accessToken
-    ? JSON.parse(atob(accessToken.split('.')[1])).userId
-    : null;
-
   try {
     const res = await authInstance.post('/worries', {
       content,
       icon,
       fontColor,
-      userId: userId,
     });
     return res.data;
   } catch (error) {
@@ -48,6 +42,21 @@ export const sendReply = async (
 export const deleteContent = async (params: WorriesDetailParams) => {
   try {
     const res = await authInstance.delete(`/worries/${params.worryid}`);
+    return res.data;
+  } catch (error) {
+    throw new Error('');
+  }
+};
+
+export const reportContent = async (
+  params: WorriesDetailParams,
+  reportReason: string,
+) => {
+  try {
+    const res = await authInstance.post(
+      `/comments/${params.commentid}/report`,
+      { reportReason },
+    );
     return res.data;
   } catch (error) {
     throw new Error('');

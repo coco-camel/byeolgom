@@ -95,4 +95,5 @@ const HoverableImage = styled.img`
 
 const StyledImg = styled.img`
   width: 55px;
+  cursor: pointer;
 `;

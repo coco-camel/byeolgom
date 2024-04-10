@@ -3,6 +3,7 @@ import { useFrame, Canvas } from '@react-three/fiber';
 import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
 import { Texture } from 'three';
+import { getStarCount } from '../../api/count';
 
 // Assets
 const starImagePath = '/assets/star.png';
@@ -47,6 +48,7 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
 const MyElement3D: React.FC = () => {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
+  const [starCount, setStarCount] = useState(0);
 
   useEffect(() => {
     new TextureLoader().load(starImagePath, (texture) => {
@@ -57,6 +59,18 @@ const MyElement3D: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    getStarCount().then((res) => {
+      setStarCount(res);
+    });
+    const interval = setInterval(() => {
+      getStarCount().then((res) => {
+        setStarCount(res);
+      });
+    }, 1000 * 20);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <AnimationGroup>
       <Canvas>
@@ -65,11 +79,11 @@ const MyElement3D: React.FC = () => {
         <Suspense fallback={<div>Loading...</div>}>
           {textureUnion && <CentralImage texture={textureUnion} />}
           {textureStar &&
-            [0, 1, 2, 3, 4].map((offset, index) => (
+            Array.from({ length: starCount }, (_, index) => (
               <Star
                 key={index}
                 texture={textureStar}
-                offsetTime={(offset * (2 * Math.PI)) / 5}
+                offsetTime={(index * (2 * Math.PI)) / starCount}
               />
             ))}
         </Suspense>

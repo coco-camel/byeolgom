@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 
@@ -7,6 +7,7 @@ function SettingPage() {
   const navigate = useNavigate();
   const { setLogoutState } = useAuthStore();
   const { isLoggedIn } = useAuthStore();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('access_Token');
@@ -19,6 +20,16 @@ function SettingPage() {
     alert('개발 중인 기능입니다!');
   };
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem('darkMode', !isDarkMode ? 'true' : 'false');
+  };
+
+  useEffect(() => {
+    const storedDarkMode = localStorage.getItem('darkMode') === 'true';
+    setIsDarkMode(storedDarkMode);
+  }, []);
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/login');
@@ -27,7 +38,9 @@ function SettingPage() {
 
   return (
     <>
-      <Header>설정</Header>
+      <MyPageHeader>
+        <h1>설정</h1>
+      </MyPageHeader>
       <SettingContainer>
         <Content>
           <Wrapper>
@@ -40,9 +53,12 @@ function SettingPage() {
             </ProfileSection>
             <Theme>
               <p>테마</p>
-              <DarkModeSwitch>
+              <DarkModeSwitch
+                onClick={toggleDarkMode}
+                className={isDarkMode ? 'active' : ''}
+              >
                 <p>다크모드</p>
-                <ToggleSwitch />
+                <ToggleSwitch isDark={isDarkMode} />{' '}
               </DarkModeSwitch>
             </Theme>
           </Wrapper>
@@ -109,13 +125,20 @@ const ChangeArrow = styled.div`
   }
 `;
 
-const Header = styled.div`
-  width: 100%;
+const MyPageHeader = styled.div`
   height: 54px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    font-size: 16px;
+    @media (max-width: 640px) {
+      font-size: 1.1rem;
+    }
+    @media (max-width: 480px) {
+      font-size: 1rem;
+    }
+  }
 `;
 
 const Content = styled.div`
@@ -152,29 +175,42 @@ const DarkModeSwitch = styled.div`
 `;
 
 const ToggleSwitch = styled.div`
-  width: 40px;
-  height: 20px;
+  width: 50px;
+  height: 25px;
   background-color: #ccc;
-  border-radius: 20px;
+  border-radius: 30px;
   position: relative;
   cursor: pointer;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
+
+  ${(props) =>
+    props.isDark &&
+    css`
+      background-color: #abcd53;
+      box-shadow: 0 0 5px 0 #abcd53;
+    `}
 
   &:after {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 16px;
+    top: 5px;
+    left: 5px;
+    width: 15px;
+    height: 15px;
     background-color: white;
     border-radius: 50%;
-    transition: 0.3s;
+    transition: left 0.3s;
   }
 
-  // 다크모드 활성화 되면 작동하는 스타일
-  &.active:after {
-    left: 22px;
-  }
+  ${(props) =>
+    props.isDark &&
+    css`
+      &:after {
+        left: 30px;
+      }
+    `}
 `;
 
 const LogoutButton = styled.button`
