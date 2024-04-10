@@ -84,7 +84,6 @@ function PostArrived() {
               <Animation
                 $sec={Math.floor(Math.random() * (50 - 25 + 1)) + 25}
                 $startAngle={Math.floor(Math.random() * 360) + 1}
-                key={item.worryId}
               >
                 <ImageContainer>
                   <img
@@ -92,7 +91,7 @@ function PostArrived() {
                     width={24}
                     height={29}
                   />
-                  {!item.unRead && <EllipseImage src={ellipse} />}
+                  {item.unRead && <EllipseImage src={ellipse} />}
                 </ImageContainer>
               </Animation>
             </TestDiv>
