@@ -4,6 +4,8 @@ interface AuthState {
   isLoggedIn: boolean;
   setLoginState: () => void;
   setLogoutState: () => void;
+  userId: number | null;
+  setUserId: (id: number | null) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -18,6 +20,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     set(() => ({
       isLoggedIn: false,
     })),
+
+  userId: null,
+  setUserId: (id) => set({ userId: id }),
 }));
 
 function initializeUser() {
