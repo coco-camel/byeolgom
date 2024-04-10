@@ -26,7 +26,7 @@ function PastContentDetail() {
   const {
     data: pastContentDetail,
     isError,
-    isLoading,
+    isPending,
   } = useQuery({
     queryKey: ['pastContentDetail', params],
     queryFn: () => worriesDetail(params),
@@ -34,7 +34,7 @@ function PastContentDetail() {
     gcTime: 1000 * 120,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isPending) return <div>Loading...</div>;
 
   if (isError) return <div>Error</div>;
 

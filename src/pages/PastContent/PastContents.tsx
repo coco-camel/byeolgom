@@ -26,7 +26,7 @@ function PastContents() {
     data: pastContent,
     fetchNextPage,
     hasNextPage,
-    isLoading,
+    isPending,
   } = useInfiniteQuery({
     queryKey: ['worries', whoseContent],
     queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
@@ -94,8 +94,8 @@ function PastContents() {
         </Button>
       </LockerTabWrap>
       <PastContentsContainer>
-        {isLoading ? (
-          <div>isLoading...</div>
+        {isPending ? (
+          <div>Loading...</div>
         ) : (
           <PastContentsList
             listsSelect={pastContents}
