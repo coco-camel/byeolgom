@@ -5,9 +5,17 @@ import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import PastContentComment from './PastContentComment';
 import styled from 'styled-components';
-import chevronLeft from '/assets/chevronLeft.svg';
+import back from '/assets/back.svg';
+import rocketA from '/assets/rocketA.svg';
+import rocketB from '/assets/rocketB.svg';
+import rocketC from '/assets/rocketC.svg';
 
 function PastContentDetail() {
+  const rocket: { [key: string]: string } = {
+    rocketA: rocketA,
+    rocketB: rocketB,
+    rocketC: rocketC,
+  };
   const params = useParams() as Readonly<WorriesDetailParams>;
   const navigate = useNavigate();
 
@@ -36,11 +44,15 @@ function PastContentDetail() {
         <div>
           <PastContentHeader>
             <button onClick={handleBackNavigation}>
-              <img src={chevronLeft} width={20} height={20} />
+              <img src={back} width={20} height={20} />
             </button>
           </PastContentHeader>
           <PastContentWrap>
-            <div>{pastContentDetail.icon}</div>
+            <img
+              src={rocket[`rocket${pastContentDetail.icon}`]}
+              width={20}
+              height={24}
+            />
             <PastContentContainer>
               <div>{formatDate(pastContentDetail.createdAt)}</div>
               <div>{pastContentDetail.content}</div>
@@ -60,12 +72,14 @@ function PastContentDetail() {
 }
 
 export default PastContentDetail;
+
 const PastContentHeader = styled.div`
   display: flex;
   align-items: center;
   height: 54px;
   padding: 0 20px;
 `;
+
 const CommentLayOut = styled.div`
   display: flex;
   justify-content: center;
@@ -97,36 +111,41 @@ const CommentListWrap = styled.div`
   @media (max-width: 640px) {
     width: 90vw;
     height: 75vh;
-    div {
-      font-size: 1.1rem;
-    }
-  }
-  @media (max-width: 480px) {
-    div {
-      font-size: 1rem;
-    }
   }
 `;
 
 const PastContentContainer = styled.div`
   flex-grow: 1;
-  margin: 0 10px;
+  padding: 0 20px;
   overflow: hidden;
   div {
     color: #e2e2e2;
-    padding: 5px 0;
-    @media (max-width: 640px) {
-      font-size: 1.1rem;
+    font-size: 14px;
+    padding: 2px 0;
+  }
+  :nth-child(1) {
+    font-size: 10px;
+  }
+  @media (max-width: 640px) {
+    :nth-child(1) {
+      font-size: 12px;
     }
-    @media (max-width: 480px) {
+    :nth-child(2) {
       font-size: 1rem;
+    }
+  }
+  @media (max-width: 480px) {
+    :nth-child(1) {
+      font-size: 10px;
+    }
+    :nth-child(2) {
+      font-size: 14px;
     }
   }
 `;
 const PastContentWrap = styled.div`
   display: flex;
   align-items: center;
-  background-color: #353535;
   padding: 0 20px;
   .content {
     max-width: 80%;
