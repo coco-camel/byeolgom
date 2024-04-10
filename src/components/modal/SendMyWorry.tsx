@@ -15,6 +15,7 @@ import {
   ModalBox,
   ModalOverlay,
   RocketButton,
+  DummyBox,
 } from './ContentStyle';
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
@@ -98,11 +99,13 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
           </ModalBox>
         )}
         <WhiteBox>
+          <DummyBox />
           <SendContents
             onSend={(content, fontColor) => {
               setContent(content);
               setFontColor(fontColor);
             }}
+            placeholder="어떤 고민이 있나요?\n자유롭게 입력해보세요."
           />
         </WhiteBox>
       </AnimatedWrapper>
