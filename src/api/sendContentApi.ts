@@ -23,15 +23,6 @@ export const sendContent = async (contentData: ContentData) => {
   }
 };
 
-export const checkContent = async (params: WorriesDetailParams) => {
-  try {
-    const res = await authInstance.get(`/worries/${params.worryid}`);
-    return res.data;
-  } catch (error) {
-    throw new Error('');
-  }
-};
-
 export const sendReply = async (
   params: WorriesDetailParams,
   contentData: ContentData,

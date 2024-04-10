@@ -1,10 +1,8 @@
-// import { authInstance } from './api';
-import axios from 'axios';
+import { authInstance } from './api';
 
 export const fetchRankings = async () => {
   try {
-    const res = await axios.get('https://friendj.store/top-likes');
-    console.log(res);
+    const res = await authInstance.get('https://friendj.store/top-likes');
     return res.data;
   } catch (err) {
     console.log('err', err);

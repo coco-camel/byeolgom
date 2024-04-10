@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import RankingModal from '../../components/modal/RankingModal';
 import { fetchRankings } from '../../api/rankingApi';
+import styled from 'styled-components';
 
 interface ApiResponse {
   commentAuthorId?: number;
@@ -11,7 +11,7 @@ interface ApiResponse {
 interface RankingModalProps {
   isOpen: boolean;
   currentUser: number;
-  accessToken: string;
+  onRequestClose: () => void;
 }
 
 const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
@@ -25,10 +25,11 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
     const fetchAndSetRankings = async () => {
       try {
         const response = await fetchRankings();
+        console.log(response);
         if ('errorCode' in response) {
           setError(response.msg);
         } else {
-          setRankings(response);
+          setRankings(response.slice(0, 5));
           const currentUserRank = response.find(
             (rank: ApiResponse) => rank.userId === currentUser,
           );
@@ -43,35 +44,80 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
   }, [isOpen, currentUser]);
 
   return (
-    <RankingModal
-      isOpen={isOpen}
-      onClose={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-    >
-      <div>
-        {rankings.length > 0 ? (
-          <ul>
-            {rankings.map((rank, index) => (
-              <li
-                key={index}
-                style={{ fontWeight: rank.userId ? 'bold' : 'normal' }}
+    <RankingContainer>
+      {rankings.length > 0 ? (
+        <RankingWrapper>
+          {rankings.map((rank, index) => (
+            <li className="RankerList" key={index}>
+              <p
+                className="Ranking"
+                style={{
+                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  color: rank.userId ? '#FED56B' : 'white',
+                }}
               >
-                {index + 1}위: Likes {rank.likes}{' '}
-                {rank.userId ? `(User ID: ${rank.userId})` : ''}
-              </li>
-            ))}
-            {!userRank && rankings.length === 5 && (
-              <li>6위: Your Rank (Likes: {userRank?.likes})</li>
-            )}
-          </ul>
-        ) : (
-          <p>랭킹 정보가 없습니다.</p>
-        )}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </div>
-    </RankingModal>
+                {index + 1}위
+              </p>
+              <p
+                className="UserName"
+                style={{
+                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  color: rank.userId ? '#FED56B' : 'white',
+                }}
+              >
+                username
+              </p>
+              <p
+                className="Likes"
+                style={{
+                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  color: rank.userId ? '#FED56B' : 'white',
+                }}
+              >
+                {rank.likes}번
+              </p>
+            </li>
+          ))}
+          {!userRank && rankings.length === 5 && (
+            <li style={{ fontWeight: 'bold', color: '#FED56B' }}>
+              6위: Your Rank
+            </li>
+          )}
+        </RankingWrapper>
+      ) : (
+        <p>랭킹 정보가 없습니다.</p>
+      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+    </RankingContainer>
   );
 };
 
 export default RankingBoard;
+
+const RankingContainer = styled.div`
+  padding: 20px;
+`;
+
+const RankingWrapper = styled.div`
+  top: 20%;
+  list-style: none;
+  padding: 0;
+  .RankerList {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid grey;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+  }
+`;

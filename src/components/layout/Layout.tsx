@@ -6,19 +6,34 @@ import Footer from './Footer';
 import background from '/assets/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
-import Modal from '../modal/Modal';
+import SendMyWorry from '../modal/SendMyWorry';
 import Header from './Header';
+import RankingModal from '../modal/RankingModal';
 
 const Layout = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showRankingModal, setShowRankingModal] = useState<boolean>(false);
   const { isLoggedIn } = useAuthStore();
   const location = useLocation();
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (): void => {
     setShowModal(true);
   };
 
-  const showHeader = location.pathname === '/' || location.pathname === 'login';
+  const handleCloseModal = (): void => {
+    setShowModal(false);
+  };
+
+  const handleOpenRankingModal = (): void => {
+    setShowRankingModal(true);
+  };
+
+  const handleCloseRankingModal = (): void => {
+    setShowRankingModal(false);
+  };
+
+  const showHeader: boolean =
+    location.pathname === '/' || location.pathname === 'login';
 
   return (
     <MainLayout>
@@ -31,8 +46,13 @@ const Layout = () => {
         <div>설명~~~</div>
       </MainContent>
       <MainWrap>
-        {showHeader && <Header />}
-        {showModal && <Modal />}
+        {showHeader && <Header openModal={handleOpenRankingModal} />}
+        <RankingModal
+          isOpen={showRankingModal}
+          onRequestClose={handleCloseRankingModal}
+          currentUser={4}
+        />
+        {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         <StarBackGround />
         <WaveBackGround />
         {isLoggedIn && <Footer openModal={handleOpenModal} />}

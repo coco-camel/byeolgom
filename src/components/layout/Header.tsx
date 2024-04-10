@@ -1,48 +1,35 @@
-// Header.tsx
-import { useState } from 'react';
 import styled from 'styled-components';
-import Trophy from '/assets/Trophy.svg';
+import trophy from '/assets/trophy.svg';
+import countRocket from '/assets/countRocket.svg';
 import { useAuthStore } from '../../store/authStore';
-import RankingBoard from '../../pages/Ranking/RankingBoard';
 
-function Header() {
+interface HeaderProps {
+  openModal: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ openModal }) => {
   const { isLoggedIn } = useAuthStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const currentUser = 4;
-
-  const toggleRankingModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   return (
     <HeaderArea>
       <HeaderInner>
-        <button onClick={toggleRankingModal}>
-          <img src={Trophy} alt="Trophy" />
+        <button onClick={openModal}>
+          <img src={trophy} alt="Trophy" />
         </button>
         <WorryCount>
           {isLoggedIn ? (
             <>
-              <img src={Trophy} alt="Trophy" />
-              {/* Assuming "xCount" is a placeholder. This should be dynamically set based on actual data */}
-              <span>xCount</span>
+              <img src={countRocket} alt="Count Rocket" />
+              <span>xCount</span>{' '}
             </>
           ) : (
             <div></div>
           )}
         </WorryCount>
       </HeaderInner>
-      {isModalOpen && (
-        <RankingBoard
-          isOpen={isModalOpen}
-          onRequestClose={toggleRankingModal}
-          currentUser={currentUser}
-          accessToken={''}
-        />
-      )}
     </HeaderArea>
   );
-}
+};
 
 export default Header;
 
