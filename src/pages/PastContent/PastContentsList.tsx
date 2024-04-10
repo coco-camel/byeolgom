@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
-import star1 from '/assets/star1.svg';
+import star from '/assets/star.svg';
 import chevronRight from '/assets/chevronRight.svg';
 import { forwardRef } from 'react';
 
@@ -40,7 +40,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                   src={
                     whoseContent === 'mySolvedWorry'
                       ? rocket[`rocket${list.icon}`]
-                      : star1
+                      : star
                   }
                   style={{ width: '24px' }}
                 />
@@ -70,11 +70,27 @@ const PastContentContainer = styled.div`
   overflow: hidden;
   div {
     color: #e2e2e2;
-    font-size: 16px;
-    padding: 3px 0;
+    font-size: 14px;
+    padding: 2px 0;
   }
   :nth-child(1) {
-    font-size: 12px;
+    font-size: 10px;
+  }
+  @media (max-width: 640px) {
+    :nth-child(1) {
+      font-size: 12px;
+    }
+    :nth-child(2) {
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 480px) {
+    :nth-child(1) {
+      font-size: 10px;
+    }
+    :nth-child(2) {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -104,14 +120,8 @@ const LockerListWrap = styled.div`
   @media (max-width: 640px) {
     width: 90vw;
     height: 75vh;
-    div {
-      font-size: 1.1rem;
-    }
   }
   @media (max-width: 480px) {
-    div {
-      font-size: 1rem;
-    }
   }
 `;
 
