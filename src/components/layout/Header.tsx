@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import trophy from '/assets/trophy.svg';
 import countRocket from '/assets/countRocket.svg';
 import { useAuthStore } from '../../store/authStore';
+import { getWorryCount } from '../../api/count';
+import { useEffect, useState } from 'react';
 
 interface HeaderProps {
   openModal: () => void;
@@ -9,6 +11,19 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ openModal }) => {
   const { isLoggedIn } = useAuthStore();
+  const [worryCount, setWorryCount] = useState(0);
+
+  useEffect(() => {
+    getWorryCount().then((res) => {
+      setWorryCount(res);
+    });
+    const interval = setInterval(() => {
+      getWorryCount().then((res) => {
+        setWorryCount(res);
+      });
+    }, 1000 * 20);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <HeaderArea>
@@ -20,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
           {isLoggedIn ? (
             <>
               <img src={countRocket} alt="Count Rocket" />
-              <span>xCount</span>{' '}
+              <span>x{worryCount}</span>
             </>
           ) : (
             <div></div>
