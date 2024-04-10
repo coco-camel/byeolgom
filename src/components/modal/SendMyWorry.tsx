@@ -17,6 +17,7 @@ import {
   RocketButton,
   DummyBox,
 } from './ContentStyle';
+import { useWorryCountStore } from '../../store/worryCountStore';
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -25,12 +26,14 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
+  const { setWorryCounteDcrement } = useWorryCountStore();
 
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, icon: selectedIcon, fontColor };
       const response = await sendContent(contentData);
       console.log(response);
+      setWorryCounteDcrement();
       closeModal();
     } catch (error) {
       console.error(error);

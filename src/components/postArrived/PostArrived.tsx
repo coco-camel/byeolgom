@@ -37,6 +37,7 @@ function PostArrived() {
 
   useEffect(() => {
     postArrived().then((res) => {
+      console.log(res);
       setPostArricedList(res);
     });
     const interval = setInterval(() => {
@@ -70,12 +71,12 @@ function PostArrived() {
   return (
     <>
       {postArrivedList &&
-        postArrivedList.map((item) => (
+        postArrivedList.map((item, index) => (
           <button
-            key={item.worryId}
+            key={index}
             onClick={() =>
               handleClick(
-                item.commentId || item.worryId,
+                item.commentId !== null ? item.commentId : item.worryId,
                 item.commentId !== null ? 'commentId' : 'worryId',
               )
             }
