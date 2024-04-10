@@ -86,7 +86,7 @@ const MainWrap = styled.div`
   border-radius: 10px;
   width: 320px;
   min-width: 320px;
-  min-height: 568px;
+  height: 568px;
   background-image: url(${background});
   background-size: cover;
   overflow: hidden;

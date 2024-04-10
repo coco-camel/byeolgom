@@ -26,38 +26,46 @@ function SettingPage() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <SettingContainer>
+    <>
       <Header>설정</Header>
-      <Content>
-        <ProfileSection>
-          <ProfilePic />
-          <NicknameAndChange>
-            <Nickname>익명의 7564</Nickname>
-            <ChangeArrow onClick={handleNicknameChange} />
-          </NicknameAndChange>
-        </ProfileSection>
-        <Theme>
-          <p>테마</p>
-          <DarkModeSwitch>
-            <p>다크모드</p>
-            <ToggleSwitch />
-          </DarkModeSwitch>
-        </Theme>
-        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-      </Content>
-    </SettingContainer>
+      <SettingContainer>
+        <Content>
+          <Wrapper>
+            <ProfileSection>
+              <ProfilePic />
+              <NicknameAndChange>
+                <Nickname>익명의 7564</Nickname>
+                <ChangeArrow onClick={handleNicknameChange} />
+              </NicknameAndChange>
+            </ProfileSection>
+            <Theme>
+              <p>테마</p>
+              <DarkModeSwitch>
+                <p>다크모드</p>
+                <ToggleSwitch />
+              </DarkModeSwitch>
+            </Theme>
+          </Wrapper>
+          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+        </Content>
+      </SettingContainer>
+    </>
   );
 }
 
 export default SettingPage;
 
+const Wrapper = styled.div`
+  width: 100%;
+`;
+
 const SettingContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 20px;
   box-sizing: border-box;
 `;
@@ -103,6 +111,7 @@ const ChangeArrow = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  height: 54px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
@@ -114,7 +123,7 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -172,7 +181,7 @@ const LogoutButton = styled.button`
   width: 100%;
   padding: 15px;
   font-size: 15px;
-  color: grey;
+  color: lightgrey;
   cursor: pointer;
   border: none;
   border-radius: 10px;

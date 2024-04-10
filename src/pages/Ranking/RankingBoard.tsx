@@ -52,7 +52,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               <p
                 className="Ranking"
                 style={{
-                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  fontWeight: rank.userId ? 'normal' : 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -61,7 +61,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               <p
                 className="UserName"
                 style={{
-                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  fontWeight: rank.userId ? 'normal' : 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -70,7 +70,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               <p
                 className="Likes"
                 style={{
-                  fontWeight: rank.userId ? 'bold' : 'normal',
+                  fontWeight: rank.userId ? 'normal' : 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -96,12 +96,15 @@ export default RankingBoard;
 
 const RankingContainer = styled.div`
   padding: 20px;
+  height: 70%;
 `;
 
 const RankingWrapper = styled.div`
-  top: 20%;
-  list-style: none;
+  position: relative;
   padding: 0;
+  height: fit-content;
+  top: 25%;
+
   .RankerList {
     display: flex;
     justify-content: space-between;
