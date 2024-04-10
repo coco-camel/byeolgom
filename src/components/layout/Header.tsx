@@ -17,7 +17,11 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
     getWorryCount().then((res) => {
       setWorryCount(res);
     });
-    const interval = setInterval(getWorryCount, 1000 * 20);
+    const interval = setInterval(() => {
+      getWorryCount().then((res) => {
+        setWorryCount(res);
+      });
+    }, 1000 * 20);
     return () => clearInterval(interval);
   }, []);
 

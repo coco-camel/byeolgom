@@ -63,7 +63,11 @@ const MyElement3D: React.FC = () => {
     getStarCount().then((res) => {
       setStarCount(res);
     });
-    const interval = setInterval(getStarCount, 1000 * 20);
+    const interval = setInterval(() => {
+      getStarCount().then((res) => {
+        setStarCount(res);
+      });
+    }, 1000 * 20);
     return () => clearInterval(interval);
   }, []);
 

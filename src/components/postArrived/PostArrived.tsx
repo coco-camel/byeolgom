@@ -39,6 +39,12 @@ function PostArrived() {
     postArrived().then((res) => {
       setPostArricedList(res);
     });
+    const interval = setInterval(() => {
+      postArrived().then((res) => {
+        setPostArricedList(res);
+      });
+    }, 1000 * 20);
+    return () => clearInterval(interval);
   }, []);
 
   const handleClick = async (itemId: number, key: 'worryId' | 'commentId') => {
@@ -86,7 +92,7 @@ function PostArrived() {
                     width={24}
                     height={29}
                   />
-                  <EllipseImage src={ellipse} />
+                  {!item.unRead && <EllipseImage src={ellipse} />}
                 </ImageContainer>
               </Animation>
             </TestDiv>
