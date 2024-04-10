@@ -2,7 +2,6 @@ import RankingBoard from '../../pages/Ranking/RankingBoard';
 import styled, { keyframes } from 'styled-components';
 import back from '/assets/back.svg';
 import trophy from '/assets/trophy.svg';
-import { BackButton } from './ContentStyle';
 
 interface RankingModalProps {
   isOpen: boolean;
@@ -51,12 +50,24 @@ const slideIn = keyframes`
 `;
 
 const RankingHeader = styled.div`
+  position: absolute;
+  top: 7%;
+  left: 5%;
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  width: 48%;
+  z-index: 300;
 
   .trophy {
   }
+`;
+
+export const BackButton = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+
+  cursor: pointer;
 `;
 
 export const ModalOverlay = styled.div`
@@ -70,6 +81,8 @@ export const ModalOverlay = styled.div`
 `;
 
 const AnimatedWrapper = styled.div`
+  width: 100%;
+  height: 100%;
   position: relative;
   z-index: 200;
   animation: ${slideIn} 0.3s ease-in-out;
@@ -78,9 +91,10 @@ const AnimatedWrapper = styled.div`
 const WhiteContainer = styled.div`
   position: absolute;
   width: 100%;
-  height: 100vh;
-  transform: translateY(-830px);
-  border-radius: 35px;
+  height: 82%;
+  transform: translateY(-0px);
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
   background-color: #1e2734;
   display: flex;
   flex-direction: column;
@@ -88,6 +102,6 @@ const WhiteContainer = styled.div`
   align-items: center;
 
   @media screen and (max-width: 641px) {
-    transform: translateY(-200px);
+    transform: translateY(-0px);
   }
 `;
