@@ -20,7 +20,7 @@ import {
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [selectedIcon, setSelectedIcon] = useState<string>('B');
+  const [selectedIcon, setSelectedIcon] = useState<string>('A');
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
