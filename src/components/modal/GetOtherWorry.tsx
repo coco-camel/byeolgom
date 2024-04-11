@@ -22,6 +22,7 @@ import {
 } from './ContentStyle';
 import { sendContentReply, sendStarReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
+import { usePostArrivedStore } from '../../store/postArrivedStore';
 
 function GetOtherWorry({
   detail,
@@ -40,6 +41,7 @@ function GetOtherWorry({
     useState<boolean>(true);
   const [sendStar, setSendStar] = useState(false);
 
+  const { setRemovePostArrived } = usePostArrivedStore();
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, fontColor };
@@ -53,6 +55,7 @@ function GetOtherWorry({
       } else {
         await sendContentReply(params, contentData);
       }
+      setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
       console.error(error);
@@ -83,6 +86,7 @@ function GetOtherWorry({
   const handleDelete = async () => {
     try {
       await deleteContent({ worryid: detail.worryId });
+      setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
       console.error(error);

@@ -1,6 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { worriesDetail } from '../../api/pastContentApi';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import PastContentComment from './PastContentComment';
@@ -9,6 +7,7 @@ import back from '/assets/back.svg';
 import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
+import { usePastContentDetail } from '../../hooks/queries/usePastContentDetail';
 
 function PastContentDetail() {
   const rocket: { [key: string]: string } = {
@@ -23,24 +22,15 @@ function PastContentDetail() {
     navigate(-1);
   };
 
-  const {
-    data: pastContentDetail,
-    isError,
-    isPending,
-  } = useQuery({
-    queryKey: ['pastContentDetail', params],
-    queryFn: () => worriesDetail(params),
-    staleTime: 1000 * 60,
-    gcTime: 1000 * 120,
-  });
+  const pastContentDetailQuery = usePastContentDetail(params);
 
-  if (isPending) return <div>Loading...</div>;
+  if (pastContentDetailQuery.isPending) return <div>Loading...</div>;
 
-  if (isError) return <div>Error</div>;
+  if (pastContentDetailQuery.isError) return <div>Error</div>;
 
   return (
     <>
-      {pastContentDetail && (
+      {pastContentDetailQuery.data && (
         <div>
           <PastContentHeader>
             <button onClick={handleBackNavigation}>
@@ -49,18 +39,18 @@ function PastContentDetail() {
           </PastContentHeader>
           <PastContentWrap>
             <img
-              src={rocket[`rocket${pastContentDetail.icon}`]}
+              src={rocket[`rocket${pastContentDetailQuery.data.icon}`]}
               width={20}
               height={24}
             />
             <PastContentContainer>
-              <div>{formatDate(pastContentDetail.createdAt)}</div>
-              <div>{pastContentDetail.content}</div>
+              <div>{formatDate(pastContentDetailQuery.data.createdAt)}</div>
+              <div>{pastContentDetailQuery.data.content}</div>
             </PastContentContainer>
           </PastContentWrap>
           <CommentLayOut>
             <CommentListWrap>
-              {pastContentDetail.comments.map((item, index) => (
+              {pastContentDetailQuery.data.comments.map((item, index) => (
                 <PastContentComment key={index} comment={item} />
               ))}
             </CommentListWrap>
