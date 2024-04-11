@@ -5,25 +5,28 @@ import styled from 'styled-components';
 
 function PastContentComment({
   comment,
-  $count = 0,
+  $count,
 }: {
   comment: Comment;
   $count?: number;
 }) {
   const params = useParams() as Readonly<WorriesDetailParams>;
-  const initialCount = params.whosecontent === 'mySolvedWorry' ? 0 : 1;
-
+  const initialCount =
+    $count === undefined
+      ? params.whosecontent === 'mySolvedWorry'
+        ? 0
+        : 1
+      : $count;
   return (
     <div>
-      <CommentContent
-        className="content"
-        $count={$count === 0 ? initialCount : $count}
-      >
-        {comment.content}
-      </CommentContent>
+      <CommentContent $count={initialCount}>{comment.content}</CommentContent>
       {comment.children &&
         comment.children.map((child, index) => (
-          <PastContentComment key={index} comment={child} $count={$count + 1} />
+          <PastContentComment
+            key={index}
+            comment={child}
+            $count={initialCount + 1}
+          />
         ))}
     </div>
   );
