@@ -8,6 +8,7 @@ import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
 import sendLine from '/assets/sendLine.svg';
 import starNotice from '/assets/starNotice.svg';
+import takeStar from '/assets/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
 import { deleteContent, reportContent } from '../../api/sendContentApi';
 import {
@@ -174,7 +175,13 @@ function GetOtherWorry({
           )}
           {showDetail && (
             <ButtonContainer>
-              <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
+              {detail.isSolved && <TakeStarImg src={takeStar} />}
+              {!detail.isSolved && (
+                <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
+              )}
+              {detail.isSolved && (
+                <ReplyButton onClick={closeModal}>확인</ReplyButton>
+              )}
               <DeleteImg src={deleteWorry} onClick={handleDelete} />
             </ButtonContainer>
           )}
@@ -214,6 +221,12 @@ const ContentText = styled.div<{ $marginTop?: string }>`
 const ButtonContainer = styled.div`
   display: flex;
   margin-top: 270px;
+`;
+
+const TakeStarImg = styled.img`
+  position: absolute;
+  margin-left: 75px;
+  margin-top: -60px;
 `;
 
 const ReplyButton = styled.button`

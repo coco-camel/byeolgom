@@ -68,7 +68,11 @@ a {
 }
 
 body {
-	cursor: url('../../public/assets/starBearDefault.gif'), auto;
+	cursor: url('../../public/assets/starBearPo.png'), default;
+}
+
+body.hovering {
+  	cursor: url("../../public/assets/starBearPo.png"), pointer;
 }
 
 body {

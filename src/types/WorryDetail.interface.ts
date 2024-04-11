@@ -9,4 +9,5 @@ export interface WorryDetail {
   worryId: number;
   userId: number;
   worryUserId: number;
+  isSolved: boolean;
 }
