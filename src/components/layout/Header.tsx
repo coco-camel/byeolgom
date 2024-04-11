@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import trophy from '/assets/trophy.svg';
 import countRocket from '/assets/countRocket.svg';
 import { useAuthStore } from '../../store/authStore';
-import { getWorryCount } from '../../api/count';
 import { useWorryCountStore } from '../../store/worryCountStore';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useWorryCount } from '../../hooks/queries/useWorryCount ';
 
 interface HeaderProps {
   openModal: () => void;
@@ -15,19 +14,15 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
   const { isLoggedIn } = useAuthStore();
   const { worryCount, setWorryCountState } = useWorryCountStore();
 
-  const { data, isError, isPending } = useQuery({
-    queryKey: ['worryCount'],
-    queryFn: () => getWorryCount(),
-    refetchInterval: 1000 * 20,
-  });
+  const worryCountQuery = useWorryCount();
 
   useEffect(() => {
-    setWorryCountState(data);
-  }, [data, setWorryCountState]);
+    setWorryCountState(worryCountQuery.data);
+  }, [worryCountQuery.data, setWorryCountState]);
 
-  if (isPending) return <div>Loading...</div>;
+  if (worryCountQuery.isPending) return <div>Loading...</div>;
 
-  if (isError) return <div>Error</div>;
+  if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
     <HeaderArea>

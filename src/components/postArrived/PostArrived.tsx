@@ -8,27 +8,25 @@ import {
   getCommentDetail,
 } from '../../api/postArrived';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 import PostArrivedList from './PostArrivedList';
+import { usePostArrived } from '../../hooks/queries/usePostArrived';
 
 function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
   const { postArrivedList, setPostArrivedListState, setPostArrivedAsRead } =
     usePostArrivedStore();
+
   const queryClient = useQueryClient();
 
-  const { data, isError, isPending } = useQuery({
-    queryKey: ['postArrived'],
-    queryFn: postArrived,
-    refetchInterval: 1000 * 20,
-  });
+  const postArrivedQuery = usePostArrived();
 
   useEffect(() => {
     postArrived();
-    setPostArrivedListState(data);
-  }, [data, setPostArrivedListState]);
+    setPostArrivedListState(postArrivedQuery.data);
+  }, [postArrivedQuery.data, setPostArrivedListState]);
 
   useEffect(() => {
     queryClient.invalidateQueries({
@@ -57,9 +55,9 @@ function PostArrived() {
     setShowModal(false);
   };
 
-  if (isPending) return <div>Loading...</div>;
+  if (postArrivedQuery.isPending) return <div>Loading...</div>;
 
-  if (isError) return <div>Error</div>;
+  if (postArrivedQuery.isError) return <div>Error</div>;
 
   return (
     <>
