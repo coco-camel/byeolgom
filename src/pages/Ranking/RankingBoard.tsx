@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// RankingBoard.tsx
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { fetchRankings } from '../../api/rankingApi';
 import styled from 'styled-components';
 
@@ -15,39 +17,26 @@ interface RankingModalProps {
 }
 
 const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
-  const [rankings, setRankings] = useState<ApiResponse[]>([]);
-  const [error, setError] = useState<string>('');
-  const [userRank, setUserRank] = useState<ApiResponse | null>(null);
+  const {
+    data: rankings,
+    error,
+    isError,
+  } = useQuery<ApiResponse[], Error>({
+    queryKey: ['rankings'],
+    queryFn: fetchRankings,
+    enabled: isOpen,
+  });
 
-  useEffect(() => {
-    if (!isOpen) return;
+  const userRank =
+    rankings?.find((rank) => rank.userId === currentUser) || null;
 
-    const fetchAndSetRankings = async () => {
-      try {
-        const response = await fetchRankings();
-        console.log(response);
-        if ('errorCode' in response) {
-          setError(response.msg);
-        } else {
-          setRankings(response.slice(0, 5));
-          const currentUserRank = response.find(
-            (rank: ApiResponse) => rank.userId === currentUser,
-          );
-          setUserRank(currentUserRank || null);
-        }
-      } catch (err) {
-        setError('랭킹 정보를 가져오는데 실패했습니다.');
-      }
-    };
-
-    fetchAndSetRankings();
-  }, [isOpen, currentUser]);
+  if (!isOpen) return null;
 
   return (
     <RankingContainer>
-      {rankings.length > 0 ? (
+      {rankings && rankings.length > 0 ? (
         <RankingWrapper>
-          {rankings.map((rank, index) => (
+          {rankings.slice(0, 5).map((rank, index) => (
             <li className="RankerList" key={index}>
               <p
                 className="Ranking"
@@ -87,7 +76,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
       ) : (
         <p>랭킹 정보가 없습니다.</p>
       )}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {isError && <p style={{ color: 'red' }}>{error?.message}</p>}
     </RankingContainer>
   );
 };
