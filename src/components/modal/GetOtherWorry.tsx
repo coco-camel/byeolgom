@@ -20,6 +20,7 @@ import {
 } from './ContentStyle';
 import { sendContentReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
+import { usePostArrivedStore } from '../../store/postArrivedStore';
 
 function GetOtherWorry({
   detail,
@@ -35,7 +36,7 @@ function GetOtherWorry({
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
-
+  const { setRemovePostArrived } = usePostArrivedStore();
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, fontColor };
@@ -45,6 +46,7 @@ function GetOtherWorry({
       }
       const response = await sendContentReply(params, contentData);
       console.log(response);
+      setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
       console.error(error);
@@ -75,6 +77,7 @@ function GetOtherWorry({
   const handleDelete = async () => {
     try {
       await deleteContent({ worryid: detail.worryId });
+      setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
       console.error(error);

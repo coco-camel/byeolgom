@@ -1,21 +1,46 @@
 import { create } from 'zustand';
+import { PostArrivedItem } from '../types/PostArrivedItem.interface';
+import { isEqual } from 'lodash';
 
-interface WorryCountState {
-  worryCount: number;
-  setWorryCountState: (count: number) => void;
-  setWorryCounteDcrement: () => void;
+interface PostArrivedItemState {
+  postArrivedList: PostArrivedItem[];
+  setPostArrivedListState: (items: PostArrivedItem[]) => void;
+  setPostArrivedAsRead: (worryId: number) => void;
+  setRemovePostArrived: (worryId: number) => void;
 }
 
-export const useWorryCountStore = create<WorryCountState>((set) => ({
-  worryCount: 0,
+export const usePostArrivedStore = create<PostArrivedItemState>((set) => ({
+  postArrivedList: [],
 
-  setWorryCountState: (count: number) =>
-    set(() => ({
-      worryCount: count,
-    })),
-  setWorryCounteDcrement: () =>
-    set((state) => ({
-      worryCount:
-        state.worryCount > 0 ? state.worryCount - 1 : state.worryCount,
-    })),
+  setPostArrivedListState: (items) =>
+    set((state) => {
+      if (!isEqual(state.postArrivedList, items)) {
+        return { postArrivedList: items };
+      }
+      return state;
+    }),
+
+  setPostArrivedAsRead: (worryId) =>
+    set((state) => {
+      let isUpdate = false;
+      const updatedList = state.postArrivedList.map((item) => {
+        if (item.worryId === worryId && item.unRead === true) {
+          isUpdate = true;
+          return { ...item, unRead: false };
+        }
+        return item;
+      });
+      if (isUpdate) {
+        return { postArrivedList: updatedList };
+      }
+      return state;
+    }),
+
+  setRemovePostArrived: (worryId) =>
+    set((state) => {
+      const updatedList = state.postArrivedList.filter(
+        (item) => item.worryId !== worryId,
+      );
+      return { postArrivedList: updatedList };
+    }),
 }));

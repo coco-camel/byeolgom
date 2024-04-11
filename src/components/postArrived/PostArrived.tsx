@@ -1,8 +1,4 @@
-import styled, { keyframes } from 'styled-components';
-import rocketA from '/assets/rocketA.svg';
-import rocketB from '/assets/rocketB.svg';
-import rocketC from '/assets/rocketC.svg';
-import ellipse from '/assets/ellipse.svg';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import GetOtherWorry from '../modal/GetOtherWorry';
 import { WorryDetail } from '../../types/WorryDetail.interface';
@@ -11,54 +7,47 @@ import {
   getWorryDetail,
   getCommentDetail,
 } from '../../api/postArrived';
-
-interface AnimationProps {
-  $sec: number;
-  $startAngle: number;
-}
-
-interface PostArrivedItem {
-  commentId: number;
-  icon: string;
-  worryId: number;
-  unRead: boolean;
-}
+import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePostArrivedStore } from '../../store/postArrivedStore';
+import PostArrivedList from './PostArrivedList';
 
 function PostArrived() {
-  const [postArrivedList, setPostArricedList] = useState<PostArrivedItem[]>();
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const { postArrivedList, setPostArrivedListState, setPostArrivedAsRead } =
+    usePostArrivedStore();
+  const queryClient = useQueryClient();
 
-  const rocket: { [key: string]: string } = {
-    rocketA: rocketA,
-    rocketB: rocketB,
-    rocketC: rocketC,
-  };
+  const { data, isError, isPending } = useQuery({
+    queryKey: ['postArrived'],
+    queryFn: postArrived,
+    refetchInterval: 1000 * 20,
+  });
 
   useEffect(() => {
-    postArrived().then((res) => {
-      console.log(res);
-      setPostArricedList(res);
-    });
-    const interval = setInterval(() => {
-      postArrived().then((res) => {
-        setPostArricedList(res);
-      });
-    }, 1000 * 20);
-    return () => clearInterval(interval);
-  }, []);
+    postArrived();
+    setPostArrivedListState(data);
+  }, [data, setPostArrivedListState]);
 
-  const handleClick = async (itemId: number, key: 'worryId' | 'commentId') => {
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['postArrived'],
+    });
+  }, [postArrivedList, queryClient]);
+
+  const handleClick = async (item: PostArrivedItem) => {
     try {
-      if (key === 'worryId') {
-        const detail = await getWorryDetail({ worryid: itemId });
+      if (item.commentId !== null) {
+        const detail = await getCommentDetail({ commentid: item.commentId });
         setDetail(detail);
         setShowModal(true);
-      } else if (key === 'commentId') {
-        const detail = await getCommentDetail({ commentid: itemId });
+      } else {
+        const detail = await getWorryDetail({ worryid: item.worryId });
         setDetail(detail);
         setShowModal(true);
       }
+      setPostArrivedAsRead(item.worryId);
     } catch (error) {
       console.error('Error fetching detail:', error);
     }
@@ -68,36 +57,18 @@ function PostArrived() {
     setShowModal(false);
   };
 
+  if (isPending) return <div>Loading...</div>;
+
+  if (isError) return <div>Error</div>;
+
   return (
     <>
-      {postArrivedList &&
-        postArrivedList.map((item, index) => (
-          <button
-            key={index}
-            onClick={() =>
-              handleClick(
-                item.commentId !== null ? item.commentId : item.worryId,
-                item.commentId !== null ? 'commentId' : 'worryId',
-              )
-            }
-          >
-            <TestDiv>
-              <Animation
-                $sec={Math.floor(Math.random() * (50 - 25 + 1)) + 25}
-                $startAngle={Math.floor(Math.random() * 360) + 1}
-              >
-                <ImageContainer>
-                  <img
-                    src={rocket[`rocket${item.icon}`]}
-                    width={24}
-                    height={29}
-                  />
-                  {item.unRead && <EllipseImage src={ellipse} />}
-                </ImageContainer>
-              </Animation>
-            </TestDiv>
-          </button>
-        ))}
+      {postArrivedList && (
+        <PostArrivedList
+          postArrivedList={postArrivedList}
+          onClick={handleClick}
+        />
+      )}
       {showModal && (
         <DetailContainer>
           <GetOtherWorry detail={detail} closeModal={handleCloseModal} />
@@ -108,62 +79,6 @@ function PostArrived() {
 }
 
 export default PostArrived;
-
-const EllipseImage = styled.img`
-  position: absolute;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  :nth-child(1) {
-    z-index: 9;
-  }
-`;
-
-const TestDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 300px;
-  max-height: 300px;
-  z-index: 100;
-`;
-
-const animation = ($startAngle: number, $translateX: string) => keyframes`
-  0% {
-    transform: rotate(${$startAngle}deg) translateX(${$translateX}) rotate(180deg);
-  }
-  100% {
-    transform: rotate(${$startAngle + 360}deg) translateX(${$translateX}) rotate(180deg);
-  }
-`;
-
-const Animation = styled.div<AnimationProps>`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  animation: ${(props) => animation(props.$startAngle, '150px')}
-    ${(props) => props.$sec}s infinite linear;
-  &:hover {
-    animation-play-state: paused;
-  }
-
-  @media (max-width: 640px) {
-    animation: ${(props) => animation(props.$startAngle, '220px')}
-      ${(props) => props.$sec}s infinite linear;
-  }
-  @media (max-width: 480px) {
-    animation: ${(props) => animation(props.$startAngle, '150px')}
-      ${(props) => props.$sec}s infinite linear;
-  }
-`;
 
 const DetailContainer = styled.div`
   position: absolute;
