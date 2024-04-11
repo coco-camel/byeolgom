@@ -7,6 +7,8 @@ import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
 import rocketC from '/assets/rocketC.svg';
 import sendLine from '/assets/sendLine.svg';
+import starNotice from '/assets/starNotice.svg';
+import takeStar from '/assets/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
 import { deleteContent, reportContent } from '../../api/sendContentApi';
 import {
@@ -18,7 +20,7 @@ import {
   ModalOverlay,
   SendButton,
 } from './ContentStyle';
-import { sendContentReply } from '../../api/sendContentApi';
+import { sendContentReply, sendStarReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 
@@ -32,10 +34,13 @@ function GetOtherWorry({
   const [showDetail, setShowDetail] = useState(true);
   const [sendReply, setSendReply] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
+  const [showStarText, setShowStarText] = useState(false);
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
+  const [sendStar, setSendStar] = useState(false);
+
   const { setRemovePostArrived } = usePostArrivedStore();
   const handleContentSubmit = async () => {
     try {
@@ -44,8 +49,12 @@ function GetOtherWorry({
       if (detail.commentId !== null) {
         params.commentid = detail.commentId;
       }
-      const response = await sendContentReply(params, contentData);
-      console.log(response);
+
+      if (sendStar) {
+        await sendStarReply(params, contentData);
+      } else {
+        await sendContentReply(params, contentData);
+      }
       setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
@@ -97,6 +106,10 @@ function GetOtherWorry({
     setReplyWrite(false);
   };
 
+  const handleSendStarClick = () => {
+    setSendStar(!sendStar);
+  };
+
   const formattedDate = new Date(detail.createdAt)
     .toISOString()
     .replace(/T/, ' ')
@@ -106,6 +119,23 @@ function GetOtherWorry({
   useEffect(() => {
     setIsSendButtonDisabled(content.trim().length === 0);
   }, [content]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_Token');
+    if (token !== null) {
+      const tokenParts = token.split('.');
+      const payload = JSON.parse(atob(tokenParts[1]));
+      const userId = payload.userId;
+
+      if (userId === detail.worryUserId) {
+        setShowStarText(true);
+      } else {
+        setShowStarText(false);
+      }
+    } else {
+      console.error('토큰이 없습니다.');
+    }
+  }, [detail.worryUserId]);
 
   return (
     <>
@@ -149,15 +179,25 @@ function GetOtherWorry({
           )}
           {showDetail && (
             <ButtonContainer>
-              <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
+              {detail.isSolved && <TakeStarImg src={takeStar} />}
+              {!detail.isSolved && (
+                <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
+              )}
+              {detail.isSolved && (
+                <ReplyButton onClick={closeModal}>확인</ReplyButton>
+              )}
               <DeleteImg src={deleteWorry} onClick={handleDelete} />
             </ButtonContainer>
           )}
-          {replyWrite && (
+          {replyWrite && showStarText && (
             <StarButtonContainer>
-              <StarButton>
-                <Circle />
+              <StarButton
+                className={sendStar ? 'active' : ''}
+                onClick={handleSendStarClick}
+              >
+                <Circle className="Circle" />
                 <StarText>답례 전송</StarText>
+                <HoverImage src={starNotice} />
               </StarButton>
             </StarButtonContainer>
           )}
@@ -185,6 +225,12 @@ const ContentText = styled.div<{ $marginTop?: string }>`
 const ButtonContainer = styled.div`
   display: flex;
   margin-top: 270px;
+`;
+
+const TakeStarImg = styled.img`
+  position: absolute;
+  margin-left: 75px;
+  margin-top: -60px;
 `;
 
 const ReplyButton = styled.button`
@@ -235,6 +281,27 @@ const StarButtonContainer = styled.div`
 const StarButton = styled.button`
   display: flex;
   align-items: center;
+  position: relative;
+
+  &:hover .HoverImage {
+    display: block;
+  }
+
+  &.active .Circle {
+    background-color: #e88439;
+  }
+`;
+
+const HoverImage = styled.img`
+  display: none;
+  position: absolute;
+  top: -400%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  ${StarButton}:hover & {
+    display: block;
+  }
 `;
 
 const Circle = styled.div`
@@ -242,10 +309,6 @@ const Circle = styled.div`
   height: 18px;
   border-radius: 25px;
   border: 2px solid #b5b5bd;
-
-  &:active {
-    background-color: #e88439;
-  }
 `;
 
 const StarText = styled.div`

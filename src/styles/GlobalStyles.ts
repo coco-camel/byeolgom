@@ -68,6 +68,14 @@ a {
 }
 
 body {
+	cursor: url('../../public/assets/starBearPo.png'), default;
+}
+
+body.hovering {
+  	cursor: url("../../public/assets/starBearPo.png"), pointer;
+}
+
+body {
 	/* background-image: url(); */
 	background-color: #2f3438;
 	color: white;

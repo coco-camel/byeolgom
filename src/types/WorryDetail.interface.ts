@@ -7,4 +7,7 @@ export interface WorryDetail {
   parentId: number;
   unRead: boolean;
   worryId: number;
+  userId: number;
+  worryUserId: number;
+  isSolved: boolean;
 }
