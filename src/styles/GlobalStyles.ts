@@ -68,6 +68,10 @@ a {
 }
 
 body {
+	cursor: url('../../public/assets/starBearDefault.gif'), auto;
+}
+
+body {
 	/* background-image: url(); */
 	background-color: #2f3438;
 	color: white;
