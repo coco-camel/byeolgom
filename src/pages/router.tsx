@@ -8,6 +8,7 @@ import PastContents from './PastContent/PastContents';
 import PastContentDetail from './PastContnetDetail/PastContentDetail';
 import SettingPage from './MyPage/SettingPage';
 import Layout from '../components/layout/Layout';
+import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -19,15 +20,27 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Main />,
+            element: (
+              <ProtectedRoute>
+                <Main />,
+              </ProtectedRoute>
+            ),
           },
           {
             path: '/pastcontents',
-            element: <PastContents />,
+            element: (
+              <ProtectedRoute>
+                <PastContents />,
+              </ProtectedRoute>
+            ),
           },
           {
             path: '/pastcontents/:whosecontent/:worryid',
-            element: <PastContentDetail />,
+            element: (
+              <ProtectedRoute>
+                <PastContentDetail />,
+              </ProtectedRoute>
+            ),
           },
           {
             path: '/login',
@@ -43,7 +56,11 @@ export const router = createBrowserRouter([
           },
           {
             path: '/mypage',
-            element: <SettingPage />,
+            element: (
+              <ProtectedRoute>
+                <SettingPage />,
+              </ProtectedRoute>
+            ),
           },
         ],
       },

@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import KakaoLogin from './kakaoLogin/KakaoLogin';
 import NaverLogin from './naverLogin/NaverLogin';
 import { useAuthStore } from '../../store/authStore';
@@ -7,14 +6,11 @@ import styled from 'styled-components';
 import mainImg from '/assets/mainImg.svg';
 
 function LoginPage() {
-  const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate(-1);
-    }
-  }, [isLoggedIn, navigate]);
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <LoginContainer>
