@@ -58,7 +58,7 @@ function SettingPage() {
                 className={isDarkMode ? 'active' : ''}
               >
                 <p>다크모드</p>
-                <ToggleSwitch isDark={isDarkMode} />{' '}
+                <ToggleSwitch $isDark={isDarkMode} />{' '}
               </DarkModeSwitch>
             </Theme>
           </Wrapper>
@@ -174,7 +174,7 @@ const DarkModeSwitch = styled.div`
   }
 `;
 
-const ToggleSwitch = styled.div`
+const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   width: 50px;
   height: 25px;
   background-color: #ccc;
@@ -186,7 +186,7 @@ const ToggleSwitch = styled.div`
     box-shadow 0.3s;
 
   ${(props) =>
-    props.isDark &&
+    props.$isDark &&
     css`
       background-color: #abcd53;
       box-shadow: 0 0 5px 0 #abcd53;
@@ -202,15 +202,13 @@ const ToggleSwitch = styled.div`
     background-color: white;
     border-radius: 50%;
     transition: left 0.3s;
-  }
 
-  ${(props) =>
-    props.isDark &&
-    css`
-      &:after {
+    ${(props) =>
+      props.$isDark &&
+      css`
         left: 30px;
-      }
-    `}
+      `}
+  }
 `;
 
 const LogoutButton = styled.button`
