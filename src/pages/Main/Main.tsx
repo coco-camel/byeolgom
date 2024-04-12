@@ -1,22 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import { startTransition, useEffect } from 'react';
-import { useAuthStore } from '../../store/authStore';
 import PostArrived from '../../components/postArrived/PostArrived.js';
 import MyElement3D from '../../components/3dMotion/MyElement3D.jsx';
 import styled from 'styled-components';
 
 function Main() {
-  const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      startTransition(() => {
-        navigate('/login');
-      });
-    }
-  }, [isLoggedIn, navigate]);
-
   return (
     <>
       <MainPage>
