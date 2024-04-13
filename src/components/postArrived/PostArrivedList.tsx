@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import rocketA from '/assets/rocketA.svg';
 import rocketB from '/assets/rocketB.svg';
@@ -23,12 +23,24 @@ const PostArrivedList = memo(
       rocketC: rocketC,
     };
 
-    const [animationProps] = useState<AnimationProps[]>(() =>
+    const [animationProps, setAnimationProps] = useState<AnimationProps[]>(() =>
       postArrivedList.map(() => ({
         $sec: Math.floor(Math.random() * (50 - 25 + 1)) + 25,
         $startAngle: Math.floor(Math.random() * 360) + 1,
       })),
     );
+
+    useEffect(() => {
+      const newItems = postArrivedList.map(
+        (_, index) =>
+          animationProps[index] || {
+            $sec: Math.floor(Math.random() * (50 - 25 + 1)) + 25,
+            $startAngle: Math.floor(Math.random() * 360) + 1,
+          },
+      );
+
+      setAnimationProps(newItems.slice(0, postArrivedList.length));
+    }, [postArrivedList, animationProps]);
 
     return (
       <>

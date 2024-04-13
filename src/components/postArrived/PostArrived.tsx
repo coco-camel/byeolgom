@@ -22,6 +22,7 @@ function PostArrived() {
   const queryClient = useQueryClient();
 
   const postArrivedQuery = usePostArrived();
+  const { setRemovePostArrived } = usePostArrivedStore();
 
   useEffect(() => {
     postArrived();
@@ -55,6 +56,11 @@ function PostArrived() {
     setShowModal(false);
   };
 
+  const handleRemoveCloseModal = (worryId: number) => {
+    setRemovePostArrived(worryId);
+    setShowModal(false);
+  };
+
   if (postArrivedQuery.isPending) return <div>Loading...</div>;
 
   if (postArrivedQuery.isError) return <div>Error</div>;
@@ -69,7 +75,11 @@ function PostArrived() {
       )}
       {showModal && (
         <DetailContainer>
-          <GetOtherWorry detail={detail} closeModal={handleCloseModal} />
+          <GetOtherWorry
+            detail={detail}
+            closeModal={handleCloseModal}
+            removeCloseModal={handleRemoveCloseModal}
+          />
         </DetailContainer>
       )}
     </>

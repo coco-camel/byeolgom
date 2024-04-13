@@ -21,6 +21,9 @@ function Footer({ openModal }: { openModal: () => void }) {
   const handleButtonClick = (buttonName: string) => {
     if (clickedButton === buttonName) return;
     setClickedButton(buttonName);
+    if (buttonName === 'chat') {
+      alert('아직 개발 중인 기능입니다.');
+    }
   };
 
   return (
@@ -39,12 +42,12 @@ function Footer({ openModal }: { openModal: () => void }) {
           />
         </Link>
         <div></div>
-        <Link to={'/'}>
-          <HoverableImage
-            src={clickedButton === 'chat' ? hoverChat : chat}
-            onClick={() => handleButtonClick('chat')}
-          />
-        </Link>
+        {/* <Link to={'/'}> */}
+        <HoverableImage
+          src={clickedButton === 'chat' ? hoverChat : chat}
+          onClick={() => handleButtonClick('chat')}
+        />
+        {/* </Link> */}
         <Link to={'/mypage'}>
           <HoverableImage
             src={clickedButton === 'setting' ? hoverSetting : setting}
