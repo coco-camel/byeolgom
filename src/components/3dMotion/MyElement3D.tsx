@@ -79,13 +79,16 @@ const MyElement3D: React.FC = () => {
         <Suspense fallback={<div>Loading...</div>}>
           {textureUnion && <CentralImage texture={textureUnion} />}
           {textureStar &&
-            Array.from({ length: starCount }, (_, index) => (
-              <Star
-                key={index}
-                texture={textureStar}
-                offsetTime={(index * (2 * Math.PI)) / starCount}
-              />
-            ))}
+            Array.from(
+              { length: starCount < 6 ? starCount : 5 },
+              (_, index) => (
+                <Star
+                  key={index}
+                  texture={textureStar}
+                  offsetTime={(index * (2 * Math.PI)) / starCount}
+                />
+              ),
+            )}
         </Suspense>
       </Canvas>
     </AnimationGroup>

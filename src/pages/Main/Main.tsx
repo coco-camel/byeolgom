@@ -1,5 +1,5 @@
-import PostArrived from '../../components/postArrived/PostArrived.js';
-import MyElement3D from '../../components/3dMotion/MyElement3D.jsx';
+import PostArrived from '../../components/postArrived/PostArrived.tsx';
+import MyElement3D from '../../components/3dMotion/MyElement3D.tsx';
 import styled from 'styled-components';
 
 function Main() {

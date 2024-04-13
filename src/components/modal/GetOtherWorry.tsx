@@ -23,13 +23,16 @@ import {
 import { sendContentReply, sendStarReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
+import { formatDate } from '../../utills/formatDate/formatDate';
 
 function GetOtherWorry({
   detail,
   closeModal,
+  removeCloseModal,
 }: {
   detail: WorryDetail;
   closeModal: () => void;
+  removeCloseModal: (worryId: number) => void;
 }) {
   const [showDetail, setShowDetail] = useState(true);
   const [sendReply, setSendReply] = useState(false);
@@ -110,12 +113,6 @@ function GetOtherWorry({
     setSendStar(!sendStar);
   };
 
-  const formattedDate = new Date(detail.createdAt)
-    .toISOString()
-    .replace(/T/, ' ')
-    .replace(/:\d{2}\.\d{3}Z/, '')
-    .replace(/-/g, '.');
-
   useEffect(() => {
     setIsSendButtonDisabled(content.trim().length === 0);
   }, [content]);
@@ -154,7 +151,7 @@ function GetOtherWorry({
       <AnimatedWrapper>
         <StyledImg src={getRocketImage(detail.icon)} />
         <WhiteBox>
-          {showDetail && <DateText>{formattedDate}</DateText>}
+          {showDetail && <DateText>{formatDate(detail.createdAt)}</DateText>}
           {!replyWrite && (
             <ContentText
               color={detail.fontColor}
@@ -165,7 +162,10 @@ function GetOtherWorry({
           )}
           {sendReply && (
             <>
-              <LineImg src={sendLine} />
+              <LineImg
+                src={sendLine}
+                $marginTop={replyWrite ? '90px' : '0px'}
+              />
               <SendContents
                 onSend={(content, fontColor) => {
                   setContent(content);
@@ -173,7 +173,7 @@ function GetOtherWorry({
                 }}
                 onInputClick={handleInputClick}
                 placeholder={`답장을 입력해주세요.`}
-                containerHeight={replyWrite ? '66%' : '44%'}
+                containerHeight={replyWrite ? '66%' : '37%'}
               />
             </>
           )}
@@ -184,7 +184,9 @@ function GetOtherWorry({
                 <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
               )}
               {detail.isSolved && (
-                <ReplyButton onClick={closeModal}>확인</ReplyButton>
+                <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
+                  확인
+                </ReplyButton>
               )}
               <DeleteImg src={deleteWorry} onClick={handleDelete} />
             </ButtonContainer>
@@ -218,19 +220,26 @@ const DateText = styled.div`
 const ContentText = styled.div<{ $marginTop?: string }>`
   font-size: 16px;
   margin-top: 60px;
+  width: 70%;
+  height: 25%;
+  text-align: center;
   margin-top: ${(props) => props.$marginTop || '0px'};
   color: ${(props) => props.color || '#FFFFFF'};
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
-  margin-top: 270px;
+  margin-top: 150px;
 `;
 
 const TakeStarImg = styled.img`
   position: absolute;
   margin-left: 75px;
   margin-top: -60px;
+`;
+
+const LineImg = styled.img<{ $marginTop?: string }>`
+  margin-top: ${(props) => props.$marginTop || '0px'};
 `;
 
 const ReplyButton = styled.button`
@@ -260,10 +269,6 @@ const ReportImg = styled.img`
   margin-right: 20px;
   margin-top: 15px;
   cursor: pointer;
-`;
-
-const LineImg = styled.img`
-  margin-top: 90px;
 `;
 
 const StarButtonContainer = styled.div`

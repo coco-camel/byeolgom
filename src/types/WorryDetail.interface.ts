@@ -1,7 +1,7 @@
 export interface WorryDetail {
   commentId: number;
   content: string;
-  createdAt: string;
+  createdAt: Date;
   fontColor: string;
   icon: string;
   parentId: number;

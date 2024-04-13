@@ -76,8 +76,9 @@ body.hovering {
 }
 
 body {
-	/* background-image: url(); */
-	background-color: #2f3438;
+	background-image: url("/assets/backGroundTest.svg");
+	background-size: cover;
+	/* background-color: #2f3438; */
 	color: white;
 }
 `;

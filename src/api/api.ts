@@ -29,8 +29,14 @@ authInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const newAccessToken = await refreshAccessToken();
-        originalRequest.headers['Authorization'] = `${newAccessToken}`;
-        return authInstance(originalRequest);
+        if (newAccessToken) {
+          originalRequest.headers['Authorization'] = `${newAccessToken}`;
+          return authInstance(originalRequest);
+        } else {
+          localStorage.removeItem('access_Token');
+          localStorage.removeItem('refresh_Token');
+          location.href = '/login';
+        }
       } catch (refreshError) {
         return Promise.reject(refreshError);
       }
@@ -41,14 +47,17 @@ authInstance.interceptors.response.use(
 
 export const refreshAccessToken = async () => {
   const refreshToken = window.localStorage.getItem('refresh_Token');
+  if (!refreshToken) {
+    throw new Error('리프레시 토큰이 필요합니다.');
+  }
   try {
     const res = await authInstance.post(`/refresh`, {
       headers: {
         Authorization: refreshToken,
       },
     });
-    window.localStorage.setItem('access_Token', res.data.accessToken);
-    window.localStorage.setItem('refresh_Token', res.data.refreshToken);
+    localStorage.setItem('access_Token', res.data.accessToken);
+    localStorage.setItem('refresh_Token', res.data.refreshToken);
     return res.data.accessToken;
   } catch (err) {
     console.error('엑세스 토큰 새로고침에 실패하였습니다', err);

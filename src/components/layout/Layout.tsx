@@ -38,12 +38,12 @@ const Layout = () => {
   return (
     <MainLayout>
       <MainContent>
+        {/* <div>설명~~~</div>
         <div>설명~~~</div>
         <div>설명~~~</div>
         <div>설명~~~</div>
         <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
+        <div>설명~~~</div> */}
       </MainContent>
       <MainWrap>
         {showHeader && <Header openModal={handleOpenRankingModal} />}
