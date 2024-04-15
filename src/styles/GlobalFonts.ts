@@ -1,14 +1,14 @@
 import { createGlobalStyle } from 'styled-components';
 
-import NotoSansKRRegular from '../assets/fonts/NotoSansKR-Regular.ttf';
-import NotoSansKRMedium from '../assets/fonts/NotoSansKR-Medium.ttf';
-import NotoSansKRLight from '../assets/fonts/NotoSansKR-Light.ttf';
-import NotoSansKRExtraLight from '../assets/fonts/NotoSansKR-ExtraLight.ttf';
-import NotoSansKRSemiBold from '../assets/fonts/NotoSansKR-SemiBold.ttf';
-import NotoSansKRBold from '../assets/fonts/NotoSansKR-Bold.ttf';
-import NotoSansKRExtraBold from '../assets/fonts/NotoSansKR-ExtraBold.ttf';
-import NotoSansKRBlack from '../assets/fonts/NotoSansKR-Black.ttf';
-import NotoSansKRThin from '../assets/fonts/NotoSansKR-Thin.ttf';
+import NotoSansKRRegular from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Regular.ttf';
+import NotoSansKRMedium from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Medium.ttf';
+import NotoSansKRLight from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Light.ttf';
+import NotoSansKRExtraLight from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-ExtraLight.ttf';
+import NotoSansKRSemiBold from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-SemiBold.ttf';
+import NotoSansKRBold from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Bold.ttf';
+import NotoSansKRExtraBold from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-ExtraBold.ttf';
+import NotoSansKRBlack from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Black.ttf';
+import NotoSansKRThin from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Thin.ttf';
 
 const GlobalFonts = createGlobalStyle`
   @font-face {

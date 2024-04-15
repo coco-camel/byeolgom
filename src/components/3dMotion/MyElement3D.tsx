@@ -4,6 +4,9 @@ import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
 import { Texture } from 'three';
 import { getStarCount } from '../../api/count';
+import { useQueryClient } from '@tanstack/react-query';
+import { useStarCountStore } from '../../store/starConuntStore';
+import { useStarCount } from '../../hooks/queries/useStarCount';
 
 // Assets
 const starImagePath = '/assets/images/star.png';
@@ -48,7 +51,23 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
 const MyElement3D: React.FC = () => {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
-  const [starCount, setStarCount] = useState(0);
+
+  const { starCount, setStarCountState } = useStarCountStore();
+
+  const queryClient = useQueryClient();
+
+  const starCountQuery = useStarCount();
+
+  useEffect(() => {
+    getStarCount();
+    setStarCountState(starCountQuery.data);
+  }, [starCountQuery.data, setStarCountState]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['worryCount'],
+    });
+  }, [starCount, queryClient]);
 
   useEffect(() => {
     new TextureLoader().load(starImagePath, (texture) => {
@@ -57,18 +76,6 @@ const MyElement3D: React.FC = () => {
     new TextureLoader().load(unionImagePath, (texture) => {
       setTextureUnion(texture);
     });
-  }, []);
-
-  useEffect(() => {
-    getStarCount().then((res) => {
-      setStarCount(res);
-    });
-    const interval = setInterval(() => {
-      getStarCount().then((res) => {
-        setStarCount(res);
-      });
-    }, 1000 * 20);
-    return () => clearInterval(interval);
   }, []);
 
   return (
