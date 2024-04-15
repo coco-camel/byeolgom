@@ -18,7 +18,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 16px;
-	font-family: 'Pretendard-Regular';
+    font-family: 'Noto Sans KR', sans-serif;
 	vertical-align: baseline;
     box-sizing: border-box;
 }
@@ -68,15 +68,15 @@ a {
 }
 
 body {
-	cursor: url('assets/starBearPo.png'), default;
+	cursor: url('assets/images/starBearPo.png'), default;
 }
 
 body.hovering {
-  	cursor: url("assets/starBearPo.png"), pointer;
+  	cursor: url("assets/images/starBearPo.png"), pointer;
 }
 
 body {
-	background-image: url("/assets/backGroundTest.svg");
+	background-image: url("/assets/images/backGroundTest.svg");
 	background-size: cover;
 	/* background-color: #2f3438; */
 	color: white;

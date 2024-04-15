@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
-import rocketA from '/assets/rocketA.svg';
-import rocketB from '/assets/rocketB.svg';
-import rocketC from '/assets/rocketC.svg';
-import star from '/assets/star.svg';
-import chevronRight from '/assets/chevronRight.svg';
+import rocketA from '/assets/images/rocketA.svg';
+import rocketB from '/assets/images/rocketB.svg';
+import rocketC from '/assets/images/rocketC.svg';
+import star from '/assets/images/star.svg';
+import chevronRight from '/assets/images/chevronRight.svg';
 import { forwardRef } from 'react';
 
 interface PastContentsListProps {

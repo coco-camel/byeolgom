@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import trophy from '/assets/trophy.svg';
-import countRocket from '/assets/countRocket.svg';
+import trophy from '/assets/images/trophy.svg';
+import countRocket from '/assets/images/countRocket.svg';
 import { useAuthStore } from '../../store/authStore';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useEffect } from 'react';

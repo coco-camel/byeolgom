@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import rocketA from '/assets/rocketA.svg';
-import rocketB from '/assets/rocketB.svg';
-import rocketC from '/assets/rocketC.svg';
-import back from '/assets/back.svg';
+import rocketA from '/assets/images/rocketA.svg';
+import rocketB from '/assets/images/rocketB.svg';
+import rocketC from '/assets/images/rocketC.svg';
+import back from '/assets/images/back.svg';
 import SendContents from '../../pages/SendContent/SendContents';
 import { sendContent } from '../../api/sendContentApi';
 import {

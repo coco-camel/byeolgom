@@ -1,9 +1,9 @@
 import { memo, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import rocketA from '/assets/rocketA.svg';
-import rocketB from '/assets/rocketB.svg';
-import rocketC from '/assets/rocketC.svg';
-import ellipse from '/assets/ellipse.svg';
+import rocketA from '/assets/images/rocketA.svg';
+import rocketB from '/assets/images/rocketB.svg';
+import rocketC from '/assets/images/rocketC.svg';
+import ellipse from '/assets/images/ellipse.svg';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
 
 interface AnimationProps {
