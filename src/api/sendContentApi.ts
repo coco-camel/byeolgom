@@ -74,8 +74,10 @@ export const reportContent = async (
 ) => {
   try {
     const res = await authInstance.post(
-      `/comments/${params.commentid}/report`,
-      { reportReason },
+      `/worries/${params.worryid}/comments/${params.commentid ? params.commentid + '/' : ''}report`,
+      {
+        reportReason,
+      },
     );
     return res.data;
   } catch (error) {

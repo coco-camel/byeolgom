@@ -80,7 +80,10 @@ function GetOtherWorry({
 
   const handleReport = async () => {
     try {
-      await reportContent({ commentid: detail.commentId }, '불쾌한 언행');
+      await reportContent(
+        { worryid: detail.worryId, commentid: detail.commentId },
+        '불쾌한 언행',
+      );
       setRemovePostArrived(detail.worryId);
       closeModal();
     } catch (error) {
