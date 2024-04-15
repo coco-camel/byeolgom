@@ -31,16 +31,16 @@ const PostArrivedList = memo(
     );
 
     useEffect(() => {
-      const newItems = postArrivedList.map(
-        (_, index) =>
-          animationProps[index] || {
-            $sec: Math.floor(Math.random() * (50 - 25 + 1)) + 25,
-            $startAngle: Math.floor(Math.random() * 360) + 1,
-          },
+      setAnimationProps((prevAnimationProps) =>
+        postArrivedList.map(
+          (_, index) =>
+            prevAnimationProps[index] || {
+              $sec: Math.floor(Math.random() * (50 - 25 + 1)) + 25,
+              $startAngle: Math.floor(Math.random() * 360) + 1,
+            },
+        ),
       );
-
-      setAnimationProps(newItems.slice(0, postArrivedList.length));
-    }, [postArrivedList, animationProps]);
+    }, [postArrivedList]);
 
     return (
       <>

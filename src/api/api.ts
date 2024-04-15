@@ -38,6 +38,9 @@ authInstance.interceptors.response.use(
           location.href = '/login';
         }
       } catch (refreshError) {
+        localStorage.removeItem('access_Token');
+        localStorage.removeItem('refresh_Token');
+        location.href = '/login';
         return Promise.reject(refreshError);
       }
     }
