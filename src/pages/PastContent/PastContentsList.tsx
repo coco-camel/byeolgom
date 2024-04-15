@@ -29,7 +29,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
     };
     return (
       <LockerListWrap>
-        {listsSelect &&
+        {listsSelect ? (
           listsSelect.map((list, index) => (
             <Link
               to={`/pastcontents/${whoseContent}/${list.worryId}`}
@@ -51,7 +51,15 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                 <img src={chevronRight} />
               </PastContentWrap>
             </Link>
-          ))}
+          ))
+        ) : (
+          <PastContentWrap>
+            <PastContentContainer>
+              <span>고민을 보내거나 </span>
+              <span>다른 분의 고민을 해결해 주세요.</span>
+            </PastContentContainer>
+          </PastContentWrap>
+        )}
         <LoadMoreDiv ref={ref} />
       </LockerListWrap>
     );
