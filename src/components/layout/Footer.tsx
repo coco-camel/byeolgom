@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import locker from '/assets/locker.svg';
-import hoverLocker from '/assets/hoverLocker.svg';
-import home from '/assets/home.svg';
-import hoverHome from '/assets/hoverHome.svg';
-import rocketA from '/assets/rocketA.svg';
-import setting from '/assets/setting.svg';
-import hoverSetting from '/assets/hoverSetting.svg';
-import chat from '/assets/chat.svg';
-import hoverChat from '/assets/hoverChat.svg';
+import locker from '/assets/images/locker.svg';
+import hoverLocker from '/assets/images/hoverLocker.svg';
+import home from '/assets/images/home.svg';
+import hoverHome from '/assets/images/hoverHome.svg';
+import rocketA from '/assets/images/rocketA.svg';
+import setting from '/assets/images/setting.svg';
+import hoverSetting from '/assets/images/hoverSetting.svg';
+import chat from '/assets/images/chat.svg';
+import hoverChat from '/assets/images/hoverChat.svg';
 import { Link } from 'react-router-dom';
 
 function Footer({ openModal }: { openModal: () => void }) {

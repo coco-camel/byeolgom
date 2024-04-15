@@ -3,10 +3,10 @@ import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import PastContentComment from './PastContentComment';
 import styled from 'styled-components';
-import back from '/assets/back.svg';
-import rocketA from '/assets/rocketA.svg';
-import rocketB from '/assets/rocketB.svg';
-import rocketC from '/assets/rocketC.svg';
+import back from '/assets/images/back.svg';
+import rocketA from '/assets/images/rocketA.svg';
+import rocketB from '/assets/images/rocketB.svg';
+import rocketC from '/assets/images/rocketC.svg';
 import { usePastContentDetail } from '../../hooks/queries/usePastContentDetail';
 
 function PastContentDetail() {

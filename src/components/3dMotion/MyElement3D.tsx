@@ -6,8 +6,8 @@ import { Texture } from 'three';
 import { getStarCount } from '../../api/count';
 
 // Assets
-const starImagePath = '/assets/star.png';
-const unionImagePath = '/assets/union.png';
+const starImagePath = '/assets/images/star.png';
+const unionImagePath = '/assets/images/union.png';
 
 interface StarProps {
   texture: Texture;

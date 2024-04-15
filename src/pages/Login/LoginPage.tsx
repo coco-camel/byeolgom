@@ -3,7 +3,7 @@ import KakaoLogin from './kakaoLogin/KakaoLogin';
 import NaverLogin from './naverLogin/NaverLogin';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
-import mainImg from '/assets/mainImg.svg';
+import mainImg from '/assets/images/mainImg.svg';
 
 function LoginPage() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

@@ -2,7 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authInstance } from '../../../api/api';
 import { useAuthStore } from '../../../store/authStore';
-import Spinner from '/assets/Spinner.gif';
+import Spinner from '/assets/images/Spinner.gif';
 import styled from 'styled-components';
 
 function KakaoRedirect() {
