@@ -7,6 +7,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import PastContents from './PastContent/PastContents';
 import PastContentDetail from './PastContnetDetail/PastContentDetail';
 import SettingPage from './MyPage/SettingPage';
+import ChangeNickName from './MyPage/ChangeNickName';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 
@@ -59,6 +60,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <SettingPage />,
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: '/changenickname',
+            element: (
+              <ProtectedRoute>
+                <ChangeNickName />,
               </ProtectedRoute>
             ),
           },

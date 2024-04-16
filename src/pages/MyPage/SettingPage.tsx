@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { getUserName } from '../../api/nickName';
 
 function SettingPage() {
   const navigate = useNavigate();
   const { setLogoutState } = useAuthStore();
   const { isLoggedIn } = useAuthStore();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [nickname, setNickname] = useState('익명');
 
   const handleLogout = () => {
     localStorage.removeItem('access_Token');
@@ -17,7 +19,7 @@ function SettingPage() {
   };
 
   const handleNicknameChange = () => {
-    alert('개발 중인 기능입니다!');
+    navigate('/changenickname');
   };
 
   const toggleDarkMode = () => {
@@ -33,6 +35,15 @@ function SettingPage() {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/login');
+    } else {
+      getUserName()
+        .then((response) => {
+          setNickname(response.nickname);
+        })
+        .catch((error) => {
+          console.error('유저 정보가 없습니다', error);
+          setNickname('익명');
+        });
     }
   }, [isLoggedIn, navigate]);
 
@@ -47,7 +58,7 @@ function SettingPage() {
             <ProfileSection>
               <ProfilePic />
               <NicknameAndChange>
-                <Nickname>익명의 7564</Nickname>
+                <Nickname>{nickname}</Nickname>
                 <ChangeArrow onClick={handleNicknameChange} />
               </NicknameAndChange>
             </ProfileSection>

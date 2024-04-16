@@ -6,6 +6,7 @@ interface ApiResponse {
   likes: number;
   userId?: number;
   rank?: number;
+  nickname?: string;
 }
 
 export const useRankingBoard = (isOpen: boolean) => {
