@@ -4,11 +4,11 @@ import back from '/assets/images/back.svg';
 import trophy from '/assets/images/trophy.svg';
 import { RankingModalProps } from '../../types/RankingProps.interface';
 
-const RankingModal: React.FC<RankingModalProps> = ({
+function RankingModal({
   isOpen,
   currentUser,
   onRequestClose,
-}) => {
+}: RankingModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -30,7 +30,7 @@ const RankingModal: React.FC<RankingModalProps> = ({
       </AnimatedWrapper>
     </>
   );
-};
+}
 
 export default RankingModal;
 

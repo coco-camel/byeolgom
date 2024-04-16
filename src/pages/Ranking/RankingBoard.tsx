@@ -1,10 +1,9 @@
 // RankingBoard.tsx
-import React from 'react';
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import { RankingModalProps } from '../../types/RankingProps.interface';
 import styled from 'styled-components';
 
-const RankingBoard: React.FC<RankingModalProps> = ({ isOpen }) => {
+function RankingBoard({ isOpen }: RankingModalProps) {
   const RankingBoardQuery = useRankingBoard(isOpen);
 
   if (!isOpen) return null;
@@ -59,7 +58,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen }) => {
       )}
     </RankingContainer>
   );
-};
+}
 
 export default RankingBoard;
 
