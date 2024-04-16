@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { getUserName } from '../../api/nickName';
 import { useChangeNicknameMutation } from '../../hooks/queries/useChangeNickName';
+import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
 import back from '/assets/images/back.svg';
 
-const ChangeNickName: React.FC = () => {
+function ChangeNickName() {
   const [nickname, setNickname] = useState('');
+  const { openStateModal } = useStateModalStore();
 
   const navigate = useNavigate();
 
@@ -29,7 +31,7 @@ const ChangeNickName: React.FC = () => {
   const submitNickname = () => {
     mutation.mutate(nickname, {
       onSuccess: () => {
-        localStorage.setItem('nicknameChangeSuccess', 'true');
+        openStateModal('닉네임이 성공적으로 변경되었어요!');
         navigate('/mypage');
       },
     });
@@ -69,7 +71,7 @@ const ChangeNickName: React.FC = () => {
       </PageContainer>
     </>
   );
-};
+}
 
 export default ChangeNickName;
 
