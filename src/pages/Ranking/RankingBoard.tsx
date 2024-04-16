@@ -1,47 +1,24 @@
 // RankingBoard.tsx
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchRankings } from '../../api/rankingApi';
+import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
+import { RankingModalProps } from '../../types/RankingProps.interface';
 import styled from 'styled-components';
 
-interface ApiResponse {
-  commentAuthorId?: number;
-  likes: number;
-  userId?: number;
-}
-
-interface RankingModalProps {
-  isOpen: boolean;
-  currentUser: number;
-  onRequestClose: () => void;
-}
-
-const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
-  const {
-    data: rankings,
-    error,
-    isError,
-  } = useQuery<ApiResponse[], Error>({
-    queryKey: ['rankings'],
-    queryFn: fetchRankings,
-    enabled: isOpen,
-  });
-
-  const userRank =
-    rankings?.find((rank) => rank.userId === currentUser) || null;
+const RankingBoard: React.FC<RankingModalProps> = ({ isOpen }) => {
+  const RankingBoardQuery = useRankingBoard(isOpen);
 
   if (!isOpen) return null;
 
   return (
     <RankingContainer>
-      {rankings && rankings.length > 0 ? (
+      {RankingBoardQuery.data && RankingBoardQuery.data.length > 0 ? (
         <RankingWrapper>
-          {rankings.slice(0, 5).map((rank, index) => (
+          {RankingBoardQuery.data.slice(0, 5).map((rank, index) => (
             <li className="RankerList" key={index}>
               <p
                 className="Ranking"
                 style={{
-                  fontWeight: rank.userId ? 'normal' : 'normal',
+                  fontWeight: 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -50,7 +27,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               <p
                 className="UserName"
                 style={{
-                  fontWeight: rank.userId ? 'normal' : 'normal',
+                  fontWeight: 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -59,7 +36,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               <p
                 className="Likes"
                 style={{
-                  fontWeight: rank.userId ? 'normal' : 'normal',
+                  fontWeight: 'normal',
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
@@ -67,16 +44,19 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen, currentUser }) => {
               </p>
             </li>
           ))}
-          {!userRank && rankings.length === 5 && (
+          {RankingBoardQuery.data.length > 5 && (
             <li style={{ fontWeight: 'bold', color: '#FED56B' }}>
-              6위: Your Rank
+              {RankingBoardQuery.data[5].rank}위 -{' '}
+              {RankingBoardQuery.data[5].likes}번
             </li>
           )}
         </RankingWrapper>
       ) : (
         <p>랭킹 정보가 없습니다.</p>
       )}
-      {isError && <p style={{ color: 'red' }}>{error?.message}</p>}
+      {RankingBoardQuery.isError && (
+        <p style={{ color: 'red' }}>{RankingBoardQuery.error?.message}</p>
+      )}
     </RankingContainer>
   );
 };
