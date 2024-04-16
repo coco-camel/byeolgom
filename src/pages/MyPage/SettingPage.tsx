@@ -10,7 +10,6 @@ function SettingPage() {
   const { isLoggedIn } = useAuthStore();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [nickname, setNickname] = useState('익명');
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('access_Token');
@@ -46,11 +45,6 @@ function SettingPage() {
           setNickname('익명');
         });
     }
-    if (localStorage.getItem('nicknameChangeSuccess') === 'true') {
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 3000);
-      localStorage.removeItem('nicknameChangeSuccess');
-    }
   }, [isLoggedIn, navigate]);
 
   return (
@@ -79,11 +73,6 @@ function SettingPage() {
               </DarkModeSwitch>
             </Theme>
           </Wrapper>
-          {showSuccessMessage && (
-            <SuccessMessage>
-              <p>닉네임이 성공적으로 변경되었어요!</p>
-            </SuccessMessage>
-          )}
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
         </Content>
       </SettingContainer>
@@ -230,23 +219,6 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
       css`
         left: 30px;
       `}
-  }
-`;
-
-const SuccessMessage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 244px;
-  height: 45px;
-  background-color: rgba(12, 12, 12, 0.7);
-  border-radius: 20px;
-  position: absolute;
-  bottom: 19%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  p {
-    font-size: 12px;
   }
 `;
 
