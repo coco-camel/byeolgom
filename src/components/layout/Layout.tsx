@@ -9,10 +9,14 @@ import StarBackGround from './StarBackGround';
 import SendMyWorry from '../modal/SendMyWorry';
 import Header from './Header';
 import RankingModal from '../modal/RankingModal';
+import StateModal from '../modal/StateModal';
+import { useStateModalStore } from '../../store/stateModalStore';
 
-const Layout = () => {
+function Layout() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showRankingModal, setShowRankingModal] = useState<boolean>(false);
+  const { modalOpen } = useStateModalStore();
+
   const { isLoggedIn } = useAuthStore();
   const location = useLocation();
 
@@ -47,22 +51,23 @@ const Layout = () => {
       </MainContent>
       <MainWrap>
         {showHeader && <Header openModal={handleOpenRankingModal} />}
+        {showModal && <SendMyWorry closeModal={handleCloseModal} />}
+        {modalOpen && <StateModal />}
+        {isLoggedIn && <Footer openModal={handleOpenModal} />}
         <RankingModal
           isOpen={showRankingModal}
           onRequestClose={handleCloseRankingModal}
           currentUser={4}
         />
-        {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         <div>
           <StarBackGround />
           <WaveBackGround />
         </div>
-        {isLoggedIn && <Footer openModal={handleOpenModal} />}
         <Outlet />
       </MainWrap>
     </MainLayout>
   );
-};
+}
 
 export default Layout;
 

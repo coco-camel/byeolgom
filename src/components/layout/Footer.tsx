@@ -10,9 +10,13 @@ import hoverSetting from '/assets/images/hoverSetting.svg';
 import chat from '/assets/images/chat.svg';
 import hoverChat from '/assets/images/hoverChat.svg';
 import { Link } from 'react-router-dom';
+import { useWorryCountStore } from '../../store/worryCountStore';
+import { useStateModalStore } from '../../store/stateModalStore';
 
 function Footer({ openModal }: { openModal: () => void }) {
   const [clickedButton, setClickedButton] = useState<string>('');
+  const { worryCount } = useWorryCountStore();
+  const { openStateModal } = useStateModalStore();
 
   useEffect(() => {
     setClickedButton('home');
@@ -42,12 +46,10 @@ function Footer({ openModal }: { openModal: () => void }) {
           />
         </Link>
         <div></div>
-        {/* <Link to={'/'}> */}
         <HoverableImage
           src={clickedButton === 'chat' ? hoverChat : chat}
           onClick={() => handleButtonClick('chat')}
         />
-        {/* </Link> */}
         <Link to={'/mypage'}>
           <HoverableImage
             src={clickedButton === 'setting' ? hoverSetting : setting}
@@ -55,7 +57,14 @@ function Footer({ openModal }: { openModal: () => void }) {
           />
         </Link>
         <Sendwrap>
-          <StyledImg src={rocketA} onClick={openModal} />
+          <StyledImg
+            src={rocketA}
+            onClick={() =>
+              worryCount === 0
+                ? openStateModal('보낼 수 있는 로켓이 없어요')
+                : openModal()
+            }
+          />
         </Sendwrap>
       </FooterInner>
     </FooterArea>

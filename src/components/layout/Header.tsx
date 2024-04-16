@@ -10,7 +10,7 @@ interface HeaderProps {
   openModal: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ openModal }) => {
+function Header({ openModal }: HeaderProps) {
   const { isLoggedIn } = useAuthStore();
   const { worryCount, setWorryCountState } = useWorryCountStore();
 
@@ -43,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ openModal }) => {
       </HeaderInner>
     </HeaderArea>
   );
-};
+}
 
 export default Header;
 

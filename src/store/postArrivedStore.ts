@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { PostArrivedItem } from '../types/PostArrivedItem.interface';
-import { isEqual } from 'lodash';
+import { useStateModalStore } from './stateModalStore';
 
 interface PostArrivedItemState {
   postArrivedList: PostArrivedItem[];
+  initialLoad: boolean;
   setPostArrivedListState: (items: PostArrivedItem[]) => void;
   setPostArrivedAsRead: (worryId: number) => void;
   setRemovePostArrived: (worryId: number) => void;
@@ -11,14 +12,25 @@ interface PostArrivedItemState {
 
 export const usePostArrivedStore = create<PostArrivedItemState>((set) => ({
   postArrivedList: [],
-
-  setPostArrivedListState: (items) =>
+  initialLoad: true,
+  setPostArrivedListState: (items) => {
     set((state) => {
-      if (!isEqual(state.postArrivedList, items)) {
-        return { postArrivedList: items };
+      if (
+        !state.initialLoad &&
+        state.postArrivedList !== items &&
+        state.postArrivedList.length < items.length
+      ) {
+        useStateModalStore
+          .getState()
+          .openStateModal('새로운 로켓이 도착했어요');
+        return { postArrivedList: items, initialLoad: false };
+      }
+      if (state.initialLoad) {
+        return { postArrivedList: items, initialLoad: false };
       }
       return state;
-    }),
+    });
+  },
 
   setPostArrivedAsRead: (worryId) =>
     set((state) => {
