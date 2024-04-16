@@ -8,6 +8,7 @@ import back from '/assets/images/back.svg';
 
 const ChangeNickName: React.FC = () => {
   const [nickname, setNickname] = useState('');
+
   const navigate = useNavigate();
 
   const { data: currentNickname, isLoading: isFetchingNickname } = useQuery({
@@ -28,6 +29,7 @@ const ChangeNickName: React.FC = () => {
   const submitNickname = () => {
     mutation.mutate(nickname, {
       onSuccess: () => {
+        localStorage.setItem('nicknameChangeSuccess', 'true');
         navigate('/mypage');
       },
     });
@@ -76,7 +78,7 @@ const PageContainer = styled.div`
   top: 10%;
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 75%;
   align-items: center;
   justify-content: flex-start;
   padding: 10px;
