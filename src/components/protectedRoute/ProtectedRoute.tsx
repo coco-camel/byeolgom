@@ -6,9 +6,9 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   return isLoggedIn ? children : <Navigate to="/login" />;
-};
+}
 
 export default ProtectedRoute;

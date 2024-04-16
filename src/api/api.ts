@@ -54,11 +54,15 @@ export const refreshAccessToken = async () => {
     throw new Error('리프레시 토큰이 필요합니다.');
   }
   try {
-    const res = await authInstance.post(`/refresh`, {
-      headers: {
-        Authorization: refreshToken,
+    const res = await authInstance.post(
+      `/refresh`,
+      {},
+      {
+        headers: {
+          Authorization: refreshToken,
+        },
       },
-    });
+    );
     localStorage.setItem('access_Token', res.data.accessToken);
     localStorage.setItem('refresh_Token', res.data.refreshToken);
     return res.data.accessToken;

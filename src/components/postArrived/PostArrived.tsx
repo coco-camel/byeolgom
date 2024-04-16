@@ -2,11 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import GetOtherWorry from '../modal/GetOtherWorry';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import {
-  postArrived,
-  getWorryDetail,
-  getCommentDetail,
-} from '../../api/postArrived';
+import { getWorryDetail, getCommentDetail } from '../../api/postArrived';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
@@ -16,17 +12,21 @@ import { usePostArrived } from '../../hooks/queries/usePostArrived';
 function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { postArrivedList, setPostArrivedListState, setPostArrivedAsRead } =
-    usePostArrivedStore();
+  const {
+    postArrivedList,
+    setPostArrivedListState,
+    setPostArrivedAsRead,
+    setRemovePostArrived,
+  } = usePostArrivedStore();
 
   const queryClient = useQueryClient();
 
   const postArrivedQuery = usePostArrived();
-  const { setRemovePostArrived } = usePostArrivedStore();
 
   useEffect(() => {
-    postArrived();
-    setPostArrivedListState(postArrivedQuery.data);
+    if (postArrivedQuery.data) {
+      setPostArrivedListState(postArrivedQuery.data);
+    }
   }, [postArrivedQuery.data, setPostArrivedListState]);
 
   useEffect(() => {

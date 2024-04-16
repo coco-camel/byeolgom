@@ -24,6 +24,7 @@ import { sendContentReply, sendStarReply } from '../../api/sendContentApi';
 import SendContents from '../../pages/SendContent/SendContents';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 import { formatDate } from '../../utills/formatDate/formatDate';
+import { useStateModalStore } from '../../store/stateModalStore';
 
 function GetOtherWorry({
   detail,
@@ -45,6 +46,7 @@ function GetOtherWorry({
   const [sendStar, setSendStar] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
+  const { openStateModal } = useStateModalStore();
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, fontColor };
@@ -60,6 +62,11 @@ function GetOtherWorry({
       }
       setRemovePostArrived(detail.worryId);
       closeModal();
+      openStateModal(
+        sendStar
+          ? '답례가 무사히 전달되었어요!'
+          : '로켓이 무사히 되돌아갔어요!',
+      );
     } catch (error) {
       console.error(error);
     }

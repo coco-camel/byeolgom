@@ -18,6 +18,7 @@ import {
   DummyBox,
 } from './ContentStyle';
 import { useWorryCountStore } from '../../store/worryCountStore';
+import { useStateModalStore } from '../../store/stateModalStore';
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -27,6 +28,7 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
   const { setWorryCounteDcrement } = useWorryCountStore();
+  const { openStateModal } = useStateModalStore();
 
   const handleContentSubmit = async () => {
     try {
@@ -35,6 +37,7 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
       console.log(response);
       setWorryCounteDcrement();
       closeModal();
+      openStateModal('로켓이 무사히 출발했어요!');
     } catch (error) {
       console.error(error);
     }
