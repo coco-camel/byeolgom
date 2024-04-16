@@ -46,7 +46,7 @@ const slideIn = keyframes`
 
 const RankingHeader = styled.div`
   position: absolute;
-  top: 7%;
+  top: 4%;
   left: 5%;
   display: flex;
   justify-content: space-between;

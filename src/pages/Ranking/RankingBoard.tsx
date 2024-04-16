@@ -31,7 +31,7 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen }) => {
                   color: rank.userId ? '#FED56B' : 'white',
                 }}
               >
-                username
+                {rank.nickname}
               </p>
               <p
                 className="Likes"
@@ -46,7 +46,8 @@ const RankingBoard: React.FC<RankingModalProps> = ({ isOpen }) => {
           ))}
           {RankingBoardQuery.data.length > 5 && (
             <li style={{ fontWeight: 'bold', color: '#FED56B' }}>
-              {RankingBoardQuery.data[5].rank}위 -{' '}
+              {RankingBoardQuery.data[5].rank}위
+              {RankingBoardQuery.data[5].nickname}
               {RankingBoardQuery.data[5].likes}번
             </li>
           )}
