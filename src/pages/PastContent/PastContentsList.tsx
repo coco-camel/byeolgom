@@ -7,10 +7,12 @@ import rocketC from '/assets/images/rocketC.svg';
 import star from '/assets/images/star.svg';
 import chevronRight from '/assets/images/chevronRight.svg';
 import { forwardRef } from 'react';
+import SkeletonItem from '../../components/skeleton/SkeletonItem';
 
 interface PastContentsListProps {
   listsSelect: worryList[];
   whoseContent: string;
+  isPending: boolean;
 }
 
 interface worryList {
@@ -21,7 +23,7 @@ interface worryList {
 }
 
 const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
-  ({ listsSelect, whoseContent }, ref) => {
+  ({ listsSelect, whoseContent, isPending }, ref) => {
     const rocket: { [key: string]: string } = {
       rocketA: rocketA,
       rocketB: rocketB,
@@ -42,7 +44,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                       ? rocket[`rocket${list.icon}`]
                       : star
                   }
-                  style={{ width: '24px' }}
+                  style={{ width: '30px', height: '30px' }}
                 />
                 <PastContentContainer>
                   <div>{formatDate(list.createdAt)}</div>
@@ -67,6 +69,8 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
             )}
           </PastContentWrap>
         )}
+        {isPending &&
+          new Array(5).fill(1).map((_, i) => <SkeletonItem key={i} />)}
         <LoadMoreDiv ref={ref} />
       </LockerListWrap>
     );
