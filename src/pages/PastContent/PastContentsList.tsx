@@ -10,7 +10,7 @@ import { forwardRef } from 'react';
 import SkeletonItem from '../../components/skeleton/SkeletonItem';
 
 interface PastContentsListProps {
-  listsSelect: worryList[];
+  pastContents: worryList[];
   whoseContent: string;
   isPending: boolean;
 }
@@ -23,7 +23,7 @@ interface worryList {
 }
 
 const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
-  ({ listsSelect, whoseContent, isPending }, ref) => {
+  ({ pastContents, whoseContent, isPending }, ref) => {
     const rocket: { [key: string]: string } = {
       rocketA: rocketA,
       rocketB: rocketB,
@@ -31,8 +31,8 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
     };
     return (
       <LockerListWrap>
-        {listsSelect ? (
-          listsSelect.map((list, index) => (
+        {pastContents && pastContents.length > 0 ? (
+          pastContents.map((list, index) => (
             <Link
               to={`/pastcontents/${whoseContent}/${list.worryId}`}
               key={index}
