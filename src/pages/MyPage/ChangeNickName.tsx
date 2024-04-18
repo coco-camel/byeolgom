@@ -88,16 +88,16 @@ const PageContainer = styled.div`
 
 const Header = styled.div`
   position: absolute;
-  width: 56%;
-  top: 3%;
-  left: 4%;
-  right: 38%;
+  width: 100%;
+  height: 54px;
   display: flex;
-  padding-bottom: 25px;
   align-items: center;
   justify-content: space-between;
 
   h1 {
+    flex: 1;
+    text-align: center;
+    padding-right: 30px;
     font-size: 16px;
     font-weight: bold;
     @media (max-width: 640px) {
