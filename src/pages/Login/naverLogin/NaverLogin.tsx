@@ -1,21 +1,25 @@
 import styled from 'styled-components';
 
 function NaverLogin() {
-  const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
+  // const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
 
-  const NAVER_CALLBACK_URI = import.meta.env.VITE_NAVER_CALLBACK_URI;
+  // const NAVER_CALLBACK_URI = import.meta.env.VITE_NAVER_CALLBACK_URI;
 
-  const STATE = 'test';
+  // const STATE = 'test';
 
-  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_url=${NAVER_CALLBACK_URI}`;
+  // const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${STATE}&redirect_url=${NAVER_CALLBACK_URI}`;
 
-  const onClicktoNaver = () => {
-    location.replace(`${NAVER_AUTH_URL}`);
+  // const onClicktoNaver = () => {
+  //   location.replace(`${NAVER_AUTH_URL}`);
+  // };
+
+  const onClickBlock = () => {
+    alert('네이버 로그인은 현재 준비중입니다!');
   };
 
   return (
     <NaverConstainer>
-      <Button className="Naver" onClick={onClicktoNaver}></Button>
+      <Button className="Naver" onClick={onClickBlock}></Button>
     </NaverConstainer>
   );
 }
