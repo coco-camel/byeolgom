@@ -198,6 +198,7 @@ export const ContentText = styled.div<{ $marginTop?: string }>`
   margin-top: 60px;
   width: 70%;
   height: 25%;
+  overflow: hidden;
   text-align: center;
   margin-top: ${(props) => props.$marginTop || '0px'};
   color: ${(props) => props.color || '#FFFFFF'};
