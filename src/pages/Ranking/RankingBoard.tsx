@@ -1,4 +1,3 @@
-// RankingBoard.tsx
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import { RankingModalProps } from '../../types/RankingProps.interface';
 import styled from 'styled-components';
@@ -13,8 +12,8 @@ function RankingBoard({ isOpen }: RankingModalProps) {
       {RankingBoardQuery.data && RankingBoardQuery.data.length > 0 ? (
         <RankingWrapper>
           {RankingBoardQuery.data.slice(0, 5).map((rank, index) => (
-            <li className="RankerList" key={index}>
-              <p
+            <RankerList key={index}>
+              <Rank
                 className="Ranking"
                 style={{
                   fontWeight: 'normal',
@@ -22,8 +21,8 @@ function RankingBoard({ isOpen }: RankingModalProps) {
                 }}
               >
                 {index + 1}위
-              </p>
-              <p
+              </Rank>
+              <Rank
                 className="UserName"
                 style={{
                   fontWeight: 'normal',
@@ -31,8 +30,8 @@ function RankingBoard({ isOpen }: RankingModalProps) {
                 }}
               >
                 {rank.nickname}
-              </p>
-              <p
+              </Rank>
+              <Rank
                 className="Likes"
                 style={{
                   fontWeight: 'normal',
@@ -40,22 +39,28 @@ function RankingBoard({ isOpen }: RankingModalProps) {
                 }}
               >
                 {rank.likes}번
-              </p>
-            </li>
+              </Rank>
+            </RankerList>
           ))}
           {RankingBoardQuery.data.length > 5 && (
-            <li style={{ fontWeight: 'bold', color: '#FED56B' }}>
-              {RankingBoardQuery.data[5].rank}위
-              {RankingBoardQuery.data[5].nickname}
-              {RankingBoardQuery.data[5].likes}번
-            </li>
+            <NoneRanker>
+              <Rank className="exRanking">
+                {RankingBoardQuery.data[5].rank}위
+              </Rank>
+              <Rank className="exUserName">
+                {RankingBoardQuery.data[5].nickname}
+              </Rank>
+              <Rank className="exLikes">
+                {RankingBoardQuery.data[5].likes}번
+              </Rank>
+            </NoneRanker>
           )}
         </RankingWrapper>
       ) : (
-        <p>랭킹 정보가 없습니다.</p>
+        <Rank>랭킹 정보가 없습니다.</Rank>
       )}
       {RankingBoardQuery.isError && (
-        <p style={{ color: 'red' }}>{RankingBoardQuery.error?.message}</p>
+        <Rank style={{ color: 'red' }}>{RankingBoardQuery.error?.message}</Rank>
       )}
     </RankingContainer>
   );
@@ -74,22 +79,32 @@ const RankingWrapper = styled.div`
   height: fit-content;
   top: 25%;
 
-  .RankerList {
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid grey;
-
-    &:last-child {
-      border-bottom: none;
-    }
+  &:last-child {
+    border-bottom: none;
   }
+`;
 
-  p {
-    text-align: center;
-    font-size: 16px;
-    font-weight: normal;
-  }
+const RankerList = styled.li`
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid grey;
+`;
+
+const NoneRanker = styled.li`
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: center;
+  padding: 15px 20px;
+  font-weight: normal;
+  color: #fed56b;
+`;
+
+const Rank = styled.p`
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
 `;
