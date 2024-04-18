@@ -31,8 +31,7 @@ export const BackButton = styled.img`
 `;
 
 export const SendButton = styled.button`
-  width: 65px;
-  height: 24px;
+  padding: 4px 8px;
   font-size: 12px;
   color: ${({ disabled }) => (disabled ? '#b9b9b9' : '#ffffff')};
   margin-right: 20px;
