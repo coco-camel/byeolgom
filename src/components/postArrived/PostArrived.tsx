@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import GetOtherWorry from '../modal/GetOtherWorry';
+import GetContents from '../../pages/SendContent/GetContents';
 import { WorryDetail } from '../../types/WorryDetail.interface';
 import { getWorryDetail, getCommentDetail } from '../../api/postArrived';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
@@ -75,7 +75,7 @@ function PostArrived() {
       )}
       {showModal && (
         <DetailContainer>
-          <GetOtherWorry
+          <GetContents
             detail={detail}
             closeModal={handleCloseModal}
             removeCloseModal={handleRemoveCloseModal}

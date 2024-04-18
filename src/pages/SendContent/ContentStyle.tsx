@@ -188,3 +188,113 @@ export const ColorSelectButton = styled.button<{
 export const DummyBox = styled.div`
   height: 50px;
 `;
+
+export const DateText = styled.div`
+  font-size: 12px;
+  margin-top: 65px;
+`;
+
+export const ContentText = styled.div<{ $marginTop?: string }>`
+  font-size: 16px;
+  margin-top: 60px;
+  width: 70%;
+  height: 25%;
+  text-align: center;
+  margin-top: ${(props) => props.$marginTop || '0px'};
+  color: ${(props) => props.color || '#FFFFFF'};
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  margin-top: 150px;
+`;
+
+export const TakeStarImg = styled.img`
+  position: absolute;
+  margin-left: 75px;
+  margin-top: -60px;
+`;
+
+export const LineImg = styled.img<{ $marginTop?: string }>`
+  margin-top: ${(props) => props.$marginTop || '0px'};
+`;
+
+export const ReplyButton = styled.button`
+  width: 145px;
+  height: 35px;
+  font-size: 12px;
+  color: #2a2a2a;
+  left: 50%;
+  background-color: #eeeeee;
+  border-radius: 30px;
+  margin-left: 60px;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #e88439;
+  }
+`;
+
+export const DeleteImg = styled.img`
+  width: 24px;
+  margin-left: 30px;
+  cursor: pointer;
+`;
+
+export const ReportImg = styled.img`
+  width: 16px;
+  margin-right: 20px;
+  margin-top: 15px;
+  cursor: pointer;
+`;
+
+export const StarButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: 77%;
+
+  @media screen and (max-width: 641px) {
+    top: 71%;
+  }
+`;
+
+export const StarButton = styled.button`
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  &:hover .HoverImage {
+    display: block;
+  }
+
+  &.active .Circle {
+    background-color: #e88439;
+  }
+`;
+
+export const HoverImage = styled.img`
+  display: none;
+  position: absolute;
+  top: -400%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  ${StarButton}:hover & {
+    display: block;
+  }
+`;
+
+export const Circle = styled.div`
+  width: 18px;
+  height: 18px;
+  border-radius: 25px;
+  border: 2px solid #b5b5bd;
+`;
+
+export const StarText = styled.div`
+  color: white;
+  font-size: 14px;
+  margin-left: 6px;
+`;

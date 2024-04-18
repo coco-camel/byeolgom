@@ -7,7 +7,7 @@ import {
   TextColorButton,
   ColorButtonContainer,
   ColorSelectButton,
-} from '../../components/modal/ContentStyle';
+} from './ContentStyle';
 
 interface SendContentProps {
   onSend: (content: string, fontColor: string) => void;

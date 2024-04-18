@@ -94,15 +94,12 @@ function PastContents() {
         </Button>
       </LockerTabWrap>
       <PastContentsContainer>
-        {isPending ? (
-          <div>Loading...</div>
-        ) : (
-          <PastContentsList
-            listsSelect={pastContents}
-            whoseContent={whoseContent}
-            ref={loadMoreRef}
-          />
-        )}
+        <PastContentsList
+          listsSelect={pastContents}
+          whoseContent={whoseContent}
+          isPending={isPending}
+          ref={loadMoreRef}
+        />
       </PastContentsContainer>
     </div>
   );

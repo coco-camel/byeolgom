@@ -7,10 +7,12 @@ import rocketC from '/assets/images/rocketC.svg';
 import star from '/assets/images/star.svg';
 import chevronRight from '/assets/images/chevronRight.svg';
 import { forwardRef } from 'react';
+import SkeletonItem from '../../components/skeleton/SkeletonItem';
 
 interface PastContentsListProps {
   listsSelect: worryList[];
   whoseContent: string;
+  isPending: boolean;
 }
 
 interface worryList {
@@ -21,7 +23,7 @@ interface worryList {
 }
 
 const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
-  ({ listsSelect, whoseContent }, ref) => {
+  ({ listsSelect, whoseContent, isPending }, ref) => {
     const rocket: { [key: string]: string } = {
       rocketA: rocketA,
       rocketB: rocketB,
@@ -42,7 +44,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                       ? rocket[`rocket${list.icon}`]
                       : star
                   }
-                  style={{ width: '24px' }}
+                  style={{ width: '30px', height: '30px' }}
                 />
                 <PastContentContainer>
                   <div>{formatDate(list.createdAt)}</div>
@@ -54,12 +56,21 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
           ))
         ) : (
           <PastContentWrap>
-            <PastContentContainer>
-              <span>고민을 보내거나 </span>
-              <span>다른 분의 고민을 해결해 주세요.</span>
-            </PastContentContainer>
+            {whoseContent === 'mySolvedWorry' ? (
+              <PastContentNone>
+                <span>보관 중인 글이 없어요</span>
+                <span>상대방의 답변에 답례를 보내주세요</span>
+              </PastContentNone>
+            ) : (
+              <PastContentNone>
+                <span>보관 중인 글이 없어요</span>
+                <span>정성껏 답변을 작성해 보세요</span>
+              </PastContentNone>
+            )}
           </PastContentWrap>
         )}
+        {isPending &&
+          new Array(5).fill(1).map((_, i) => <SkeletonItem key={i} />)}
         <LoadMoreDiv ref={ref} />
       </LockerListWrap>
     );
@@ -67,6 +78,17 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
 );
 
 export default PastContentsList;
+const PastContentNone = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  font-size: 14px;
+  span {
+    margin-top: 10px;
+  }
+`;
 
 const LoadMoreDiv = styled.div`
   height: 10px;
