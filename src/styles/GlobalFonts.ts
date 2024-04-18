@@ -10,6 +10,9 @@ import NotoSansKRExtraBold from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Ex
 import NotoSansKRBlack from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Black.ttf';
 import NotoSansKRThin from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Thin.ttf';
 
+import PyeongChangPeaceLight from '/assets/fonts/pyeongChangPeace/PyeongChangPeace-Light.ttf';
+import PyeongChangPeaceBold from '/assets/fonts/pyeongChangPeace/PyeongChangPeace-Bold.ttf';
+
 const GlobalFonts = createGlobalStyle`
   @font-face {
     font-family: 'Noto Sans KR';
@@ -67,8 +70,19 @@ const GlobalFonts = createGlobalStyle`
     font-weight: 900;
     font-style: normal;
   }
-
-
+  // PyeongChang font faces
+  @font-face {
+    font-family: 'PyeongChangPeace-Light';
+    src: url(${PyeongChangPeaceLight}) format('truetype');
+    font-weight: light;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'PyeongChangPeace-Bold';
+    src: url(${PyeongChangPeaceBold}) format('truetype');
+    font-weight: Bold;
+    font-style: normal;
+  }
 
 `;
 
