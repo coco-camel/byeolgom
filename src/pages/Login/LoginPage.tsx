@@ -14,7 +14,10 @@ function LoginPage() {
 
   return (
     <LoginContainer>
-      <span>별곰</span>
+      <LoginTitle>
+        <span>별별고민</span>
+        <h2>별곰</h2>
+      </LoginTitle>
       <img className="Logo" src={mainImg} />
       <LoginButtonContainer>
         <KakaoLogin />
@@ -25,6 +28,25 @@ function LoginPage() {
 }
 
 export default LoginPage;
+const LoginTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  top: 10%;
+  :nth-child(1) {
+    font-family: 'PyeongChangPeace-Light';
+    font-size: 20px;
+    color: #fed56b;
+  }
+  h2 {
+    font-family: 'PyeongChangPeace-Bold';
+    font-weight: bold;
+    margin-top: 5px;
+    font-size: 53px;
+  }
+`;
 
 const LoginContainer = styled.div`
   display: flex;
@@ -35,12 +57,11 @@ const LoginContainer = styled.div`
   padding-bottom: 10%;
   box-sizing: border-box;
   position: absolute;
-  span {
+  div span {
     font-size: 16px;
     font-weight: bold;
     color: #f7f7f7;
-    position: relative;
-    top: 15%;
+
     @media (max-width: 640px) {
       font-size: 1.2rem;
     }
@@ -51,7 +72,7 @@ const LoginContainer = styled.div`
   img {
     position: absolute;
     width: 40%;
-    top: 28%;
+    top: 32%;
   }
 `;
 const LoginButtonContainer = styled.div`
