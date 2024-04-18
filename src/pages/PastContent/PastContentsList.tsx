@@ -31,7 +31,9 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
     };
     return (
       <LockerListWrap>
-        {pastContents && pastContents.length > 0 ? (
+        {isPending ? (
+          new Array(5).fill(1).map((_, i) => <SkeletonItem key={i} />)
+        ) : pastContents && pastContents.length > 0 ? (
           pastContents.map((list, index) => (
             <Link
               to={`/pastcontents/${whoseContent}/${list.worryId}`}
@@ -69,8 +71,6 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
             )}
           </PastContentWrap>
         )}
-        {isPending &&
-          new Array(5).fill(1).map((_, i) => <SkeletonItem key={i} />)}
         <LoadMoreDiv ref={ref} />
       </LockerListWrap>
     );
