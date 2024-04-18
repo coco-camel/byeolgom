@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import back from '/assets/images/back.svg';
 import deleteWorry from '/assets/images/deleteWorry.svg';
 import report from '/assets/images/report.svg';
@@ -10,7 +9,12 @@ import sendLine from '/assets/images/sendLine.svg';
 import starNotice from '/assets/images/starNotice.svg';
 import takeStar from '/assets/images/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { deleteContent, reportContent } from '../../api/sendContentApi';
+import {
+  deleteContent,
+  reportContent,
+  sendContentReply,
+  sendStarReply,
+} from '../../api/sendContentApi';
 import {
   ModalHeader,
   BackButton,
@@ -19,14 +23,26 @@ import {
   WhiteBox,
   ModalOverlay,
   SendButton,
+  DateText,
+  ContentText,
+  ButtonContainer,
+  TakeStarImg,
+  LineImg,
+  ReplyButton,
+  DeleteImg,
+  ReportImg,
+  StarButtonContainer,
+  StarButton,
+  HoverImage,
+  Circle,
+  StarText,
 } from './ContentStyle';
-import { sendContentReply, sendStarReply } from '../../api/sendContentApi';
-import SendContents from '../../pages/SendContent/SendContents';
+import SendContents from './SendContents';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { useStateModalStore } from '../../store/stateModalStore';
 
-function GetOtherWorry({
+function GetContents({
   detail,
   closeModal,
   removeCloseModal,
@@ -39,14 +55,16 @@ function GetOtherWorry({
   const [sendReply, setSendReply] = useState(false);
   const [replyWrite, setReplyWrite] = useState(false);
   const [showStarText, setShowStarText] = useState(false);
+  const [sendStar, setSendStar] = useState(false);
+
   const [content, setContent] = useState<string>('');
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
-  const [sendStar, setSendStar] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
+
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, fontColor };
@@ -69,19 +87,6 @@ function GetOtherWorry({
       );
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const getRocketImage = (icon: string) => {
-    switch (icon) {
-      case 'A':
-        return rocketA;
-      case 'B':
-        return rocketB;
-      case 'C':
-        return rocketC;
-      default:
-        return rocketA;
     }
   };
 
@@ -108,21 +113,17 @@ function GetOtherWorry({
     }
   };
 
-  const handleReply = () => {
-    setShowDetail(false);
-    setSendReply(true);
-  };
-
-  const handleInputClick = () => {
-    setReplyWrite(true);
-  };
-
-  const handleOutSideClick = () => {
-    setReplyWrite(false);
-  };
-
-  const handleSendStarClick = () => {
-    setSendStar(!sendStar);
+  const getRocketImage = (icon: string) => {
+    switch (icon) {
+      case 'A':
+        return rocketA;
+      case 'B':
+        return rocketB;
+      case 'C':
+        return rocketC;
+      default:
+        return rocketA;
+    }
   };
 
   useEffect(() => {
@@ -183,7 +184,7 @@ function GetOtherWorry({
                   setContent(content);
                   setFontColor(fontColor);
                 }}
-                onInputClick={handleInputClick}
+                onInputClick={() => setReplyWrite(true)}
                 placeholder={`답장을 입력해주세요.`}
                 containerHeight={replyWrite ? '66%' : '37%'}
               />
@@ -193,7 +194,14 @@ function GetOtherWorry({
             <ButtonContainer>
               {detail.isSolved && <TakeStarImg src={takeStar} />}
               {!detail.isSolved && (
-                <ReplyButton onClick={handleReply}>답장하기</ReplyButton>
+                <ReplyButton
+                  onClick={() => {
+                    setShowDetail(false);
+                    setSendReply(true);
+                  }}
+                >
+                  답장하기
+                </ReplyButton>
               )}
               {detail.isSolved && (
                 <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
@@ -207,7 +215,7 @@ function GetOtherWorry({
             <StarButtonContainer>
               <StarButton
                 className={sendStar ? 'active' : ''}
-                onClick={handleSendStarClick}
+                onClick={() => setSendStar(!sendStar)}
               >
                 <Circle className="Circle" />
                 <StarText>답례 전송</StarText>
@@ -217,119 +225,9 @@ function GetOtherWorry({
           )}
         </WhiteBox>
       </AnimatedWrapper>
-      <ModalOverlay onClick={handleOutSideClick} />
+      <ModalOverlay />
     </>
   );
 }
 
-export default GetOtherWorry;
-
-const DateText = styled.div`
-  font-size: 12px;
-  margin-top: 65px;
-`;
-
-const ContentText = styled.div<{ $marginTop?: string }>`
-  font-size: 16px;
-  margin-top: 60px;
-  width: 70%;
-  height: 25%;
-  text-align: center;
-  margin-top: ${(props) => props.$marginTop || '0px'};
-  color: ${(props) => props.color || '#FFFFFF'};
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  margin-top: 150px;
-`;
-
-const TakeStarImg = styled.img`
-  position: absolute;
-  margin-left: 75px;
-  margin-top: -60px;
-`;
-
-const LineImg = styled.img<{ $marginTop?: string }>`
-  margin-top: ${(props) => props.$marginTop || '0px'};
-`;
-
-const ReplyButton = styled.button`
-  width: 145px;
-  height: 35px;
-  font-size: 12px;
-  color: #2a2a2a;
-  left: 50%;
-  background-color: #eeeeee;
-  border-radius: 30px;
-  margin-left: 60px;
-  cursor: pointer;
-  &:hover {
-    color: #ffffff;
-    background-color: #e88439;
-  }
-`;
-
-const DeleteImg = styled.img`
-  width: 24px;
-  margin-left: 30px;
-  cursor: pointer;
-`;
-
-const ReportImg = styled.img`
-  width: 16px;
-  margin-right: 20px;
-  margin-top: 15px;
-  cursor: pointer;
-`;
-
-const StarButtonContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  top: 77%;
-
-  @media screen and (max-width: 641px) {
-    top: 71%;
-  }
-`;
-
-const StarButton = styled.button`
-  display: flex;
-  align-items: center;
-  position: relative;
-
-  &:hover .HoverImage {
-    display: block;
-  }
-
-  &.active .Circle {
-    background-color: #e88439;
-  }
-`;
-
-const HoverImage = styled.img`
-  display: none;
-  position: absolute;
-  top: -400%;
-  left: 50%;
-  transform: translateX(-50%);
-
-  ${StarButton}:hover & {
-    display: block;
-  }
-`;
-
-const Circle = styled.div`
-  width: 18px;
-  height: 18px;
-  border-radius: 25px;
-  border: 2px solid #b5b5bd;
-`;
-
-const StarText = styled.div`
-  color: white;
-  font-size: 14px;
-  margin-left: 6px;
-`;
+export default GetContents;
