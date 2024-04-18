@@ -95,7 +95,7 @@ function PastContents() {
       </LockerTabWrap>
       <PastContentsContainer>
         <PastContentsList
-          listsSelect={pastContents}
+          pastContents={pastContents}
           whoseContent={whoseContent}
           isPending={isPending}
           ref={loadMoreRef}
