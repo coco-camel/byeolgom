@@ -54,7 +54,6 @@ const LoginContainer = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  padding-bottom: 10%;
   box-sizing: border-box;
   position: absolute;
   div span {
@@ -72,12 +71,12 @@ const LoginContainer = styled.div`
   img {
     position: absolute;
     width: 40%;
-    top: 32%;
+    top: 35%;
   }
 `;
 const LoginButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  bottom: 15%;
+  bottom: 10%;
 `;
