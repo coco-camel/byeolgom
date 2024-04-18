@@ -3,7 +3,7 @@ import rocketA from '/assets/images/rocketA.svg';
 import rocketB from '/assets/images/rocketB.svg';
 import rocketC from '/assets/images/rocketC.svg';
 import back from '/assets/images/back.svg';
-import SendContents from '../../pages/SendContent/SendContents';
+import SendContents from './SendContents';
 import { sendContent } from '../../api/sendContentApi';
 import {
   ModalHeader,

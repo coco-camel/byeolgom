@@ -6,7 +6,7 @@ import Footer from './Footer';
 import background from '/assets/images/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
-import SendMyWorry from '../modal/SendMyWorry';
+import SendMyWorry from '../../pages/SendContent/SendMyWorry';
 import Header from './Header';
 import RankingModal from '../modal/RankingModal';
 import StateModal from '../modal/StateModal';
