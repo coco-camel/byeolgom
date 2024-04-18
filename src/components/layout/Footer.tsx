@@ -75,7 +75,7 @@ export default Footer;
 
 const Sendwrap = styled.div`
   position: absolute;
-  margin-bottom: 50px;
+  bottom: 30%;
   left: 50%;
   transform: translateX(-50%);
 `;
