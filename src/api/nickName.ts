@@ -1,11 +1,17 @@
 import { authInstance } from './api';
+import { NickName } from '../types/NickName.interface';
 
-export const getUserName = async () => {
+export const getUserName = async (): Promise<NickName> => {
   try {
     const res = await authInstance.get('/myNickname');
-    return res.data;
+    if (res.data && res.data.nickname) {
+      return res.data as NickName;
+    }
+    console.log(res.data);
+    throw new Error('닉네임을 찾을 수 없습니다');
   } catch (err) {
     console.log('err', err);
+    throw err;
   }
 };
 

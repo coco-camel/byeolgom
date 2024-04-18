@@ -46,14 +46,17 @@ const slideIn = keyframes`
 
 const RankingHeader = styled.div`
   position: absolute;
-  top: 4%;
-  left: 5%;
+  width: 100%;
+  height: 54px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  width: 48%;
-  z-index: 300;
 
   .trophy {
+    height: 20px;
+    flex: 1;
+    text-align: center;
+    padding-right: 30px;
   }
 `;
 
