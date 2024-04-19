@@ -1,6 +1,7 @@
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import { RankingModalProps } from '../../types/RankingProps.interface';
 import styled from 'styled-components';
+import threeDot from '/assets/images/threeDot.png';
 
 function RankingBoard({ isOpen }: RankingModalProps) {
   const RankingBoardQuery = useRankingBoard(isOpen);
@@ -42,6 +43,7 @@ function RankingBoard({ isOpen }: RankingModalProps) {
               </Rank>
             </RankerList>
           ))}
+          <img className="threeDot" src={threeDot} alt="ThreeDot" />
           {RankingBoardQuery.data.length > 5 && (
             <NoneRanker>
               <Rank className="exRanking">
@@ -74,6 +76,10 @@ const RankingContainer = styled.div`
 `;
 
 const RankingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   position: relative;
   padding: 0;
   height: fit-content;
@@ -81,6 +87,12 @@ const RankingWrapper = styled.div`
 
   &:last-child {
     border-bottom: none;
+  }
+
+  .threeDot {
+    width: 20%;
+    margin: 0 auto;
+    padding-top: 10px;
   }
 `;
 
@@ -91,6 +103,7 @@ const RankerList = styled.li`
   align-items: center;
   padding: 15px 20px;
   border-bottom: 1px solid grey;
+  width: 100%;
 `;
 
 const NoneRanker = styled.li`
@@ -105,6 +118,6 @@ const NoneRanker = styled.li`
 
 const Rank = styled.p`
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: normal;
 `;

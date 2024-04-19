@@ -13,12 +13,14 @@ function RankingModal({
 
   return (
     <>
-      <AnimatedWrapper>
+      <ModalOverlay />
+      <AnimatedWrapper onClick={onRequestClose}>
         <WhiteContainer>
           <RankingHeader>
             <BackButton src={back} onClick={onRequestClose} />
             <img className="trophy" src={trophy} alt="Trophy" />
           </RankingHeader>
+          <Title>고민을 많이 해결해준 순위</Title>
           <RankingBoard
             isOpen={isOpen}
             currentUser={currentUser}
@@ -56,7 +58,7 @@ const RankingHeader = styled.div`
     height: 20px;
     flex: 1;
     text-align: center;
-    padding-right: 30px;
+    padding-right: 40px;
   }
 `;
 
@@ -66,6 +68,12 @@ export const BackButton = styled.img`
   margin-left: 10px;
 
   cursor: pointer;
+`;
+
+const Title = styled.p`
+  position: relative;
+  top: 16%;
+  color: white;
 `;
 
 export const ModalOverlay = styled.div`
