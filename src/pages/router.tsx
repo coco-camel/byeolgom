@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
             index: true,
             element: (
               <ProtectedRoute>
-                <Main />,
+                <Main />
               </ProtectedRoute>
             ),
           },
@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
             path: '/pastcontents',
             element: (
               <ProtectedRoute>
-                <PastContents />,
+                <PastContents />
               </ProtectedRoute>
             ),
           },
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
             path: '/pastcontents/:whosecontent/:worryid',
             element: (
               <ProtectedRoute>
-                <PastContentDetail />,
+                <PastContentDetail />
               </ProtectedRoute>
             ),
           },
@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
             path: '/mypage',
             element: (
               <ProtectedRoute>
-                <SettingPage />,
+                <SettingPage />
               </ProtectedRoute>
             ),
           },
@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
             path: '/changenickname',
             element: (
               <ProtectedRoute>
-                <ChangeNickName />,
+                <ChangeNickName />
               </ProtectedRoute>
             ),
           },
