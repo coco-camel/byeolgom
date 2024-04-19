@@ -17,7 +17,7 @@ function PastContents() {
     return {
       result: data,
       nextPage: pageParam + 1,
-      isLast: data.length < 10,
+      isLast: data.length < 10 || data.length === 0,
       hasNextPage: data.length === 10,
     };
   };
@@ -32,8 +32,12 @@ function PastContents() {
     queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (!lastPage.isLast) return lastPage.nextPage;
+      if (lastPage.result.length === 0) {
+        return undefined;
+      }
+      return lastPage.isLast ? undefined : lastPage.nextPage;
     },
+    retry: 1,
     staleTime: 1000 * 20,
   });
 
