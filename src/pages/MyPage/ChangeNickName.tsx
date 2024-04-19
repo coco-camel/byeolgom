@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { getUserName } from '../../api/nickName';
-import { useChangeNicknameMutation } from '../../hooks/queries/useChangeNickName';
+import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
 import back from '/assets/images/back.svg';
@@ -51,7 +51,7 @@ function ChangeNickName() {
     <>
       <Header>
         <BackButton src={back} onClick={handleBackButton} />
-        <h1>닉네임 변경</h1>
+        <Title>닉네임 변경</Title>
       </Header>
       <PageContainer>
         <Description>
@@ -86,6 +86,14 @@ const PageContainer = styled.div`
   padding: 10px;
 `;
 
+const Title = styled.p`
+  flex: 1;
+  text-align: center;
+  padding-right: 30px;
+  font-size: 16px;
+  font-weight: 300;
+`;
+
 const Header = styled.div`
   position: absolute;
   width: 100%;
@@ -93,20 +101,6 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  h1 {
-    flex: 1;
-    text-align: center;
-    padding-right: 30px;
-    font-size: 16px;
-    font-weight: bold;
-    @media (max-width: 640px) {
-      font-size: 1.1rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 1rem;
-    }
-  }
 `;
 
 export const BackButton = styled.img`

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
+import chevronRight from '/assets/images/chevronRight.svg';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -45,11 +46,12 @@ function SettingPage() {
   return (
     <>
       <MyPageHeader>
-        <h1>설정</h1>
+        <p>설정</p>
       </MyPageHeader>
       <SettingContainer>
         <Content>
           <Wrapper>
+            <SubTitle>닉네임</SubTitle>
             <ProfileSection>
               <ProfilePic />
               <NicknameAndChange>
@@ -57,13 +59,13 @@ function SettingPage() {
                 <ChangeArrow onClick={handleNicknameChange} />
               </NicknameAndChange>
             </ProfileSection>
+            <SubTitle>테마</SubTitle>
             <Theme>
-              <p>테마</p>
+              <DarkModeTitle>다크모드</DarkModeTitle>
               <DarkModeSwitch
                 onClick={toggleDarkMode}
                 className={isDarkMode ? 'active' : ''}
               >
-                <p>다크모드</p>
                 <ToggleSwitch $isDark={isDarkMode} />{' '}
               </DarkModeSwitch>
             </Theme>
@@ -97,16 +99,17 @@ const ProfileSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   padding: 15px 0;
   border-bottom: 1px solid #e0e0e0;
 `;
 
 const ProfilePic = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  background-color: #ccc;
+  background-color: #121212;
+  border: 1px solid white;
   margin-right: 15px;
 `;
 
@@ -118,17 +121,18 @@ const NicknameAndChange = styled.div`
 `;
 
 const Nickname = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   color: white;
 `;
 
 const ChangeArrow = styled.div`
-  font-size: 18px;
-  color: white;
+  width: 10px;
+  height: 20px;
+  padding-right: 20px;
   cursor: pointer;
-  &:after {
-    content: '>';
-  }
+  background-image: url(${chevronRight});
+  background-size: cover;
+  background-position: center;
 `;
 
 const MyPageHeader = styled.div`
@@ -136,8 +140,9 @@ const MyPageHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  h1 {
+  p {
     font-size: 16px;
+    font-weight: 300;
     @media (max-width: 640px) {
       font-size: 1.1rem;
     }
@@ -157,19 +162,28 @@ const Content = styled.div`
 `;
 
 const Theme = styled.div`
+  padding-top: 10px;
+  justify-content: space-between;
+  display: flex;
   width: 100%;
+  align-items: center;
   margin-bottom: 50px;
+`;
 
-  p {
-    color: gray;
-    font-weight: 300;
-  }
+const DarkModeTitle = styled.p`
+  font-size: 14px;
+  font-weight: 300;
+  color: #eee;
+`;
+
+const SubTitle = styled.p`
+  font-size: 12px;
+  font-weight: 300;
+  color: #eee;
+  opacity: 67%;
 `;
 
 const DarkModeSwitch = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   border-radius: 10px;
   margin-top: 10px;
 
@@ -181,8 +195,8 @@ const DarkModeSwitch = styled.div`
 `;
 
 const ToggleSwitch = styled.div<{ $isDark: boolean }>`
-  width: 50px;
-  height: 25px;
+  width: 32px;
+  height: 17px;
   background-color: #ccc;
   border-radius: 30px;
   position: relative;
@@ -201,8 +215,8 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   &:after {
     content: '';
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 1px;
+    left: 2px;
     width: 15px;
     height: 15px;
     background-color: white;
@@ -212,17 +226,17 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
     ${(props) =>
       props.$isDark &&
       css`
-        left: 30px;
+        left: 16px;
       `}
   }
 `;
 
 const LogoutButton = styled.button`
-  width: 100%;
-  padding: 15px;
-  font-size: 15px;
-  color: lightgrey;
+  width: fit-content;
+  padding-bottom: 30px;
+  font-size: 12px;
+  color: #eee;
+  opacity: 67%;
   cursor: pointer;
   border: none;
-  border-radius: 10px;
 `;
