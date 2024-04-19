@@ -1,4 +1,3 @@
-// RankingBoard.tsx
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import { RankingModalProps } from '../../types/RankingProps.interface';
 import styled from 'styled-components';

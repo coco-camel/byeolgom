@@ -31,8 +31,7 @@ export const BackButton = styled.img`
 `;
 
 export const SendButton = styled.button`
-  width: 65px;
-  height: 24px;
+  padding: 4px 8px;
   font-size: 12px;
   color: ${({ disabled }) => (disabled ? '#b9b9b9' : '#ffffff')};
   margin-right: 20px;
@@ -199,6 +198,7 @@ export const ContentText = styled.div<{ $marginTop?: string }>`
   margin-top: 60px;
   width: 70%;
   height: 25%;
+  overflow: hidden;
   text-align: center;
   margin-top: ${(props) => props.$marginTop || '0px'};
   color: ${(props) => props.color || '#FFFFFF'};
