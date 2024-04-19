@@ -4,7 +4,9 @@ import { useStateModalStore } from '../../store/stateModalStore';
 
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { statusMessage, closeStateModal } = useStateModalStore();
+
+  const closeStateModal = useStateModalStore((state) => state.closeStateModal);
+  const statusMessage = useStateModalStore((state) => state.statusMessage);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { postArrived } from '../../api/postArrived';
+import { postArrived } from '../../api/postArrivedApi';
 
 export const usePostArrived = () => {
   return useQuery({

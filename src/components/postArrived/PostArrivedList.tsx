@@ -5,6 +5,7 @@ import rocketB from '/assets/images/rocketB.svg';
 import rocketC from '/assets/images/rocketC.svg';
 import ellipse from '/assets/images/ellipse.svg';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface AnimationProps {
   $sec: number;
@@ -30,6 +31,8 @@ const PostArrivedList = memo(
       })),
     );
 
+    const queryClient = useQueryClient();
+
     useEffect(() => {
       setAnimationProps((prevAnimationProps) =>
         postArrivedList.map(
@@ -40,7 +43,10 @@ const PostArrivedList = memo(
             },
         ),
       );
-    }, [postArrivedList]);
+      queryClient.invalidateQueries({
+        queryKey: ['pastContentDetail'],
+      });
+    }, [postArrivedList, queryClient]);
 
     return (
       <>

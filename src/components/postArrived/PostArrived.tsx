@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import GetContents from '../../pages/SendContent/GetContents';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { getWorryDetail, getCommentDetail } from '../../api/postArrived';
+import { getWorryDetail, getCommentDetail } from '../../api/postArrivedApi';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
@@ -12,12 +12,17 @@ import { usePostArrived } from '../../hooks/queries/usePostArrived';
 function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const {
-    postArrivedList,
-    setPostArrivedListState,
-    setPostArrivedAsRead,
-    setRemovePostArrived,
-  } = usePostArrivedStore();
+
+  const postArrivedList = usePostArrivedStore((state) => state.postArrivedList);
+  const setPostArrivedListState = usePostArrivedStore(
+    (state) => state.setPostArrivedListState,
+  );
+  const setPostArrivedAsRead = usePostArrivedStore(
+    (state) => state.setPostArrivedAsRead,
+  );
+  const setRemovePostArrived = usePostArrivedStore(
+    (state) => state.setRemovePostArrived,
+  );
 
   const queryClient = useQueryClient();
 
