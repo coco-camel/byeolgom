@@ -7,6 +7,7 @@ import { getStarCount } from '../../api/count';
 import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../store/starConuntStore';
 import { useStarCount } from '../../hooks/queries/useStarCount';
+import { useShallow } from 'zustand/react/shallow';
 
 // Assets
 const starImagePath = '/assets/images/star.png';
@@ -52,9 +53,11 @@ const MyElement3D: React.FC = () => {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
 
-  const starCount = useStarCountStore((state) => state.starCount);
-  const setStarCountState = useStarCountStore(
-    (state) => state.setStarCountState,
+  const { starCount, setStarCountState } = useStarCountStore(
+    useShallow((state) => ({
+      starCount: state.starCount,
+      setStarCountState: state.setStarCountState,
+    })),
   );
 
   const queryClient = useQueryClient();
