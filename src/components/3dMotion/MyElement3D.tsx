@@ -53,11 +53,8 @@ const MyElement3D: React.FC = () => {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
 
-  const { starCount, setStarCountState } = useStarCountStore(
-    useShallow((state) => ({
-      starCount: state.starCount,
-      setStarCountState: state.setStarCountState,
-    })),
+  const [starCount, setStarCountState] = useStarCountStore(
+    useShallow((state) => [state.starCount, state.setStarCountState]),
   );
 
   const queryClient = useQueryClient();

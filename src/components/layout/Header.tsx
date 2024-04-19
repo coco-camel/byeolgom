@@ -13,11 +13,8 @@ interface HeaderProps {
 
 function Header({ openModal }: HeaderProps) {
   const { isLoggedIn } = useAuthStore();
-  const { worryCount, setWorryCountState } = useWorryCountStore(
-    useShallow((state) => ({
-      worryCount: state.worryCount,
-      setWorryCountState: state.setWorryCountState,
-    })),
+  const [worryCount, setWorryCountState] = useWorryCountStore(
+    useShallow((state) => [state.worryCount, state.setWorryCountState]),
   );
 
   const worryCountQuery = useWorryCount();
