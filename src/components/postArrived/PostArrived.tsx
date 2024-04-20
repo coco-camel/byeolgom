@@ -14,18 +14,18 @@ function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  const {
+  const [
     postArrivedList,
     setPostArrivedListState,
     setPostArrivedAsRead,
     setRemovePostArrived,
-  } = usePostArrivedStore(
-    useShallow((state) => ({
-      postArrivedList: state.postArrivedList,
-      setPostArrivedListState: state.setPostArrivedListState,
-      setPostArrivedAsRead: state.setPostArrivedAsRead,
-      setRemovePostArrived: state.setRemovePostArrived,
-    })),
+  ] = usePostArrivedStore(
+    useShallow((state) => [
+      state.postArrivedList,
+      state.setPostArrivedListState,
+      state.setPostArrivedAsRead,
+      state.setRemovePostArrived,
+    ]),
   );
 
   const queryClient = useQueryClient();

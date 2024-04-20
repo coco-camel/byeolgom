@@ -6,11 +6,8 @@ import { useShallow } from 'zustand/react/shallow';
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  const { statusMessage, closeStateModal } = useStateModalStore(
-    useShallow((state) => ({
-      statusMessage: state.statusMessage,
-      closeStateModal: state.closeStateModal,
-    })),
+  const [statusMessage, closeStateModal] = useStateModalStore(
+    useShallow((state) => [state.statusMessage, state.closeStateModal]),
   );
 
   useEffect(() => {
