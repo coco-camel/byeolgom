@@ -31,46 +31,46 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
     };
     return (
       <LockerListWrap>
-        {isPending ? (
-          new Array(5).fill(1).map((_, i) => <SkeletonItem key={i} />)
-        ) : pastContents && pastContents.length > 0 ? (
-          pastContents.map((list, index) => (
-            <Link
-              to={`/pastcontents/${whoseContent}/${list.worryId}`}
-              key={index}
-            >
+        {pastContents && pastContents.length > 0
+          ? pastContents.map((list, index) => (
+              <Link
+                to={`/pastcontents/${whoseContent}/${list.worryId}`}
+                key={index}
+              >
+                <PastContentWrap>
+                  <img
+                    src={
+                      whoseContent === 'mySolvedWorry'
+                        ? rocket[`rocket${list.icon}`]
+                        : star
+                    }
+                    style={{ width: '30px', height: '30px' }}
+                  />
+                  <PastContentContainer>
+                    <div>{formatDate(list.createdAt)}</div>
+                    <div className="content">{list.content}</div>
+                  </PastContentContainer>
+                  <img src={chevronRight} />
+                </PastContentWrap>
+              </Link>
+            ))
+          : !isPending && (
               <PastContentWrap>
-                <img
-                  src={
-                    whoseContent === 'mySolvedWorry'
-                      ? rocket[`rocket${list.icon}`]
-                      : star
-                  }
-                  style={{ width: '30px', height: '30px' }}
-                />
-                <PastContentContainer>
-                  <div>{formatDate(list.createdAt)}</div>
-                  <div className="content">{list.content}</div>
-                </PastContentContainer>
-                <img src={chevronRight} />
+                {whoseContent === 'mySolvedWorry' ? (
+                  <PastContentNone>
+                    <span>보관 중인 글이 없어요</span>
+                    <span>상대방의 답변에 답례를 보내주세요</span>
+                  </PastContentNone>
+                ) : (
+                  <PastContentNone>
+                    <span>보관 중인 글이 없어요</span>
+                    <span>정성껏 답변을 작성해 보세요</span>
+                  </PastContentNone>
+                )}
               </PastContentWrap>
-            </Link>
-          ))
-        ) : (
-          <PastContentWrap>
-            {whoseContent === 'mySolvedWorry' ? (
-              <PastContentNone>
-                <span>보관 중인 글이 없어요</span>
-                <span>상대방의 답변에 답례를 보내주세요</span>
-              </PastContentNone>
-            ) : (
-              <PastContentNone>
-                <span>보관 중인 글이 없어요</span>
-                <span>정성껏 답변을 작성해 보세요</span>
-              </PastContentNone>
             )}
-          </PastContentWrap>
-        )}
+        {isPending &&
+          [...Array(10).keys()].map((i) => <SkeletonItem key={i} />)}
         <LoadMoreDiv ref={ref} />
       </LockerListWrap>
     );
