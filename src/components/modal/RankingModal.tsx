@@ -82,7 +82,7 @@ export const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #2f4768;
+  background-color: none;
   z-index: 150;
 `;
 

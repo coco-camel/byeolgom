@@ -7,10 +7,9 @@ export const getUserName = async (): Promise<NickName> => {
     if (res.data && res.data.nickname) {
       return res.data as NickName;
     }
-    console.log(res.data);
     throw new Error('닉네임을 찾을 수 없습니다');
   } catch (err) {
-    console.log('err', err);
+    console.error('err', err);
     throw err;
   }
 };
