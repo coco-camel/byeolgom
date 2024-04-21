@@ -8,6 +8,7 @@ import rocketA from '/assets/images/rocketA.svg';
 import rocketB from '/assets/images/rocketB.svg';
 import rocketC from '/assets/images/rocketC.svg';
 import { usePastContentDetail } from '../../hooks/queries/usePastContentDetail';
+import { useWhoseContentStore } from '../../store/whoseContentStore';
 
 function PastContentDetail() {
   const rocket: { [key: string]: string } = {
@@ -17,8 +18,11 @@ function PastContentDetail() {
   };
   const params = useParams() as Readonly<WorriesDetailParams>;
   const navigate = useNavigate();
-
+  const setWhoseContentState = useWhoseContentStore(
+    (state) => state.setWhoseContentState,
+  );
   const handleBackNavigation = () => {
+    setWhoseContentState(params.whosecontent);
     navigate(-1);
   };
 

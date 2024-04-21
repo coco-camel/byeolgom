@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
 import PastContentsList from './PastContentsList';
@@ -6,9 +6,13 @@ import { Worry } from '../../types/WorryContent.interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import _ from 'lodash';
 import useObserver from '../../hooks/observer/useObserver';
+import { useWhoseContentStore } from '../../store/whoseContentStore';
+import { useShallow } from 'zustand/react/shallow';
 
 function PastContents() {
-  const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
+  const [whoseContent, setWhoseContentState] = useWhoseContentStore(
+    useShallow((state) => [state.whoseContent, state.setWhoseContentState]),
+  );
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
 
@@ -75,13 +79,13 @@ function PastContents() {
       <LockerTabWrap>
         <Button
           className={whoseContent === 'mySolvedWorry' ? 'active' : ''}
-          onClick={() => setWhoseContent('mySolvedWorry')}
+          onClick={() => setWhoseContentState('mySolvedWorry')}
         >
           나의 고민
         </Button>
         <Button
           className={whoseContent === 'myHelpedSolvedWorry' ? 'active' : ''}
-          onClick={() => setWhoseContent('myHelpedSolvedWorry')}
+          onClick={() => setWhoseContentState('myHelpedSolvedWorry')}
         >
           익명의 고민
         </Button>
