@@ -22,7 +22,6 @@ function KakaoRedirect() {
         window.localStorage.setItem('access_Token', res.data.accessToken);
         window.localStorage.setItem('refresh_Token', res.data.refreshToken);
         navigate('/');
-        console.log('카카오 로그인에 성공하였습니다.');
       })
       .catch((err) => {
         console.error('카카오 로그인에 실패하였습니다.', err);
