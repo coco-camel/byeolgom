@@ -23,7 +23,7 @@ function ChangeNickName() {
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newNickname = e.target.value;
-    if (newNickname.length > 15) {
+    if (newNickname.length >= 15) {
       setNicknameError('닉네임은 15글자 이내여야 합니다');
     } else {
       setNicknameError('');
@@ -87,7 +87,7 @@ function ChangeNickName() {
 export default ChangeNickName;
 
 const TextOver = styled.p`
-  color: red;
+  color: #e88439;
   font-size: 12px;
   margin-top: 5px;
 `;
