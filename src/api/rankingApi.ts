@@ -5,6 +5,6 @@ export const fetchRankings = async () => {
     const res = await authInstance.get('/top-likes');
     return res.data;
   } catch (err) {
-    console.log('err', err);
+    console.error('err', err);
   }
 };

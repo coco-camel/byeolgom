@@ -1,67 +1,55 @@
 // RankingBoard.tsx
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import { RankingModalProps } from '../../types/RankingProps.interface';
+import RankingList from './RankingList';
 import styled from 'styled-components';
 import threeDot from '/assets/images/threeDot.png';
 
-function RankingBoard({ isOpen }: RankingModalProps) {
+function RankingBoard({ isOpen, currentUser }: RankingModalProps) {
   const RankingBoardQuery = useRankingBoard(isOpen);
 
   if (!isOpen) return null;
 
   return (
     <RankingContainer>
-      {RankingBoardQuery.data && RankingBoardQuery.data.length > 0 ? (
-        <RankingWrapper>
-          {RankingBoardQuery.data.slice(0, 5).map((rank, index) => (
-            <RankerList key={index}>
-              <Rank
-                className="Ranking"
-                style={{
-                  fontWeight: 'normal',
-                  color: rank.userId ? '#FED56B' : 'white',
-                }}
-              >
-                {index + 1}위
-              </Rank>
-              <Rank
-                className="UserName"
-                style={{
-                  fontWeight: 'normal',
-                  color: rank.userId ? '#FED56B' : 'white',
-                }}
-              >
-                {rank.nickname}
-              </Rank>
-              <Rank
-                className="Likes"
-                style={{
-                  fontWeight: 'normal',
-                  color: rank.userId ? '#FED56B' : 'white',
-                }}
-              >
-                {rank.likes}번
-              </Rank>
-            </RankerList>
-          ))}
-          <img className="threeDot" src={threeDot} alt="ThreeDot" />
-          {RankingBoardQuery.data.length > 5 && (
-            <NoneRanker>
-              <Rank className="exRanking">
-                {RankingBoardQuery.data[5].rank}위
-              </Rank>
-              <Rank className="exUserName">
-                {RankingBoardQuery.data[5].nickname}
-              </Rank>
-              <Rank className="exLikes">
-                {RankingBoardQuery.data[5].likes}번
-              </Rank>
-            </NoneRanker>
-          )}
-        </RankingWrapper>
-      ) : (
-        <Rank>랭킹 정보가 없습니다.</Rank>
-      )}
+      <RankingWrapper>
+        {RankingBoardQuery.data &&
+          RankingBoardQuery.data
+            .slice(0, -1)
+            .map((rank, index) => (
+              <RankingList
+                key={index}
+                rank={index + 1}
+                nickname={rank.nickname}
+                likes={rank.likes}
+                isCurrentUser={rank.userId === currentUser}
+              />
+            ))}
+        <img
+          className="threeDot"
+          src={threeDot}
+          alt="ThreeDot"
+          color="#B5B5BD"
+        />
+        {RankingBoardQuery.data && RankingBoardQuery.data.length > 1 && (
+          <RankingList
+            rank={
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1].rank ||
+              'N/A'
+            }
+            nickname={
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1].nickname
+            }
+            likes={
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1].likes
+            }
+            isCurrentUser={
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1]
+                .userId === currentUser
+            }
+          />
+        )}
+      </RankingWrapper>
       {RankingBoardQuery.isError && (
         <Rank style={{ color: 'red' }}>{RankingBoardQuery.error?.message}</Rank>
       )}
@@ -95,26 +83,6 @@ const RankingWrapper = styled.div`
     margin: 0 auto;
     padding-top: 10px;
   }
-`;
-
-const RankerList = styled.li`
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid grey;
-  width: 100%;
-`;
-
-const NoneRanker = styled.li`
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-  align-items: center;
-  padding: 15px 20px;
-  font-weight: normal;
-  color: #fed56b;
 `;
 
 const Rank = styled.p`

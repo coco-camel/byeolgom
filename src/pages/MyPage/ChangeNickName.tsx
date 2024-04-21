@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getUserName } from '../../api/nickName';
 import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
@@ -10,6 +10,7 @@ import back from '/assets/images/back.svg';
 function ChangeNickName() {
   const [nickname, setNickname] = useState('');
   const { openStateModal } = useStateModalStore();
+  const [nicknameError, setNicknameError] = useState('');
 
   const navigate = useNavigate();
 
@@ -21,6 +22,12 @@ function ChangeNickName() {
   const mutation = useChangeNicknameMutation();
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newNickname = e.target.value;
+    if (newNickname.length >= 15) {
+      setNicknameError('닉네임은 15글자 이내여야 합니다');
+    } else {
+      setNicknameError('');
+    }
     setNickname(e.target.value);
   };
 
@@ -28,9 +35,12 @@ function ChangeNickName() {
     navigate('/mypage');
   };
 
+  const queryClient = useQueryClient();
+
   const submitNickname = () => {
     mutation.mutate(nickname, {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['rankings'] });
         openStateModal('닉네임이 성공적으로 변경되었어요!');
         navigate('/mypage');
       },
@@ -68,12 +78,19 @@ function ChangeNickName() {
             {isLoading ? '변경 중...' : '확인'}
           </SubmitButton>
         </ButtonWrapper>
+        {nicknameError && <TextOver>{nicknameError}</TextOver>}
       </PageContainer>
     </>
   );
 }
 
 export default ChangeNickName;
+
+const TextOver = styled.p`
+  color: #e88439;
+  font-size: 12px;
+  margin-top: 5px;
+`;
 
 const PageContainer = styled.div`
   position: relative;
