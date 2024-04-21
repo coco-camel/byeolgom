@@ -9,7 +9,7 @@ interface WorryCountState {
 export const useWorryCountStore = create<WorryCountState>((set) => ({
   worryCount: 0,
 
-  setWorryCountState: (count: number) =>
+  setWorryCountState: (count) =>
     set(() => ({
       worryCount: count,
     })),
