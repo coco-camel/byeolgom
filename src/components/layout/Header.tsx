@@ -5,6 +5,7 @@ import { useAuthStore } from '../../store/authStore';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useEffect } from 'react';
 import { useWorryCount } from '../../hooks/queries/useWorryCount ';
+import { useShallow } from 'zustand/react/shallow';
 
 interface HeaderProps {
   openModal: () => void;
@@ -12,7 +13,9 @@ interface HeaderProps {
 
 function Header({ openModal }: HeaderProps) {
   const { isLoggedIn } = useAuthStore();
-  const { worryCount, setWorryCountState } = useWorryCountStore();
+  const [worryCount, setWorryCountState] = useWorryCountStore(
+    useShallow((state) => [state.worryCount, state.setWorryCountState]),
+  );
 
   const worryCountQuery = useWorryCount();
 

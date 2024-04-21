@@ -6,7 +6,7 @@ export const usePastContentDetail = (params: WorriesDetailParams) => {
   return useQuery({
     queryKey: ['pastContentDetail', params],
     queryFn: () => worriesDetail(params),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 20,
     gcTime: 1000 * 120,
   });
 };

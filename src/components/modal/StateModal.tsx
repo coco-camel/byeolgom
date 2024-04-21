@@ -1,10 +1,14 @@
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useShallow } from 'zustand/react/shallow';
 
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
-  const { statusMessage, closeStateModal } = useStateModalStore();
+
+  const [statusMessage, closeStateModal] = useStateModalStore(
+    useShallow((state) => [state.statusMessage, state.closeStateModal]),
+  );
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

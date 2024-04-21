@@ -136,7 +136,8 @@ const PastContentContainer = styled.div`
 const PastContentWrap = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 14px 20px;
+  background-color: rgba(255, 255, 255, 0.2);
   .content {
     max-width: 80%;
     overflow: hidden;

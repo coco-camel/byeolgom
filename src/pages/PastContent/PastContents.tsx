@@ -1,14 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { myWorries, yourWorries } from '../../api/pastContentApi';
 import PastContentsList from './PastContentsList';
 import { Worry } from '../../types/WorryContent.interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import _ from 'lodash';
+import useObserver from '../../hooks/observer/useObserver';
 
 function PastContents() {
   const [whoseContent, setWhoseContent] = useState('mySolvedWorry');
   const loadMoreRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef(null);
 
   const getPastContent = async (pageParam: number) => {
     const data = await (
@@ -17,7 +19,7 @@ function PastContents() {
     return {
       result: data,
       nextPage: pageParam + 1,
-      isLast: data.length < 10,
+      isLast: data.length < 10 || data.length === 0,
       hasNextPage: data.length === 10,
     };
   };
@@ -32,8 +34,12 @@ function PastContents() {
     queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (!lastPage.isLast) return lastPage.nextPage;
+      if (lastPage.result.length === 0) {
+        return undefined;
+      }
+      return lastPage.isLast ? undefined : lastPage.nextPage;
     },
+    retry: 1,
     staleTime: 1000 * 20,
   });
 
@@ -45,34 +51,21 @@ function PastContents() {
     return list;
   }, [pastContent]);
 
-  useEffect(() => {
-    const handleLoadMore = _.throttle(() => {
-      if (hasNextPage) {
-        fetchNextPage();
-      }
-    }, 500);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          handleLoadMore();
+  const handleLoadMore = useMemo(
+    () =>
+      _.throttle(() => {
+        if (hasNextPage) {
+          fetchNextPage();
         }
-      },
-      {
-        root: null,
-        rootMargin: '100px',
-        threshold: 0,
-      },
-    );
+      }, 500),
+    [hasNextPage, fetchNextPage],
+  );
 
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-      handleLoadMore.cancel();
-    };
-  }, [hasNextPage, fetchNextPage]);
+  useObserver(loadMoreRef, handleLoadMore, {
+    root: scrollContainerRef.current,
+    rootMargin: '100px',
+    threshold: 0.25,
+  });
 
   return (
     <div>

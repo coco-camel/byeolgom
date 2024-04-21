@@ -2,22 +2,31 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import GetContents from '../../pages/SendContent/GetContents';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { getWorryDetail, getCommentDetail } from '../../api/postArrived';
+import { getWorryDetail, getCommentDetail } from '../../api/postArrivedApi';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 import PostArrivedList from './PostArrivedList';
 import { usePostArrived } from '../../hooks/queries/usePostArrived';
+import { useShallow } from 'zustand/react/shallow';
 
 function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const {
+
+  const [
     postArrivedList,
     setPostArrivedListState,
     setPostArrivedAsRead,
     setRemovePostArrived,
-  } = usePostArrivedStore();
+  ] = usePostArrivedStore(
+    useShallow((state) => [
+      state.postArrivedList,
+      state.setPostArrivedListState,
+      state.setPostArrivedAsRead,
+      state.setRemovePostArrived,
+    ]),
+  );
 
   const queryClient = useQueryClient();
 
