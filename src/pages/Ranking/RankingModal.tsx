@@ -1,4 +1,4 @@
-import RankingBoard from '../../pages/Ranking/RankingBoard';
+import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
 import back from '/assets/images/back.svg';
 import trophy from '/assets/images/trophy.svg';

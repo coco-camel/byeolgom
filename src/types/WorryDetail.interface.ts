@@ -5,6 +5,7 @@ export interface WorryDetail {
   fontColor: string;
   icon: string;
   parentId: number;
+  parentContent: string;
   unRead: boolean;
   worryId: number;
   userId: number;

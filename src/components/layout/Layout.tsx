@@ -8,7 +8,7 @@ import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
 import SendMyWorry from '../../pages/SendContent/SendMyWorry';
 import Header from './Header';
-import RankingModal from '../modal/RankingModal';
+import RankingModal from '../../pages/Ranking/RankingModal';
 import StateModal from '../modal/StateModal';
 import { useStateModalStore } from '../../store/stateModalStore';
 

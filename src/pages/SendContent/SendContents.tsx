@@ -26,7 +26,7 @@ function SendContents({
   const [fontColor, setFontColor] = useState<string>('#EEEEEE');
   const [showColorButtons, setShowColorButtons] = useState<boolean>(false);
 
-  const colors = ['#EEEEEE', 'red', 'yellow', 'blue'];
+  const colors = ['#EEEEEE', '#E88439', '#FFE45E', '#4C76B0'];
 
   const handleColorChange = (color: string) => {
     setFontColor(color);
