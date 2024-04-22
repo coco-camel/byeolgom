@@ -3,6 +3,7 @@ import ButtonContainer from '../../../components/button/ButtonContainer';
 import { deleteContent } from '../../../api/sendContentApi';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
+import { useQueryClient } from '@tanstack/react-query';
 
 function DeleteModal({
   detail,
@@ -15,10 +16,15 @@ function DeleteModal({
 }) {
   const { setRemovePostArrived } = usePostArrivedStore();
 
+  const queryClient = useQueryClient();
+
   const handleDelete = async () => {
     try {
       await deleteContent({ worryid: detail.worryId });
       setRemovePostArrived(detail.worryId);
+      queryClient.invalidateQueries({
+        queryKey: ['worryCount'],
+      });
       closeModal();
     } catch (error) {
       console.error(error);

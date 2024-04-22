@@ -5,6 +5,7 @@ import { sendStarReply } from '../../../api/sendContentApi';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 function SendStarModal({
   closeModal,
@@ -22,6 +23,8 @@ function SendStarModal({
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
 
+  const queryClient = useQueryClient();
+
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, fontColor };
@@ -32,6 +35,9 @@ function SendStarModal({
 
       await sendStarReply(params, contentData);
       setRemovePostArrived(detail.worryId);
+      queryClient.invalidateQueries({
+        queryKey: ['worryCount'],
+      });
       closeModal();
       openStateModal('답례가 무사히 전달되었어요!');
     } catch (error) {
