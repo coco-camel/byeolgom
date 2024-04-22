@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect, useRef } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useShallow } from 'zustand/react/shallow';
 
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const [statusMessage, closeStateModal] = useStateModalStore(
     useShallow((state) => [state.statusMessage, state.closeStateModal]),
@@ -15,7 +16,8 @@ function StateModal() {
       const target = event.target as Node;
 
       if (modalRef.current && !modalRef.current.contains(target)) {
-        closeStateModal();
+        setIsClosing(true);
+        setTimeout(() => closeStateModal(), 300);
       }
     };
 
@@ -26,7 +28,7 @@ function StateModal() {
   }, [closeStateModal]);
 
   return (
-    <ModalContainer ref={modalRef}>
+    <ModalContainer ref={modalRef} isClosing={isClosing}>
       <p>{statusMessage}</p>
     </ModalContainer>
   );
@@ -34,7 +36,43 @@ function StateModal() {
 
 export default StateModal;
 
-const ModalContainer = styled.div`
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    bottom: 10%;
+  }
+  70% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    bottom: 15%;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    bottom: 14%;
+  }
+`;
+
+const fadeOut = keyframes`
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    bottom: 14%;
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    bottom: 15%;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    bottom: 10%;
+  }
+`;
+
+const ModalContainer = styled.div<{ isClosing: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,6 +84,10 @@ const ModalContainer = styled.div`
   bottom: 14%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 300;
+  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease
+    forwards;
+
   p {
     font-size: 12px;
   }

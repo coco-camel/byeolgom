@@ -42,11 +42,13 @@ function ButtonContainer({
 export default ButtonContainer;
 
 const ButtonWrapper = styled.div`
-  position: absolute;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 10%;
+  width: 100%;
+  margin-top: auto;
+  margin-bottom: 10px;
   gap: 6px;
 `;
 

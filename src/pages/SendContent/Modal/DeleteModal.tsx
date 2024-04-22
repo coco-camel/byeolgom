@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import { deleteContent } from '../../../api/sendContentApi';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
+import { useStateModalStore } from '../../../store/stateModalStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -15,6 +16,7 @@ function DeleteModal({
   closePageModal: () => void;
 }) {
   const { setRemovePostArrived } = usePostArrivedStore();
+  const { openStateModal } = useStateModalStore();
 
   const queryClient = useQueryClient();
 
@@ -26,6 +28,7 @@ function DeleteModal({
         queryKey: ['worryCount'],
       });
       closeModal();
+      openStateModal('로켓이 어딘가로 떠났습니다...');
     } catch (error) {
       console.error(error);
     }

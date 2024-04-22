@@ -73,6 +73,7 @@ export default SendStarModal;
 
 const CancelImg = styled.img`
   position: absolute;
+  top: 0;
   right: 0;
   margin-right: 5px;
   margin-top: 5px;
