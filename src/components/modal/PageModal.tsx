@@ -1,18 +1,25 @@
 import styled, { keyframes } from 'styled-components';
+import { WorryDetail } from '../../types/WorryDetail.interface';
 import DeleteModal from '../../pages/SendContent/Modal/DeleteModal';
 import ReportModal from '../../pages/SendContent/Modal/ReportModal';
-import { WorryDetail } from '../../types/WorryDetail.interface';
+import SendStarModal from '../../pages/SendContent/Modal/SendStarModal';
 
 function PageModal({
   showDeleteModal,
   showReportModal,
+  showSendStarModal,
   detail,
+  content = '',
+  fontColor = '',
   closeModal,
   closePageModal,
 }: {
   showDeleteModal?: boolean;
   showReportModal?: boolean;
+  showSendStarModal?: boolean;
   detail: WorryDetail;
+  content?: string;
+  fontColor?: string;
   closeModal: () => void;
   closePageModal: () => void;
 }) {
@@ -29,6 +36,15 @@ function PageModal({
               />
             )}
             {showReportModal && <ReportModal />}
+            {showSendStarModal && (
+              <SendStarModal
+                closeModal={closeModal}
+                closePageModal={closePageModal}
+                detail={detail}
+                content={content}
+                fontColor={fontColor}
+              />
+            )}
           </WhiteBox>
         </AnimatedWrapper>
       </ModalContainer>

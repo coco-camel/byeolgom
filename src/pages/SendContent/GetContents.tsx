@@ -9,11 +9,7 @@ import sendLine from '/assets/images/sendLine.svg';
 import starNotice from '/assets/images/starNotice.svg';
 import takeStar from '/assets/images/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import {
-  reportContent,
-  sendContentReply,
-  sendStarReply,
-} from '../../api/sendContentApi';
+import { reportContent, sendContentReply } from '../../api/sendContentApi';
 import {
   ModalHeader,
   BackButton,
@@ -62,7 +58,8 @@ function GetContents({
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
 
-  const [showPageDeleteModal, setShowPageDeleteModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showSendStarModal, setShowSendStarModal] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
@@ -76,17 +73,13 @@ function GetContents({
       }
 
       if (sendStar) {
-        await sendStarReply(params, contentData);
+        setShowSendStarModal(true);
       } else {
         await sendContentReply(params, contentData);
+        setRemovePostArrived(detail.worryId);
+        closeModal();
+        openStateModal('로켓이 무사히 되돌아갔어요!');
       }
-      setRemovePostArrived(detail.worryId);
-      closeModal();
-      openStateModal(
-        sendStar
-          ? '답례가 무사히 전달되었어요!'
-          : '로켓이 무사히 되돌아갔어요!',
-      );
     } catch (error) {
       console.error(error);
     }
@@ -106,11 +99,11 @@ function GetContents({
   };
 
   const handleShowDeleteModal = () => {
-    setShowPageDeleteModal(true);
+    setShowDeleteModal(!showDeleteModal);
   };
 
-  const handleDeleteCancel = () => {
-    setShowPageDeleteModal(false);
+  const handleShowSendStarModal = () => {
+    setShowSendStarModal(!showSendStarModal);
   };
 
   const getRocketImage = (icon: string) => {
@@ -263,12 +256,22 @@ function GetContents({
       </AnimatedWrapper>
       <ModalOverlay />
 
-      {showPageDeleteModal && (
+      {showDeleteModal && (
         <PageModal
           showDeleteModal={true}
           detail={detail}
           closeModal={closeModal}
-          closePageModal={handleDeleteCancel}
+          closePageModal={handleShowDeleteModal}
+        />
+      )}
+      {showSendStarModal && (
+        <PageModal
+          showSendStarModal={true}
+          detail={detail}
+          content={content}
+          fontColor={fontColor}
+          closeModal={closeModal}
+          closePageModal={handleShowSendStarModal}
         />
       )}
     </>

@@ -214,7 +214,7 @@ export const ButtonContainer = styled.div`
 
 export const TakeStarImg = styled.img`
   position: absolute;
-  margin-top: -60px;
+  margin-top: -90px;
 `;
 
 export const LineContainer = styled.div<{ $marginTop?: string }>`
