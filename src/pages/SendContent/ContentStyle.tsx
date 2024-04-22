@@ -103,6 +103,7 @@ export const RocketButton = styled.img<RocketButtonProps>`
 `;
 
 export const SendContainer = styled.div<{ height?: string }>`
+  position: relative;
   width: 100%;
   height: ${(props) => props.height || '75%'};
   display: flex;
@@ -117,9 +118,9 @@ export const SendContainer = styled.div<{ height?: string }>`
 `;
 
 export const StyledInput = styled.textarea`
-  margin-top: 40px;
-  width: 70%;
-  height: 30%;
+  margin-top: 30px;
+  width: 80%;
+  height: 75%;
   font-size: 16px;
   text-align: center;
   color: '#EEEEEE';
@@ -132,17 +133,16 @@ export const StyledInput = styled.textarea`
 `;
 
 export const BottomContainer = styled.div`
-  position: relative;
+  position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 10px;
+  padding: 10px 15px;
   display: flex;
 `;
 
 export const TextColorButton = styled.img`
   width: 24px;
   z-index: 5;
-  margin-left: 10px;
   top: 0;
   cursor: pointer;
 `;
@@ -156,8 +156,8 @@ export const ColorButtonContainer = styled.div`
   flex-direction: column;
   background-color: #b5b5bd66;
   border-radius: 20px;
-  margin-left: 9px;
-  top: -101px;
+  margin-left: -0.5px;
+  bottom: 28%;
 `;
 
 export const ColorSelectButton = styled.button<{
@@ -193,11 +193,13 @@ export const DateText = styled.div`
   margin-top: 65px;
 `;
 
-export const ContentText = styled.div<{ $marginTop?: string }>`
+export const ContentText = styled.div<{
+  $marginTop?: string;
+  $height?: string;
+}>`
   font-size: 16px;
-  margin-top: 60px;
   width: 70%;
-  height: 25%;
+  height: ${(props) => props.$height || '20%'};
   overflow: hidden;
   text-align: center;
   margin-top: ${(props) => props.$marginTop || '0px'};
@@ -205,17 +207,23 @@ export const ContentText = styled.div<{ $marginTop?: string }>`
 `;
 
 export const ButtonContainer = styled.div`
+  position: fixed;
   display: flex;
-  margin-top: 150px;
+  justify-content: center;
+  align-items: center;
+  bottom: 28%;
 `;
 
 export const TakeStarImg = styled.img`
   position: absolute;
-  margin-left: 75px;
   margin-top: -60px;
 `;
 
-export const LineImg = styled.img<{ $marginTop?: string }>`
+export const LineContainer = styled.div<{ $marginTop?: string }>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 30px;
   margin-top: ${(props) => props.$marginTop || '0px'};
 `;
 
@@ -227,7 +235,6 @@ export const ReplyButton = styled.button`
   left: 50%;
   background-color: #eeeeee;
   border-radius: 30px;
-  margin-left: 60px;
   cursor: pointer;
   &:hover {
     color: #ffffff;
@@ -236,14 +243,15 @@ export const ReplyButton = styled.button`
 `;
 
 export const DeleteImg = styled.img`
+  position: absolute;
   width: 24px;
-  margin-left: 30px;
+  right: -40%;
   cursor: pointer;
 `;
 
 export const ReportImg = styled.img`
   width: 16px;
-  margin-right: 20px;
+  margin-right: 25px;
   margin-top: 15px;
   cursor: pointer;
 `;

@@ -10,7 +10,6 @@ import starNotice from '/assets/images/starNotice.svg';
 import takeStar from '/assets/images/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
 import {
-  deleteContent,
   reportContent,
   sendContentReply,
   sendStarReply,
@@ -27,7 +26,7 @@ import {
   ContentText,
   ButtonContainer,
   TakeStarImg,
-  LineImg,
+  LineContainer,
   ReplyButton,
   DeleteImg,
   ReportImg,
@@ -41,6 +40,7 @@ import SendContents from './SendContents';
 import { usePostArrivedStore } from '../../store/postArrivedStore';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { useStateModalStore } from '../../store/stateModalStore';
+import PageModal from '../../components/modal/PageModal';
 
 function GetContents({
   detail,
@@ -61,6 +61,8 @@ function GetContents({
   const [fontColor, setFontColor] = useState<string>('');
   const [isSendButtonDisabled, setIsSendButtonDisabled] =
     useState<boolean>(true);
+
+  const [showPageDeleteModal, setShowPageDeleteModal] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
@@ -103,14 +105,12 @@ function GetContents({
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await deleteContent({ worryid: detail.worryId });
-      setRemovePostArrived(detail.worryId);
-      closeModal();
-    } catch (error) {
-      console.error(error);
-    }
+  const handleShowDeleteModal = () => {
+    setShowPageDeleteModal(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowPageDeleteModal(false);
   };
 
   const getRocketImage = (icon: string) => {
@@ -161,24 +161,52 @@ function GetContents({
           </SendButton>
         )}
       </ModalHeader>
+
       <AnimatedWrapper>
         <StyledImg src={getRocketImage(detail.icon)} />
         <WhiteBox>
           {showDetail && <DateText>{formatDate(detail.createdAt)}</DateText>}
           {!replyWrite && (
-            <ContentText
-              color={detail.fontColor}
-              $marginTop={showDetail ? '60px' : '110px'}
-            >
-              {detail.content}
-            </ContentText>
+            <>
+              {detail.parentContent && !sendReply && (
+                <>
+                  <ContentText
+                    color={'#868690'}
+                    $height={'12%'}
+                    $marginTop={showDetail ? '60px' : '110px'}
+                  >
+                    {detail.parentContent}
+                  </ContentText>
+                  <LineContainer>
+                    <img src={sendLine} />
+                  </LineContainer>
+                </>
+              )}
+              <ContentText
+                color={detail.fontColor}
+                $marginTop={
+                  detail.parentContent && showDetail
+                    ? '40px'
+                    : showDetail
+                      ? '60px'
+                      : '110px'
+                }
+              >
+                {detail.content}
+              </ContentText>
+            </>
           )}
           {sendReply && (
             <>
-              <LineImg
-                src={sendLine}
-                $marginTop={replyWrite ? '90px' : '0px'}
-              />
+              <LineContainer
+                $marginTop={replyWrite ? '62px' : '0px'}
+                onClick={() => {
+                  setSendReply(true);
+                  setReplyWrite(false);
+                }}
+              >
+                <img src={sendLine} />
+              </LineContainer>
               <SendContents
                 onSend={(content, fontColor) => {
                   setContent(content);
@@ -186,29 +214,37 @@ function GetContents({
                 }}
                 onInputClick={() => setReplyWrite(true)}
                 placeholder={`답장을 입력해주세요.`}
-                containerHeight={replyWrite ? '66%' : '37%'}
+                containerHeight={replyWrite ? '67%' : '38.5%'}
               />
             </>
           )}
+
           {showDetail && (
             <ButtonContainer>
-              {detail.isSolved && <TakeStarImg src={takeStar} />}
               {!detail.isSolved && (
-                <ReplyButton
-                  onClick={() => {
-                    setShowDetail(false);
-                    setSendReply(true);
-                  }}
-                >
-                  답장하기
-                </ReplyButton>
+                <>
+                  <ReplyButton
+                    onClick={() => {
+                      setShowDetail(false);
+                      setSendReply(true);
+                    }}
+                  >
+                    답장하기
+                  </ReplyButton>
+                  <DeleteImg
+                    src={deleteWorry}
+                    onClick={handleShowDeleteModal}
+                  />
+                </>
               )}
               {detail.isSolved && (
-                <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
-                  확인
-                </ReplyButton>
+                <>
+                  <TakeStarImg src={takeStar} />
+                  <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
+                    확인
+                  </ReplyButton>
+                </>
               )}
-              <DeleteImg src={deleteWorry} onClick={handleDelete} />
             </ButtonContainer>
           )}
           {replyWrite && showStarText && (
@@ -226,6 +262,15 @@ function GetContents({
         </WhiteBox>
       </AnimatedWrapper>
       <ModalOverlay />
+
+      {showPageDeleteModal && (
+        <PageModal
+          showDeleteModal={true}
+          detail={detail}
+          closeModal={closeModal}
+          closePageModal={handleDeleteCancel}
+        />
+      )}
     </>
   );
 }
