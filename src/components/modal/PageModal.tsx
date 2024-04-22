@@ -40,12 +40,20 @@ function PageModal({
 export default PageModal;
 
 const slideIn = keyframes`
-  from {
-    bottom: -900px;
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
   }
-
-  to {
-    bottom: 0;
+  40% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 `;
 
@@ -55,15 +63,15 @@ export const AnimatedWrapper = styled.div`
   animation: ${slideIn} 0.3s ease-in-out;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ModalContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
   z-index: 999;

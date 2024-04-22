@@ -53,13 +53,11 @@ export const StyledImg = styled.img`
   z-index: 1;
   left: 50%;
   width: 55px;
-  margin-top: 55px;
   transform: translate(-50%, -50%);
   cursor: pointer;
 `;
 
 export const WhiteBox = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
   margin-top: 50px;
@@ -207,11 +205,11 @@ export const ContentText = styled.div<{
 `;
 
 export const ButtonContainer = styled.div`
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 28%;
+  bottom: 19%;
 `;
 
 export const TakeStarImg = styled.img`
