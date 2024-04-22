@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
 import rocketA from '/assets/images/rocketA.svg';
@@ -8,6 +7,13 @@ import star from '/assets/images/star.svg';
 import chevronRight from '/assets/images/chevronRight.svg';
 import { forwardRef } from 'react';
 import SkeletonItem from '../../components/skeleton/SkeletonItem';
+import {
+  LoadMoreDiv,
+  LockerListWrap,
+  PastContentContainer,
+  PastContentNone,
+  PastContentWrap,
+} from './PastContentsStyle';
 
 interface PastContentsListProps {
   pastContents: worryList[];
@@ -37,7 +43,7 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                 to={`/pastcontents/${whoseContent}/${list.worryId}`}
                 key={index}
               >
-                <PastContentWrap>
+                <PastContentWrap $margin={'15px 0'}>
                   <img
                     src={
                       whoseContent === 'mySolvedWorry'
@@ -78,91 +84,3 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
 );
 
 export default PastContentsList;
-const PastContentNone = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
-  font-size: 14px;
-  span {
-    margin-top: 10px;
-  }
-`;
-
-const LoadMoreDiv = styled.div`
-  height: 10px;
-`;
-
-const PastContentContainer = styled.div`
-  flex-grow: 1;
-  margin: 0 10px;
-  overflow: hidden;
-  div {
-    color: #e2e2e2;
-    font-size: 14px;
-    padding: 2px 0;
-  }
-  :nth-child(1) {
-    font-size: 10px;
-  }
-  @media (max-width: 640px) {
-    :nth-child(1) {
-      font-size: 12px;
-    }
-    :nth-child(2) {
-      font-size: 1rem;
-    }
-  }
-  @media (max-width: 480px) {
-    :nth-child(1) {
-      font-size: 10px;
-    }
-    :nth-child(2) {
-      font-size: 14px;
-    }
-  }
-`;
-
-const LockerListWrap = styled.div`
-  width: 100%;
-  height: 370px;
-  overflow: auto;
-  padding: 0 20px;
-  box-sizing: border-box;
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  @media (max-width: 640px) {
-    width: 90vw;
-    height: 75vh;
-  }
-  @media (max-width: 480px) {
-  }
-`;
-
-const PastContentWrap = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 15px 0;
-  .content {
-    max-width: 80%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-`;
