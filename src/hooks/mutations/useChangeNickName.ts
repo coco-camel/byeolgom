@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { changeUserName } from '../../api/nickName';
+import { changeUserName } from '../../api/nickNameApi';
 
 export const useChangeNicknameMutation = () => {
   const mutation = useMutation<string, Error, string>({

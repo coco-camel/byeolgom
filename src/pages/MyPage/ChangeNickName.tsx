@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUserName } from '../../api/nickName';
+import { getUserName } from '../../api/nickNameApi';
 import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
