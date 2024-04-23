@@ -134,9 +134,11 @@ export const LockerListWrap = styled.div`
 export const PastContentWrap = styled.div<{
   $margin?: string;
   $padding?: string;
+  $backgroundcolor?: string;
 }>`
   display: flex;
   align-items: center;
+  background-color: ${(props) => props.$backgroundcolor || 'none'};
   margin: ${(props) => props.$margin || '0'};
   padding: ${(props) => props.$padding || '0'};
   .content {
