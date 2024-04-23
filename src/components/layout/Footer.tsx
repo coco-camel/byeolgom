@@ -61,7 +61,7 @@ function Footer({ openModal }: { openModal: () => void }) {
             src={rocketA}
             onClick={() =>
               worryCount === 0
-                ? openStateModal('보낼 수 있는 로켓이 없어요')
+                ? openStateModal('보낼 수 있는 로켓이 없어요', true)
                 : openModal()
             }
           />

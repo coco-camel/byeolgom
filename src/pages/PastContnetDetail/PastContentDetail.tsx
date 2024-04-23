@@ -47,7 +47,10 @@ function PastContentDetail() {
               <img src={back} width={20} height={20} />
             </button>
           </PastContentHeader>
-          <PastContentWrap $padding={'14px 20px'}>
+          <PastContentWrap
+            $padding={'14px 20px'}
+            $backgroundcolor={'rgba(255, 255, 255, 0.2)'}
+          >
             <img
               src={rocket[`rocket${pastContentDetailQuery.data.icon}`]}
               width={20}

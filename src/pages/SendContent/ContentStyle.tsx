@@ -25,7 +25,7 @@ export const ModalHeader = styled.div`
 export const BackButton = styled.img`
   width: 20px;
   height: 20px;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-top: 15px;
   cursor: pointer;
 `;
@@ -134,7 +134,7 @@ export const BottomContainer = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 10px 15px;
+  padding: 15px 20px;
   display: flex;
 `;
 
