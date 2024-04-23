@@ -3,7 +3,7 @@ import { useFrame, Canvas } from '@react-three/fiber';
 import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
 import { Texture } from 'three';
-import { getStarCount } from '../../api/count';
+import { getStarCount } from '../../api/countApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../store/starConuntStore';
 import { useStarCount } from '../../hooks/queries/useStarCount';

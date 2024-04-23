@@ -6,6 +6,7 @@ import { reportContent } from '../../../api/sendContentApi';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
+import { useQueryClient } from '@tanstack/react-query';
 
 function ReportModal({
   detail,
@@ -22,6 +23,8 @@ function ReportModal({
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
 
+  const queryClient = useQueryClient();
+
   const handleReport = async () => {
     try {
       let reasonsToSend = selectedReason;
@@ -34,6 +37,9 @@ function ReportModal({
         reasonsToSend,
       );
       setRemovePostArrived(detail.worryId);
+      queryClient.invalidateQueries({
+        queryKey: ['worryCount'],
+      });
       closeModal();
       openStateModal('신고 접수가 완료되었습니다');
     } catch (error) {
