@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { rankingStore } from '../../store/rankingStore';
 
 interface RankerListItemProps {
   rank: number | string | undefined;
   nickname?: string;
   likes: number;
+  userId: number;
   isCurrentUser: boolean;
 }
 
@@ -11,13 +13,15 @@ const RankingList: React.FC<RankerListItemProps> = ({
   rank,
   nickname,
   likes,
-  isCurrentUser,
+  userId,
 }) => {
+  const isCurrentUser = rankingStore((state) => state.isCurrentUser(userId));
+
   return (
     <RankerList $highlight={isCurrentUser}>
-      <Rank className="Ranking">{rank}위</Rank>
-      <Rank className="UserName">{nickname}</Rank>
-      <Rank className="Likes">{likes}번</Rank>
+      <Rank>{`${rank}위`}</Rank>
+      <Rank>{nickname}</Rank>
+      <Rank>{`${likes}번`}</Rank>
     </RankerList>
   );
 };

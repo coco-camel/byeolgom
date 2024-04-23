@@ -1,33 +1,25 @@
+import { rankingStore } from '../../store/rankingStore';
 import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
 import back from '/assets/images/back.svg';
 import trophy from '/assets/images/trophy.svg';
-import { RankingModalProps } from '../../types/RankingProps.interface';
 
-function RankingModal({
-  isOpen,
-  currentUser,
-  onRequestClose,
-}: RankingModalProps) {
+function RankingModal() {
+  const { isOpen, closeModal } = rankingStore();
+
   if (!isOpen) return null;
 
   return (
     <>
       <ModalOverlay />
-      <AnimatedWrapper onClick={onRequestClose}>
+      <AnimatedWrapper onClick={() => closeModal()}>
         <WhiteContainer>
           <RankingHeader>
-            <BackButton src={back} onClick={onRequestClose} />
+            <BackButton src={back} onClick={() => closeModal()} />
             <img className="trophy" src={trophy} alt="Trophy" />
           </RankingHeader>
           <Title>고민을 많이 해결해준 순위</Title>
-          <RankingBoard
-            isOpen={isOpen}
-            currentUser={currentUser}
-            onRequestClose={function (): void {
-              throw new Error('Function not implemented.');
-            }}
-          />
+          <RankingBoard />
         </WhiteContainer>
       </AnimatedWrapper>
     </>

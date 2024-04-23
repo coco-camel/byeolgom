@@ -6,13 +6,13 @@ import { useWorryCountStore } from '../../store/worryCountStore';
 import { useEffect } from 'react';
 import { useWorryCount } from '../../hooks/queries/useWorryCount ';
 import { useShallow } from 'zustand/react/shallow';
+import { rankingStore } from '../../store/rankingStore';
 
-interface HeaderProps {
-  openModal: () => void;
-}
-
-function Header({ openModal }: HeaderProps) {
+function Header() {
   const { isLoggedIn } = useAuthStore();
+  const { openModal } = rankingStore((state) => ({
+    openModal: state.openModal,
+  }));
   const [worryCount, setWorryCountState] = useWorryCountStore(
     useShallow((state) => [state.worryCount, state.setWorryCountState]),
   );
