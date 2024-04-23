@@ -8,7 +8,7 @@ interface StarCountState {
 export const useStarCountStore = create<StarCountState>((set) => ({
   starCount: 0,
 
-  setStarCountState: (count: number) =>
+  setStarCountState: (count) =>
     set(() => ({
       starCount: count,
     })),
