@@ -5,16 +5,23 @@ import RankingList from './RankingList';
 import styled from 'styled-components';
 import threeDot from '/assets/images/threeDot.png';
 import { rankingStore } from '../../store/rankingStore';
+import { useShallow } from 'zustand/react/shallow';
 
 function RankingBoard() {
-  const { isOpen, isCurrentUser, initializeCurrentUser } = rankingStore();
+  const [isOpen, isCurrentUser, setCurrentUser] = rankingStore(
+    useShallow((state) => [
+      state.isOpen,
+      state.isCurrentUser,
+      state.setCurrentUser,
+    ]),
+  );
   const RankingBoardQuery = useRankingBoard(isOpen);
 
   useEffect(() => {
     if (RankingBoardQuery.data && RankingBoardQuery.data.length > 0) {
-      initializeCurrentUser(RankingBoardQuery.data);
+      setCurrentUser(RankingBoardQuery.data);
     }
-  }, [RankingBoardQuery.data, initializeCurrentUser]);
+  }, [RankingBoardQuery.data, setCurrentUser]);
 
   if (!isOpen) return null;
 
