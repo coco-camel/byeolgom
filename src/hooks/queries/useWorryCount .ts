@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getWorryCount } from '../../api/count';
+import { getWorryCount } from '../../api/countApi';
 
 export const useWorryCount = () => {
   return useQuery({
