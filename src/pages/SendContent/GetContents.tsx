@@ -9,7 +9,7 @@ import sendLine from '/assets/images/sendLine.svg';
 import starNotice from '/assets/images/starNotice.svg';
 import takeStar from '/assets/images/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { reportContent, sendContentReply } from '../../api/sendContentApi';
+import { sendContentReply } from '../../api/sendContentApi';
 import {
   ModalHeader,
   BackButton,
@@ -60,6 +60,7 @@ function GetContents({
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSendStarModal, setShowSendStarModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
@@ -85,25 +86,16 @@ function GetContents({
     }
   };
 
-  const handleReport = async () => {
-    try {
-      await reportContent(
-        { worryid: detail.worryId, commentid: detail.commentId },
-        '불쾌한 언행',
-      );
-      setRemovePostArrived(detail.worryId);
-      closeModal();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleShowDeleteModal = () => {
     setShowDeleteModal(!showDeleteModal);
   };
 
   const handleShowSendStarModal = () => {
     setShowSendStarModal(!showSendStarModal);
+  };
+
+  const handleShowReportModal = () => {
+    setShowReportModal(!showReportModal);
   };
 
   const getRocketImage = (icon: string) => {
@@ -144,7 +136,9 @@ function GetContents({
     <>
       <ModalHeader>
         <BackButton src={back} onClick={closeModal} />
-        {showDetail && <ReportImg src={report} onClick={handleReport} />}
+        {showDetail && (
+          <ReportImg src={report} onClick={handleShowReportModal} />
+        )}
         {sendReply && (
           <SendButton
             onClick={handleContentSubmit}
@@ -262,6 +256,14 @@ function GetContents({
           detail={detail}
           closeModal={closeModal}
           closePageModal={handleShowDeleteModal}
+        />
+      )}
+      {showReportModal && (
+        <PageModal
+          showReportModal={true}
+          detail={detail}
+          closeModal={closeModal}
+          closePageModal={handleShowReportModal}
         />
       )}
       {showSendStarModal && (
