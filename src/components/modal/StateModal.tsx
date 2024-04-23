@@ -2,13 +2,19 @@ import { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useShallow } from 'zustand/react/shallow';
+import check from '/assets/images/check.svg';
+import check_bad from '/assets/images/check_bad.svg';
 
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [isClosing, setIsClosing] = useState(false);
 
-  const [statusMessage, closeStateModal] = useStateModalStore(
-    useShallow((state) => [state.statusMessage, state.closeStateModal]),
+  const [statusMessage, closeStateModal, checkbox] = useStateModalStore(
+    useShallow((state) => [
+      state.statusMessage,
+      state.closeStateModal,
+      state.checkbox,
+    ]),
   );
 
   useEffect(() => {
@@ -29,6 +35,11 @@ function StateModal() {
 
   return (
     <ModalContainer ref={modalRef} isClosing={isClosing}>
+      {!checkbox ? (
+        <img src={check} width={20} height={20} />
+      ) : (
+        <img src={check_bad} width={20} height={20} />
+      )}
       <p>{statusMessage}</p>
     </ModalContainer>
   );
@@ -90,5 +101,6 @@ const ModalContainer = styled.div<{ isClosing: boolean }>`
 
   p {
     font-size: 12px;
+    margin: 0 10px;
   }
 `;

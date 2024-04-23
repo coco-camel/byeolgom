@@ -57,6 +57,7 @@ button {
     border:none;
     cursor: pointer;
     outline:none;
+	padding: 0;
 }
 a {
 	text-decoration: none;
