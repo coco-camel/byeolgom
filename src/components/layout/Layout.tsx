@@ -14,7 +14,6 @@ import { useStateModalStore } from '../../store/stateModalStore';
 
 function Layout() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showRankingModal, setShowRankingModal] = useState<boolean>(false);
   const { modalOpen } = useStateModalStore();
 
   const { isLoggedIn } = useAuthStore();
@@ -26,14 +25,6 @@ function Layout() {
 
   const handleCloseModal = (): void => {
     setShowModal(false);
-  };
-
-  const handleOpenRankingModal = (): void => {
-    setShowRankingModal(true);
-  };
-
-  const handleCloseRankingModal = (): void => {
-    setShowRankingModal(false);
   };
 
   const showHeader: boolean =
@@ -50,15 +41,11 @@ function Layout() {
         <div>설명~~~</div> */}
       </MainContent>
       <MainWrap>
-        {showHeader && <Header openModal={handleOpenRankingModal} />}
+        {showHeader && <Header />}
         {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         {modalOpen && <StateModal />}
         {isLoggedIn && <Footer openModal={handleOpenModal} />}
-        <RankingModal
-          isOpen={showRankingModal}
-          onRequestClose={handleCloseRankingModal}
-          currentUser={4}
-        />
+        <RankingModal />
         <div>
           <StarBackGround />
           <WaveBackGround />
