@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import back from '/assets/images/back.svg';
 import star from '/assets/images/star.svg';
 import planetC from '/assets/images/planetC.svg';
-import check from '/assets/images/check.svg';
+import Check from '@/assets/images/check.svg?react';
 
 function PlanetShop() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function PlanetShop() {
         <PlanetItem>
           <img src={planetC} />
           <div>
-            <img src={check} width={20} height={20} />
+            <Check fill="white" />
             <span>보유중</span>
           </div>
         </PlanetItem>
