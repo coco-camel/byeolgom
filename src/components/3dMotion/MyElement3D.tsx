@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/react/shallow';
 
 // Assets
 const starImagePath = '/assets/images/star.png';
-const unionImagePath = '/assets/images/union.png';
+const planetImagePath = '/assets/images/planetA.png';
 
 interface StarProps {
   texture: Texture;
@@ -51,7 +51,7 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
 
 const MyElement3D: React.FC = () => {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
-  const [textureUnion, setTextureUnion] = useState<Texture | null>(null);
+  const [texturePlanet, setTexturePlanet] = useState<Texture | null>(null);
 
   const [starCount, setStarCountState] = useStarCountStore(
     useShallow((state) => [state.starCount, state.setStarCountState]),
@@ -76,8 +76,8 @@ const MyElement3D: React.FC = () => {
     new TextureLoader().load(starImagePath, (texture) => {
       setTextureStar(texture);
     });
-    new TextureLoader().load(unionImagePath, (texture) => {
-      setTextureUnion(texture);
+    new TextureLoader().load(planetImagePath, (texture) => {
+      setTexturePlanet(texture);
     });
   }, []);
 
@@ -87,7 +87,7 @@ const MyElement3D: React.FC = () => {
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 5, 5]} />
         <Suspense fallback={<div>Loading...</div>}>
-          {textureUnion && <CentralImage texture={textureUnion} />}
+          {texturePlanet && <CentralImage texture={texturePlanet} />}
           {textureStar &&
             Array.from(
               { length: starCount < 6 ? starCount : 5 },

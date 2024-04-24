@@ -18,18 +18,14 @@ function StateModal() {
   );
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsClosing(true);
-        setTimeout(() => closeStateModal(), 300);
-      }
+    const handleClick = () => {
+      setIsClosing(true);
+      setTimeout(() => closeStateModal(), 300);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClick);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClick);
     };
   }, [closeStateModal]);
 
