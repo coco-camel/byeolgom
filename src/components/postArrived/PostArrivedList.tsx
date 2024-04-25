@@ -1,9 +1,9 @@
 import { memo, useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import rocketA from '/assets/images/rocketA.svg';
-import rocketB from '/assets/images/rocketB.svg';
-import rocketC from '/assets/images/rocketC.svg';
-import ellipse from '/assets/images/ellipse.svg';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
+import ellipse from '@/ellipse.svg';
 import { PostArrivedItem } from '../../types/PostArrivedItem.interface';
 import { useQueryClient } from '@tanstack/react-query';
 

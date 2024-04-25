@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useShallow } from 'zustand/react/shallow';
-import check_bad from '/assets/images/check_bad.svg';
+import check_bad from '@/check_bad.svg';
 import Check from '@/check.svg?react';
 
 function StateModal() {

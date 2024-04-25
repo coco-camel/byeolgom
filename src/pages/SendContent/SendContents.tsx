@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import textchange from '/assets/images/textchange.svg';
+import textchange from '@/textchange.svg';
 import {
   SendContainer,
   StyledInput,

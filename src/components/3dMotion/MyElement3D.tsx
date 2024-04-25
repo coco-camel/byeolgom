@@ -10,8 +10,8 @@ import { useStarCount } from '../../hooks/queries/useStarCount';
 import { useShallow } from 'zustand/react/shallow';
 
 // Assets
-const starImagePath = '/assets/images/star.png';
-const planetImagePath = '/assets/images/planetA.png';
+const starImagePath = '/src/assets/images/star.png';
+const planetImagePath = '/src/assets/images/planetA.png';
 
 interface StarProps {
   texture: Texture;

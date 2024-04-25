@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import shop from '/assets/images/shop.svg';
+import shop from '@/shop.svg';
 import { Link } from 'react-router-dom';
 interface MainPageBtnProps {
   link: string;
