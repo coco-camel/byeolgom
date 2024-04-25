@@ -34,7 +34,7 @@ function StateModal() {
   }, [closeStateModal]);
 
   return (
-    <ModalContainer ref={modalRef} isClosing={isClosing}>
+    <ModalContainer ref={modalRef} $isClosing={isClosing}>
       {!checkbox ? (
         <img src={check} width={20} height={20} />
       ) : (
@@ -83,7 +83,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const ModalContainer = styled.div<{ isClosing: boolean }>`
+const ModalContainer = styled.div<{ $isClosing: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +96,7 @@ const ModalContainer = styled.div<{ isClosing: boolean }>`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 300;
-  animation: ${({ isClosing }) => (isClosing ? fadeOut : fadeIn)} 0.3s ease
+  animation: ${({ $isClosing }) => ($isClosing ? fadeOut : fadeIn)} 0.3s ease
     forwards;
 
   p {
