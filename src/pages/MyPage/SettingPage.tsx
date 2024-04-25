@@ -1,16 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
 import chevronRight from '/assets/images/chevronRight.svg';
+import { useThemeStore } from '../../store/themeStore';
 
 function SettingPage() {
   const navigate = useNavigate();
   const { setLogoutState } = useAuthStore();
   const { isLoggedIn } = useAuthStore();
   const { data: NickName, isError, error } = useFetchNickName();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleTheme } = useThemeStore();
 
   if (isError) {
     console.error('닉네임 정보를 불러오는 데 실패했습니다.', error);
@@ -26,16 +27,6 @@ function SettingPage() {
   const handleNicknameChange = () => {
     navigate('/changenickname');
   };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    localStorage.setItem('darkMode', !isDarkMode ? 'true' : 'false');
-  };
-
-  useEffect(() => {
-    const storedDarkMode = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(storedDarkMode);
-  }, []);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -62,10 +53,7 @@ function SettingPage() {
             <SubTitle>테마</SubTitle>
             <Theme>
               <DarkModeTitle>다크모드</DarkModeTitle>
-              <DarkModeSwitch
-                onClick={toggleDarkMode}
-                className={isDarkMode ? 'active' : ''}
-              >
+              <DarkModeSwitch onClick={toggleTheme}>
                 <ToggleSwitch $isDark={isDarkMode} />{' '}
               </DarkModeSwitch>
             </Theme>
