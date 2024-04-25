@@ -1,3 +1,4 @@
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface WaveProps {
@@ -14,7 +15,7 @@ const rotateAnimation = keyframes`
   }
 `;
 
-function WaveBackGround() {
+const WaveBackGround = React.memo(function WaveBackGround() {
   return (
     <>
       <Wave $top="70%" $animationDuration="50s" />
@@ -22,7 +23,7 @@ function WaveBackGround() {
       <Wave $top="80%" $animationDuration="60s" />
     </>
   );
-}
+});
 
 export default WaveBackGround;
 

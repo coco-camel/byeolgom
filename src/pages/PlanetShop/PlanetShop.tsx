@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import back from '/assets/images/back.svg';
-import star from '/assets/images/star.svg';
-import planetC from '/assets/images/planetC.svg';
-import Check from '@/assets/images/check.svg?react';
+import back from '@/back.svg';
+import star from '@/star.svg';
+import planetA from '@/planetA.svg';
+import planetB from '@/planetB.svg';
+import planetC from '@/planetC.svg';
+import planetD from '@/planetD.svg';
+import Check from '@/check.svg?react';
 
 function PlanetShop() {
+  const planets = [planetA, planetB, planetC, planetD];
   const navigate = useNavigate();
   const handleBackNavigation = () => {
     navigate(-1);
@@ -23,13 +27,15 @@ function PlanetShop() {
         </StarCount>
       </PlanetShopHeader>
       <PlanetShopContainer>
-        <PlanetItem>
-          <img src={planetC} />
-          <div>
-            <Check fill="white" />
-            <span>보유중</span>
-          </div>
-        </PlanetItem>
+        {planets.map((planet, index) => (
+          <PlanetItem key={index}>
+            <img src={planet} />
+            <PlanetStatecontainer>
+              <Check fill="white" />
+              <span>보유중</span>
+            </PlanetStatecontainer>
+          </PlanetItem>
+        ))}
       </PlanetShopContainer>
       <Button>구매하기</Button>
     </PlanetShopArea>
@@ -37,12 +43,36 @@ function PlanetShop() {
 }
 
 export default PlanetShop;
-const PlanetItem = styled.div``;
+const PlanetStatecontainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  span {
+    font-size: 12px;
+    padding: 0 5px;
+  }
+`;
+
+const PlanetItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  &:hover {
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 2px white;
+  }
+`;
 
 const PlanetShopContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
-  height: 100%;
-  padding: 20px;
+  padding: 0 20px;
 `;
 
 const Button = styled.button`
@@ -59,6 +89,10 @@ const Button = styled.button`
     color: #ffffff;
     background-color: #e88439;
   }
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 100px;
 `;
 
 const PlanetShopArea = styled.div`

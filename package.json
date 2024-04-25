@@ -14,6 +14,7 @@
   "dependencies": {
     "@react-three/drei": "^9.105.1",
     "@react-three/fiber": "^8.16.1",
+    "@svgr/rollup": "^8.1.0",
     "@tanstack/react-query": "^5.28.9",
     "@types/lodash": "^4.17.0",
     "@types/three": "^0.163.0",

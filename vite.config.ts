@@ -13,6 +13,6 @@ export default defineConfig({
     outDir: 'build',
   },
   resolve: {
-    alias: [{ find: '@', replacement: '/public' }],
+    alias: [{ find: '@', replacement: '/public/assets/images/' }],
   },
 });

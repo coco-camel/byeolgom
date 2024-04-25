@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, Suspense } from 'react';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
 import { useFrame, Canvas } from '@react-three/fiber';
 import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
@@ -49,7 +49,7 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
   );
 };
 
-const MyElement3D: React.FC = () => {
+const MyElement3D = React.memo(function MyElement3D() {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [texturePlanet, setTexturePlanet] = useState<Texture | null>(null);
 
@@ -103,7 +103,7 @@ const MyElement3D: React.FC = () => {
       </Canvas>
     </AnimationGroup>
   );
-};
+});
 
 export default MyElement3D;
 
