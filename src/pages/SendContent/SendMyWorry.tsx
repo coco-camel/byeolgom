@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
-import back from '@/back.svg';
+import Back from '@/back.svg?react';
 import SendContents from './SendContents';
 import { sendContent } from '../../api/sendContentApi';
 import {
   ModalHeader,
-  BackButton,
   SendButton,
   AnimatedWrapper,
   StyledImg,
@@ -72,7 +71,13 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   return (
     <>
       <ModalHeader>
-        <BackButton src={back} onClick={closeModal} />
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          className="backButton"
+          onClick={closeModal}
+        />
         <SendButton
           onClick={handleContentSubmit}
           disabled={isSendButtonDisabled}

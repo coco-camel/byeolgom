@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import back from '@/back.svg';
+import Back from '@/back.svg?react';
 import deleteWorry from '@/deleteWorry.svg';
 import report from '@/report.svg';
 import rocketA from '@/rocketA.svg';
@@ -12,7 +12,6 @@ import { WorryDetail } from '../../types/WorryDetail.interface';
 import { sendContentReply } from '../../api/sendContentApi';
 import {
   ModalHeader,
-  BackButton,
   AnimatedWrapper,
   StyledImg,
   WhiteBox,
@@ -135,7 +134,13 @@ function GetContents({
   return (
     <>
       <ModalHeader>
-        <BackButton src={back} onClick={closeModal} />
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          className="backButton"
+          onClick={closeModal}
+        />
         {showDetail && (
           <ReportImg src={report} onClick={handleShowReportModal} />
         )}

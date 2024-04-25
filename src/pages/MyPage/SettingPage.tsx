@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
-import chevronRight from '@/chevronRight.svg';
+import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
 
 function SettingPage() {
@@ -47,7 +47,12 @@ function SettingPage() {
               <ProfilePic />
               <NicknameAndChange>
                 <Nickname>{NickName?.nickname || '익명'}</Nickname>
-                <ChangeArrow onClick={handleNicknameChange} />
+                <ChevronRight
+                  width={20}
+                  height={20}
+                  fill="#EEEEEE"
+                  onClick={handleNicknameChange}
+                />
               </NicknameAndChange>
             </ProfileSection>
             <SubTitle>테마</SubTitle>
@@ -111,16 +116,6 @@ const NicknameAndChange = styled.div`
 const Nickname = styled.p`
   font-size: 16px;
   color: white;
-`;
-
-const ChangeArrow = styled.div`
-  width: 10px;
-  height: 20px;
-  padding-right: 20px;
-  cursor: pointer;
-  background-image: url(${chevronRight});
-  background-size: cover;
-  background-position: center;
 `;
 
 const MyPageHeader = styled.div`

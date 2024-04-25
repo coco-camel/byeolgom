@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import trophy from '@/trophy.svg';
-import countRocket from '@/countRocket.svg';
+import Trophy from '@/trophy.svg?react';
+import CountRocket from '@/countRocket.svg?react';
 import { useAuthStore } from '../../store/authStore';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useEffect } from 'react';
@@ -31,12 +31,12 @@ function Header() {
     <HeaderArea>
       <HeaderInner>
         <button onClick={openModal}>
-          <img src={trophy} alt="Trophy" />
+          <Trophy fill="#EEEEEE" />
         </button>
         <WorryCount>
           {isLoggedIn ? (
             <>
-              <img src={countRocket} alt="Count Rocket" />
+              <CountRocket fill="#EEEEEE" />
               <span> x {worryCount}</span>
             </>
           ) : (

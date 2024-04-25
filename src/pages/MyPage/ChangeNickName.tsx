@@ -5,7 +5,7 @@ import { getUserName } from '../../api/nickNameApi';
 import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
-import back from '@/back.svg';
+import Back from '@/back.svg?react';
 
 function ChangeNickName() {
   const [nickname, setNickname] = useState('');
@@ -60,7 +60,13 @@ function ChangeNickName() {
   return (
     <>
       <Header>
-        <BackButton src={back} onClick={handleBackButton} />
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          className="backButton"
+          onClick={handleBackButton}
+        />
         <Title>닉네임 변경</Title>
       </Header>
       <PageContainer>
@@ -118,14 +124,11 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+  .backButton {
+    margin-left: 20px;
 
-export const BackButton = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-
-  cursor: pointer;
+    cursor: pointer;
+  }
 `;
 
 const Description = styled.div`

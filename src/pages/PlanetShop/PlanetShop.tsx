@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import back from '@/back.svg';
+import Back from '@/back.svg?react';
 import star from '@/star.svg';
 import planetA from '@/planetA.svg';
 import planetB from '@/planetB.svg';
@@ -18,7 +18,7 @@ function PlanetShop() {
     <PlanetShopArea>
       <PlanetShopHeader>
         <button onClick={handleBackNavigation}>
-          <img src={back} width={20} height={20} />
+          <Back width={20} height={20} fill="#EEEEEE" />
         </button>
         <h1>상점</h1>
         <StarCount>
