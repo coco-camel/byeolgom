@@ -73,7 +73,6 @@ export const reportContent = async (
   reportReason: string,
 ) => {
   try {
-    console.log(reportReason);
     const res = await authInstance.post(
       `/worries/${params.worryid}/comments/${params.commentid ? params.commentid + '/' : ''}report`,
       {
