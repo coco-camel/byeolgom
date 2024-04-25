@@ -1,8 +1,8 @@
 import { rankingStore } from '../../store/rankingStore';
 import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
-import back from '/assets/images/back.svg';
-import trophy from '/assets/images/trophy.svg';
+import back from '@/back.svg';
+import trophy from '@/trophy.svg';
 
 function RankingModal() {
   const { isOpen, closeModal } = rankingStore();

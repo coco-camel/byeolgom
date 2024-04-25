@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useShallow } from 'zustand/react/shallow';
-import check from '/assets/images/check.svg';
-import check_bad from '/assets/images/check_bad.svg';
+import check_bad from '@/check_bad.svg';
+import Check from '@/check.svg?react';
 
 function StateModal() {
   const modalRef = useRef<HTMLDivElement | null>(null);
@@ -18,25 +18,21 @@ function StateModal() {
   );
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (modalRef.current && !modalRef.current.contains(target)) {
-        setIsClosing(true);
-        setTimeout(() => closeStateModal(), 300);
-      }
+    const handleClick = () => {
+      setIsClosing(true);
+      setTimeout(() => closeStateModal(), 300);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClick);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mousedown', handleClick);
     };
   }, [closeStateModal]);
 
   return (
     <ModalContainer ref={modalRef} $isClosing={isClosing}>
       {!checkbox ? (
-        <img src={check} width={20} height={20} />
+        <Check fill="#e88439" />
       ) : (
         <img src={check_bad} width={20} height={20} />
       )}

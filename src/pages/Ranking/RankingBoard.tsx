@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import RankingList from './RankingList';
 import styled from 'styled-components';
-import threeDot from '/assets/images/threeDot.png';
+import threeDot from '@/threeDot.png';
 import { rankingStore } from '../../store/rankingStore';
 import { useShallow } from 'zustand/react/shallow';
 

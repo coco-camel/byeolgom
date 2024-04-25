@@ -5,7 +5,7 @@ import { getUserName } from '../../api/nickNameApi';
 import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
-import back from '/assets/images/back.svg';
+import back from '@/back.svg';
 
 function ChangeNickName() {
   const [nickname, setNickname] = useState('');

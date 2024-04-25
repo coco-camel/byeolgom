@@ -1,10 +1,10 @@
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { Link } from 'react-router-dom';
-import rocketA from '/assets/images/rocketA.svg';
-import rocketB from '/assets/images/rocketB.svg';
-import rocketC from '/assets/images/rocketC.svg';
-import star from '/assets/images/star.svg';
-import chevronRight from '/assets/images/chevronRight.svg';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
+import star from '@/star.svg';
+import chevronRight from '@/chevronRight.svg';
 import { forwardRef } from 'react';
 import SkeletonItem from '../../components/skeleton/SkeletonItem';
 import {

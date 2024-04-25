@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import back from '/assets/images/back.svg';
-import deleteWorry from '/assets/images/deleteWorry.svg';
-import report from '/assets/images/report.svg';
-import rocketA from '/assets/images/rocketA.svg';
-import rocketB from '/assets/images/rocketB.svg';
-import rocketC from '/assets/images/rocketC.svg';
-import sendLine from '/assets/images/sendLine.svg';
-import starNotice from '/assets/images/starNotice.svg';
-import takeStar from '/assets/images/takeStar.svg';
+import back from '@/back.svg';
+import deleteWorry from '@/deleteWorry.svg';
+import report from '@/report.svg';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
+import sendLine from '@/sendLine.svg';
+import starNotice from '@/starNotice.svg';
+import takeStar from '@/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
 import { sendContentReply } from '../../api/sendContentApi';
 import {

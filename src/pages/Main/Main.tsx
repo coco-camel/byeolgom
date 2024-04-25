@@ -1,6 +1,7 @@
 import PostArrived from '../../components/postArrived/PostArrived.tsx';
 import MyElement3D from '../../components/3dMotion/MyElement3D.tsx';
 import styled from 'styled-components';
+import MainPageButton from '../../components/button/MainPageButton.tsx';
 
 function Main() {
   return (
@@ -8,6 +9,8 @@ function Main() {
       <MainPage>
         <PostArrived />
         <MyElement3D />
+        {/* <MainPageButton $link="/!" /> */}
+        <MainPageButton link="/planetshop" item="shop" />
       </MainPage>
     </>
   );

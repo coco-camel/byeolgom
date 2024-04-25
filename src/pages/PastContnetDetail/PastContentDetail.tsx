@@ -2,10 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import PastContentComment from './PastContentComment';
-import back from '/assets/images/back.svg';
-import rocketA from '/assets/images/rocketA.svg';
-import rocketB from '/assets/images/rocketB.svg';
-import rocketC from '/assets/images/rocketC.svg';
+import back from '@/back.svg';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
 import { usePastContentDetail } from '../../hooks/queries/usePastContentDetail';
 import { useWhoseContentStore } from '../../store/whoseContentStore';
 import {

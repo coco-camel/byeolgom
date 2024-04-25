@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
-import chevronRight from '/assets/images/chevronRight.svg';
+import chevronRight from '@/chevronRight.svg';
 import { useThemeStore } from '../../store/themeStore';
 
 function SettingPage() {

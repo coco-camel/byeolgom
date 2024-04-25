@@ -1,3 +1,4 @@
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 interface StarsProps {
@@ -6,7 +7,7 @@ interface StarsProps {
   $delay?: string;
 }
 
-function StarBackGround() {
+const StarBackGround = React.memo(function StarBackGround() {
   return (
     <>
       <Stars $left="10%" $top="20%" $delay="0s" />
@@ -15,7 +16,7 @@ function StarBackGround() {
       <Stars $left="67%" $top="8%" $delay="1.5s" />
     </>
   );
-}
+});
 
 export default StarBackGround;
 

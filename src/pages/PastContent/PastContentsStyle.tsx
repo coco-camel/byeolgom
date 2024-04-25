@@ -127,8 +127,6 @@ export const LockerListWrap = styled.div`
     width: 90vw;
     height: 75vh;
   }
-  @media (max-width: 480px) {
-  }
 `;
 
 export const PastContentWrap = styled.div<{

@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
-import background from '/assets/images/background.svg';
+import background from '@/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
 import SendMyWorry from '../../pages/SendContent/SendMyWorry';

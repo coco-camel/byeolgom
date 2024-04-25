@@ -77,7 +77,7 @@ function PastContents() {
   });
 
   return (
-    <div>
+    <>
       <PastContentHeader $content={'center'}>
         <h1>보관함</h1>
       </PastContentHeader>
@@ -103,7 +103,7 @@ function PastContents() {
           ref={loadMoreRef}
         />
       </PastContentsContainer>
-    </div>
+    </>
   );
 }
 

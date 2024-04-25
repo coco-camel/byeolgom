@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
-import cancel from '/assets/images/cancel.svg';
+import cancel from '@/cancel.svg';
 import { sendStarReply } from '../../../api/sendContentApi';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';

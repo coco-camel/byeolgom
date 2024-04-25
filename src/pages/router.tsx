@@ -10,6 +10,7 @@ import SettingPage from './MyPage/SettingPage';
 import ChangeNickName from './MyPage/ChangeNickName';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
+import PlanetShop from './PlanetShop/PlanetShop';
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +69,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <ChangeNickName />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: '/planetshop',
+            element: (
+              <ProtectedRoute>
+                <PlanetShop />
               </ProtectedRoute>
             ),
           },
