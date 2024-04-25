@@ -32,19 +32,25 @@ function Footer({ openModal }: { openModal: () => void }) {
       <FooterInner>
         <Link to={'/'}>
           {clickedButton !== 'home' && (
-            <Home fill="black" onClick={() => handleButtonClick('home')} />
+            <Home fill="#EEEEEE" onClick={() => handleButtonClick('home')} />
           )}
           {clickedButton === 'home' && (
-            <HoverHome fill="black" onClick={() => handleButtonClick('home')} />
+            <HoverHome
+              fill="#EEEEEE"
+              onClick={() => handleButtonClick('home')}
+            />
           )}
         </Link>
         <Link to={'/pastcontents'}>
           {clickedButton !== 'locker' && (
-            <Locker fill="black" onClick={() => handleButtonClick('locker')} />
+            <Locker
+              fill="#EEEEEE"
+              onClick={() => handleButtonClick('locker')}
+            />
           )}
           {clickedButton === 'locker' && (
             <HoverLocker
-              fill="black"
+              fill="#EEEEEE"
               onClick={() => handleButtonClick('locker')}
             />
           )}
@@ -52,22 +58,25 @@ function Footer({ openModal }: { openModal: () => void }) {
         <div></div>
         <Link to={'/chat'}>
           {clickedButton !== 'chat' && (
-            <Chat fill="black" onClick={() => handleButtonClick('chat')} />
+            <Chat fill="#EEEEEE" onClick={() => handleButtonClick('chat')} />
           )}
           {clickedButton === 'chat' && (
-            <HoverChat fill="black" onClick={() => handleButtonClick('chat')} />
+            <HoverChat
+              fill="#EEEEEE"
+              onClick={() => handleButtonClick('chat')}
+            />
           )}
         </Link>
         <Link to={'/mypage'}>
           {clickedButton !== 'setting' && (
             <Setting
-              fill="black"
+              fill="#EEEEEE"
               onClick={() => handleButtonClick('setting')}
             />
           )}
           {clickedButton === 'setting' && (
             <HoverSetting
-              fill="black"
+              fill="#EEEEEE"
               onClick={() => handleButtonClick('setting')}
             />
           )}
