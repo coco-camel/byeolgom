@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import shop from '@/shop.svg';
+import Shop from '@/shop.svg?react';
 import { Link } from 'react-router-dom';
 interface MainPageBtnProps {
   link: string;
@@ -13,7 +13,7 @@ function MainPageButton({ link, item = '' }: MainPageBtnProps) {
   return (
     <Link to={link}>
       <PlanetWrap $item={item}>
-        <img src={item === 'shop' ? shop : ''} width={20} height={20} />
+        {item === 'shop' ? <Shop fill="#EEEEEE" /> : <div>g</div>}
       </PlanetWrap>
     </Link>
   );

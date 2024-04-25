@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
 import PastContentComment from './PastContentComment';
-import back from '@/back.svg';
+import Back from '@/back.svg?react';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
@@ -44,7 +44,7 @@ function PastContentDetail() {
         <div>
           <PastContentHeader $padding={'0 20px'}>
             <button onClick={handleBackNavigation}>
-              <img src={back} width={20} height={20} />
+              <Back width={20} height={20} fill="#EEEEEE" />
             </button>
           </PastContentHeader>
           <PastContentWrap

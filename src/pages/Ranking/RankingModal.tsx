@@ -1,8 +1,8 @@
 import { rankingStore } from '../../store/rankingStore';
 import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
-import back from '@/back.svg';
-import trophy from '@/trophy.svg';
+import Back from '@/back.svg?react';
+import Trophy from '@/trophy.svg?react';
 
 function RankingModal() {
   const { isOpen, closeModal } = rankingStore();
@@ -15,8 +15,14 @@ function RankingModal() {
       <AnimatedWrapper onClick={() => closeModal()}>
         <WhiteContainer>
           <RankingHeader>
-            <BackButton src={back} onClick={() => closeModal()} />
-            <img className="trophy" src={trophy} alt="Trophy" />
+            <Back
+              width={20}
+              height={20}
+              fill="#EEEEEE"
+              onClick={() => closeModal()}
+              className="backButton"
+            />
+            <Trophy fill="#EEEEEE" className="trophy" />
           </RankingHeader>
           <Title>고민을 많이 해결해준 순위</Title>
           <RankingBoard />
@@ -45,21 +51,17 @@ const RankingHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .backButton {
+    margin-left: 20px;
 
+    cursor: pointer;
+  }
   .trophy {
     height: 20px;
     flex: 1;
     text-align: center;
     padding-right: 40px;
   }
-`;
-
-export const BackButton = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-left: 20px;
-
-  cursor: pointer;
 `;
 
 const Title = styled.p`
