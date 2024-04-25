@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import locker from '@/locker.svg';
-import hoverLocker from '@/hoverLocker.svg';
-import home from '@/home.svg';
-import hoverHome from '@/hoverHome.svg';
 import rocketA from '@/rocketA.svg';
-import setting from '@/setting.svg';
-import hoverSetting from '@/hoverSetting.svg';
-import chat from '@/chat.svg';
-import hoverChat from '@/hoverChat.svg';
+import Home from '@/home.svg?react';
+import HoverHome from '@/hoverHome.svg?react';
+import Locker from '@/locker.svg?react';
+import HoverLocker from '@/hoverLocker.svg?react';
+import Chat from '@/chat.svg?react';
+import HoverChat from '@/hoverChat.svg?react';
+import Setting from '@/setting.svg?react';
+import HoverSetting from '@/hoverSetting.svg?react';
 import { Link } from 'react-router-dom';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
@@ -25,36 +25,52 @@ function Footer({ openModal }: { openModal: () => void }) {
   const handleButtonClick = (buttonName: string) => {
     if (clickedButton === buttonName) return;
     setClickedButton(buttonName);
-    if (buttonName === 'chat') {
-      alert('아직 개발 중인 기능입니다.');
-    }
   };
 
   return (
     <FooterArea>
       <FooterInner>
         <Link to={'/'}>
-          <HoverableImage
-            src={clickedButton === 'home' ? hoverHome : home}
-            onClick={() => handleButtonClick('home')}
-          />
+          {clickedButton !== 'home' && (
+            <Home fill="black" onClick={() => handleButtonClick('home')} />
+          )}
+          {clickedButton === 'home' && (
+            <HoverHome fill="black" onClick={() => handleButtonClick('home')} />
+          )}
         </Link>
         <Link to={'/pastcontents'}>
-          <HoverableImage
-            src={clickedButton === 'locker' ? hoverLocker : locker}
-            onClick={() => handleButtonClick('locker')}
-          />
+          {clickedButton !== 'locker' && (
+            <Locker fill="black" onClick={() => handleButtonClick('locker')} />
+          )}
+          {clickedButton === 'locker' && (
+            <HoverLocker
+              fill="black"
+              onClick={() => handleButtonClick('locker')}
+            />
+          )}
         </Link>
         <div></div>
-        <HoverableImage
-          src={clickedButton === 'chat' ? hoverChat : chat}
-          onClick={() => handleButtonClick('chat')}
-        />
+        <Link to={'/chat'}>
+          {clickedButton !== 'chat' && (
+            <Chat fill="black" onClick={() => handleButtonClick('chat')} />
+          )}
+          {clickedButton === 'chat' && (
+            <HoverChat fill="black" onClick={() => handleButtonClick('chat')} />
+          )}
+        </Link>
         <Link to={'/mypage'}>
-          <HoverableImage
-            src={clickedButton === 'setting' ? hoverSetting : setting}
-            onClick={() => handleButtonClick('setting')}
-          />
+          {clickedButton !== 'setting' && (
+            <Setting
+              fill="black"
+              onClick={() => handleButtonClick('setting')}
+            />
+          )}
+          {clickedButton === 'setting' && (
+            <HoverSetting
+              fill="black"
+              onClick={() => handleButtonClick('setting')}
+            />
+          )}
         </Link>
         <Sendwrap>
           <StyledImg
@@ -97,13 +113,6 @@ const FooterInner = styled.div`
   padding: 15px 15px;
   gap: 20px;
   background: #2f4768;
-`;
-
-const HoverableImage = styled.img`
-  transition: transform 0.3s ease-in-out;
-  &:hover {
-    transform: scale(1.15);
-  }
 `;
 
 const StyledImg = styled.img`
