@@ -1,134 +1,124 @@
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import Back from '@/back.svg?react';
-import star from '@/star.svg';
+import { useState, useEffect } from 'react';
 import planetA from '@/planetA.svg';
 import planetB from '@/planetB.svg';
 import planetC from '@/planetC.svg';
 import planetD from '@/planetD.svg';
 import Check from '@/check.svg?react';
+import PlanetShopHeader from './PlanetShopHeader';
+import {
+  Button,
+  PlanetItem,
+  PlanetShopArea,
+  PlanetShopContainer,
+  PlanetStatecontainer,
+} from './planetShopStyle';
+import { useGetPlanets } from '../../hooks/queries/useGetPlanets';
+import { usePlanetShopStore } from '../../store/planetShop';
+import { useShallow } from 'zustand/react/shallow';
+import star from '@/star.svg';
+import { SkeletonDiv } from '../../components/skeleton/skeletonStyle';
+import { useAuthStore } from '../../store/authStore';
+import { buyPlanet, changePlanet } from '../../api/planetShopApi';
 
 function PlanetShop() {
-  const planets = [planetA, planetB, planetC, planetD];
-  const navigate = useNavigate();
-  const handleBackNavigation = () => {
-    navigate(-1);
+  const planets = [
+    [planetA, 'A', 0],
+    [planetB, 'B', 1],
+    [planetC, 'C', 3],
+    [planetD, 'D', 5],
+  ];
+
+  const [planetsState, setPlanetsState, setAddPlanets] = usePlanetShopStore(
+    useShallow((state) => [
+      state.planetsState,
+      state.setPlanetsState,
+      state.setAddPlanets,
+    ]),
+  );
+  const [userPlanet, setUserPlanet] = useAuthStore(
+    useShallow((state) => [state.userPlanet, state.setUserPlanet]),
+  );
+
+  const [selectedPlanet, setSelectedPlanet] = useState('');
+
+  useEffect(() => {
+    setSelectedPlanet(userPlanet ?? '');
+  }, [userPlanet]);
+
+  const [buttonLabel, setButtonLabel] = useState('');
+
+  const handlePlanetChangeClick = (planet: string) => {
+    if (buttonLabel === '사용하기') {
+      changePlanet(planet);
+      setUserPlanet(planet);
+    }
+    if (buttonLabel === '구매하기') {
+      buyPlanet(planet);
+      setAddPlanets(planet);
+      setUserPlanet(planet);
+    }
   };
+
+  const handlePlanetClick = (planet: string) => {
+    setSelectedPlanet(planet);
+  };
+
+  useEffect(() => {
+    if (planetsState && planetsState.includes(selectedPlanet)) {
+      if (userPlanet === selectedPlanet) {
+        setButtonLabel('사용중');
+      } else {
+        setButtonLabel('사용하기');
+      }
+    } else {
+      setButtonLabel('구매하기');
+    }
+  }, [planetsState, selectedPlanet, userPlanet]);
+
+  const getPlanetsQuery = useGetPlanets();
+
+  useEffect(() => {
+    setPlanetsState(getPlanetsQuery.data);
+  }, [getPlanetsQuery.data, setPlanetsState]);
+
   return (
     <PlanetShopArea>
-      <PlanetShopHeader>
-        <button onClick={handleBackNavigation}>
-          <Back width={20} height={20} fill="#EEEEEE" />
-        </button>
-        <h1>상점</h1>
-        <StarCount>
-          <img src={star} alt="Count Rocket" />
-          <span> x {}</span>
-        </StarCount>
-      </PlanetShopHeader>
+      <PlanetShopHeader />
       <PlanetShopContainer>
         {planets.map((planet, index) => (
-          <PlanetItem key={index}>
-            <img src={planet} />
-            <PlanetStatecontainer>
-              <Check fill="white" />
-              <span>보유중</span>
-            </PlanetStatecontainer>
+          <PlanetItem
+            key={index}
+            onClick={() => handlePlanetClick(String(planet[1]))}
+            $isSelected={selectedPlanet === planet[1]}
+          >
+            <img src={String(planet[0])} />
+            {getPlanetsQuery.isPending ? (
+              <PlanetStatecontainer>
+                <SkeletonDiv $width="50px" $height="20px" />
+              </PlanetStatecontainer>
+            ) : planetsState && planetsState.includes(String(planet[1])) ? (
+              <PlanetStatecontainer>
+                <Check fill="white" />
+                <span>보유중</span>
+              </PlanetStatecontainer>
+            ) : (
+              <PlanetStatecontainer>
+                <img src={star} height={24} />
+                <span>x &nbsp; {planet[2]}</span>
+              </PlanetStatecontainer>
+            )}
           </PlanetItem>
         ))}
       </PlanetShopContainer>
-      <Button>구매하기</Button>
+      <Button
+        onClick={() => handlePlanetChangeClick(selectedPlanet)}
+        disabled={userPlanet === selectedPlanet}
+        $isUsing={userPlanet === selectedPlanet}
+      >
+        {buttonLabel}
+      </Button>
     </PlanetShopArea>
   );
 }
 
 export default PlanetShop;
-const PlanetStatecontainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  span {
-    font-size: 12px;
-    padding: 0 5px;
-  }
-`;
-
-const PlanetItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  &:hover {
-    border-radius: 10px;
-    box-shadow: inset 0 0 0 2px white;
-  }
-`;
-
-const PlanetShopContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  padding: 0 20px;
-`;
-
-const Button = styled.button`
-  width: 145px;
-  height: 35px;
-  min-height: 35px;
-  font-size: 12px;
-  color: #2a2a2a;
-  left: 50%;
-  background-color: #eeeeee;
-  border-radius: 30px;
-  cursor: pointer;
-  &:hover {
-    color: #ffffff;
-    background-color: #e88439;
-  }
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 100px;
-`;
-
-const PlanetShopArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: calc(100% - 90px);
-`;
-const PlanetShopHeader = styled.div`
-  height: 54px;
-  min-height: 54px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  h1 {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 16px;
-    @media (max-width: 640px) {
-      font-size: 1.1rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 1rem;
-    }
-  }
-  button {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const StarCount = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

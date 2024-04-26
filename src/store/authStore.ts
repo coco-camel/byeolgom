@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 
 interface AuthState {
@@ -5,11 +6,18 @@ interface AuthState {
   setLoginState: () => void;
   setLogoutState: () => void;
   userId: number | null;
+  userPlanet: string | null;
   setUserId: (id: number | null) => void;
+  setUserPlanet: (planet: string | null) => void;
+}
+interface CustomJwtPayload {
+  planet: string;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   isLoggedIn: false,
+  userId: null,
+  userPlanet: null,
 
   setLoginState: () =>
     set(() => ({
@@ -21,8 +29,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       isLoggedIn: false,
     })),
 
-  userId: null,
   setUserId: (id) => set({ userId: id }),
+  setUserPlanet: (planet) => set({ userPlanet: planet }),
 }));
 
 function initializeUser() {
@@ -30,6 +38,11 @@ function initializeUser() {
   accessToken
     ? useAuthStore.getState().setLoginState()
     : useAuthStore.getState().setLogoutState();
+  if (accessToken) {
+    const decoded: CustomJwtPayload = jwtDecode(accessToken.slice(7));
+    useAuthStore.getState().setUserPlanet(decoded.planet);
+    console.log(decoded.planet);
+  }
 }
 
 initializeUser();

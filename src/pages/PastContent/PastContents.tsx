@@ -12,7 +12,7 @@ import {
   LockerTabWrap,
   PastContentHeader,
   PastContentsContainer,
-} from './PastContentsStyle';
+} from './pastContentsStyle';
 
 function PastContents() {
   const [whoseContent, setWhoseContentState] = useWhoseContentStore(

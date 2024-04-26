@@ -16,7 +16,7 @@ import {
   PastContentContainer,
   PastContentHeader,
   PastContentWrap,
-} from '../PastContent/PastContentsStyle';
+} from '../PastContent/pastContentsStyle';
 
 function PastContentDetail() {
   const rocket: { [key: string]: string } = {
