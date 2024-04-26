@@ -9,8 +9,6 @@ function createAxiosInstance() {
 export const instance = createAxiosInstance();
 export const authInstance = createAxiosInstance();
 
-// Authorization 헤더 설정
-
 // 인증 요청 인터셉터
 authInstance.interceptors.request.use(
   (config) => {
@@ -52,8 +50,6 @@ authInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-// 로그인 페이지로 리다이렉트
 
 // 액세스 토큰 갱신
 export const refreshAccessToken = async () => {

@@ -31,7 +31,7 @@ function Header() {
     <HeaderArea>
       <HeaderInner>
         <button onClick={openModal}>
-          <Trophy fill="#EEEEEE" />
+          <Trophy fill="#FED56B" />
         </button>
         <WorryCount>
           {isLoggedIn ? (
@@ -55,6 +55,7 @@ const WorryCount = styled.div`
   align-items: center;
   span {
     padding-left: 10px;
+    color: #eeeeee;
   }
 `;
 

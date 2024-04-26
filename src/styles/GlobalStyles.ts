@@ -80,7 +80,7 @@ body {
 	background-image: url("/src/assets/images/backGroundTest.svg");
 	background-size: cover;
 	/* background-color: #2f3438; */
-	color: white;
+	color: ${({ theme }) => theme.fontColor};
 }
 `;
 
