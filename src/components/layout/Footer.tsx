@@ -12,11 +12,13 @@ import HoverSetting from '@/hoverSetting.svg?react';
 import { Link } from 'react-router-dom';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useThemeStore } from '../../store/themeStore';
 
 function Footer({ openModal }: { openModal: () => void }) {
   const [clickedButton, setClickedButton] = useState<string>('');
   const { worryCount } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
+  const { isDarkMode } = useThemeStore();
 
   useEffect(() => {
     setClickedButton('home');
@@ -27,24 +29,26 @@ function Footer({ openModal }: { openModal: () => void }) {
     setClickedButton(buttonName);
   };
 
+  const theme = isDarkMode ? '#eee' : '#000239';
+
   return (
     <FooterArea>
       <FooterInner>
         <Link to={'/'}>
           {clickedButton !== 'home' && (
-            <Home fill="black" onClick={() => handleButtonClick('home')} />
+            <Home fill={theme} onClick={() => handleButtonClick('home')} />
           )}
           {clickedButton === 'home' && (
-            <HoverHome fill="black" onClick={() => handleButtonClick('home')} />
+            <HoverHome fill={theme} onClick={() => handleButtonClick('home')} />
           )}
         </Link>
         <Link to={'/pastcontents'}>
           {clickedButton !== 'locker' && (
-            <Locker fill="black" onClick={() => handleButtonClick('locker')} />
+            <Locker fill={theme} onClick={() => handleButtonClick('locker')} />
           )}
           {clickedButton === 'locker' && (
             <HoverLocker
-              fill="black"
+              fill={theme}
               onClick={() => handleButtonClick('locker')}
             />
           )}
@@ -52,22 +56,22 @@ function Footer({ openModal }: { openModal: () => void }) {
         <div></div>
         <Link to={'/chat'}>
           {clickedButton !== 'chat' && (
-            <Chat fill="black" onClick={() => handleButtonClick('chat')} />
+            <Chat fill={theme} onClick={() => handleButtonClick('chat')} />
           )}
           {clickedButton === 'chat' && (
-            <HoverChat fill="black" onClick={() => handleButtonClick('chat')} />
+            <HoverChat fill={theme} onClick={() => handleButtonClick('chat')} />
           )}
         </Link>
         <Link to={'/mypage'}>
           {clickedButton !== 'setting' && (
             <Setting
-              fill="black"
+              fill={theme}
               onClick={() => handleButtonClick('setting')}
             />
           )}
           {clickedButton === 'setting' && (
             <HoverSetting
-              fill="black"
+              fill={theme}
               onClick={() => handleButtonClick('setting')}
             />
           )}
@@ -112,7 +116,7 @@ const FooterInner = styled.div`
   width: 100%;
   padding: 15px 15px;
   gap: 20px;
-  background: #2f4768;
+  background: ${({ theme }) => theme.footerArea};
 `;
 
 const StyledImg = styled.img`

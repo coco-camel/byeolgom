@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
 import RankingList from './RankingList';
 import styled from 'styled-components';
-import threeDot from '@/threeDot.png';
+import ThreeDot from '@/threeDot.svg?react';
 import { rankingStore } from '../../store/rankingStore';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -41,12 +41,9 @@ function RankingBoard() {
                 isCurrentUser={isCurrentUser(rank.userId)}
               />
             ))}
-        <img
-          className="threeDot"
-          src={threeDot}
-          alt="ThreeDot"
-          color="#B5B5BD"
-        />
+        <IconBox>
+          <ThreeDot fill="#b5b5bd" />
+        </IconBox>
         {RankingBoardQuery.data && RankingBoardQuery.data.length > 1 && (
           <RankingList
             rank={
@@ -95,12 +92,10 @@ const RankingWrapper = styled.div`
   &:last-child {
     border-bottom: none;
   }
+`;
 
-  .threeDot {
-    width: 20%;
-    margin: 0 auto;
-    padding-top: 10px;
-  }
+const IconBox = styled.div`
+  padding-top: 15px;
 `;
 
 const Rank = styled.p`

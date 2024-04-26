@@ -10,13 +10,13 @@ export const Button = styled.button`
   border: none;
   cursor: pointer;
   padding-bottom: 15px;
-  color: #313131;
+  color: #b0b0b0;
   width: 50%;
-  border-bottom: 2px solid #313131;
+  border-bottom: 2px solid #b0b0b0;
 
   &.active {
     color: #e2e2e2;
-    border-bottom: 2px solid #e2e2e2;
+    border-bottom: 2px solid #eee;
   }
   @media (max-width: 640px) {
     font-size: 1.1rem;
@@ -45,6 +45,7 @@ export const PastContentHeader = styled.div<{
   padding: ${(props) => props.$padding || '0'};
   h1 {
     font-size: 16px;
+    color: #eee;
     @media (max-width: 640px) {
       font-size: 1.1rem;
     }
@@ -147,7 +148,12 @@ export const PastContentWrap = styled.div<{
   }
 `;
 
-export const CommentContent = styled.div<{ $count: number }>`
+interface CommentContentProps {
+  $count: number;
+  $theme: boolean;
+}
+
+export const CommentContent = styled.div<CommentContentProps>`
   padding: 10px;
   width: 70%;
   margin-top: 15px;
@@ -157,8 +163,12 @@ export const CommentContent = styled.div<{ $count: number }>`
   font-size: 12px;
   background-color: ${(props) =>
     props.$count % 2 === 0
-      ? 'rgba(18, 18, 18, 0.6)'
-      : 'rgba(47, 71, 104, 0.6)'};
+      ? props.$theme
+        ? 'rgba(0, 0, 0, 0.6)'
+        : 'rgba(142, 180, 238, 0.6)'
+      : props.$theme
+        ? 'rgba(47, 71, 104, 0.6)'
+        : 'rgba(255,255,255,0.7)'};
   margin-left: ${(props) => (props.$count % 2 === 0 ? '0' : 'auto')};
   margin-right: ${(props) => (props.$count % 2 === 0 ? 'auto' : '0')};
   @media (max-width: 640px) {
@@ -168,6 +178,7 @@ export const CommentContent = styled.div<{ $count: number }>`
     font-size: 12px;
   }
 `;
+
 export const CommentLayOut = styled.div`
   display: flex;
   flex-direction: column;

@@ -85,7 +85,7 @@ const ModalContainer = styled.div<{ $isClosing: boolean }>`
   justify-content: center;
   width: 244px;
   height: 45px;
-  background-color: rgba(12, 12, 12, 0.7);
+  background-color: ${({ theme }) => theme.StateModal};
   border-radius: 20px;
   position: absolute;
   bottom: 14%;

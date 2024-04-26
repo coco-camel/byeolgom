@@ -3,11 +3,16 @@ import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
 import Back from '@/back.svg?react';
 import Trophy from '@/trophy.svg?react';
+import { useThemeStore } from '../../store/themeStore';
 
 function RankingModal() {
   const { isOpen, closeModal } = rankingStore();
+  const { isDarkMode } = useThemeStore();
 
   if (!isOpen) return null;
+
+  const backbutton = isDarkMode ? '#eee' : '#000239';
+  const trophyColor = isDarkMode ? '#eee' : '#000239';
 
   return (
     <>
@@ -18,11 +23,11 @@ function RankingModal() {
             <Back
               width={20}
               height={20}
-              fill="#EEEEEE"
+              fill={backbutton}
               onClick={() => closeModal()}
               className="backButton"
             />
-            <Trophy fill="#EEEEEE" className="trophy" />
+            <Trophy fill={trophyColor} className="trophy" />
           </RankingHeader>
           <Title>고민을 많이 해결해준 순위</Title>
           <RankingBoard />
@@ -67,7 +72,6 @@ const RankingHeader = styled.div`
 const Title = styled.p`
   position: relative;
   top: 16%;
-  color: white;
 `;
 
 export const ModalOverlay = styled.div`
@@ -77,7 +81,8 @@ export const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: none;
-  z-index: 150;
+  background-color: ${({ theme }) => theme.ModalOverlay};
+  z-index: 90;
 `;
 
 const AnimatedWrapper = styled.div`
@@ -95,7 +100,7 @@ const WhiteContainer = styled.div`
   transform: translateY(-0px);
   border-bottom-left-radius: 35px;
   border-bottom-right-radius: 35px;
-  background-color: #1e2734;
+  background-color: ${({ theme }) => theme.ModalBox};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

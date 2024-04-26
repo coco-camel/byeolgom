@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { Comment } from '../../types/Comment.interface';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
-import { CommentContent } from '../PastContent/pastContentsStyle';
+import { CommentContent } from '../PastContent/PastContentsStyle';
+import { useThemeStore } from '../../store/themeStore';
 
 function PastContentComment({
   comment,
@@ -17,9 +18,13 @@ function PastContentComment({
         ? 0
         : 1
       : $count;
+
+  const isDarkMode = useThemeStore((state) => state.isDarkMode);
   return (
     <div>
-      <CommentContent $count={initialCount}>{comment.content}</CommentContent>
+      <CommentContent $theme={isDarkMode} $count={initialCount}>
+        {comment.content}
+      </CommentContent>
       {comment.children &&
         comment.children.map((child, index) => (
           <PastContentComment

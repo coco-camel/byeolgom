@@ -115,6 +115,7 @@ const Title = styled.p`
   padding-right: 30px;
   font-size: 16px;
   font-weight: 300;
+  color: #eee;
 `;
 
 const Header = styled.div`
@@ -133,8 +134,7 @@ const Header = styled.div`
 
 const Description = styled.div`
   position: relative;
-
-  color: #fff;
+  color: #eee;
   margin: 20px 0;
   h1 {
     font-size: 16px;
@@ -170,7 +170,6 @@ const ButtonWrapper = styled.div`
 
 const SubmitButton = styled.button`
   background: ${(props) => (props.disabled ? '#ccc' : '#EEEEEE')};
-  color: #000;
   border: none;
   border-radius: 25px;
   padding: 10px 40px;

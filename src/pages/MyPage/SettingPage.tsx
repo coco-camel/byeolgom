@@ -125,6 +125,7 @@ const MyPageHeader = styled.div`
   justify-content: center;
   p {
     font-size: 16px;
+    color: #eee;
     font-weight: 300;
     @media (max-width: 640px) {
       font-size: 1.1rem;
@@ -191,8 +192,8 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   ${(props) =>
     props.$isDark &&
     css`
-      background-color: #abcd53;
-      box-shadow: 0 0 5px 0 #abcd53;
+      background-color: #e88439;
+      box-shadow: 0 0 5px 0 #e88439;
     `}
 
   &:after {
