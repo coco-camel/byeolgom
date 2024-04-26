@@ -6,7 +6,6 @@ export const PastContentsContainer = styled.div`
 `;
 export const Button = styled.button`
   font-size: 16px;
-  font-weight: bold;
   border: none;
   cursor: pointer;
   padding-bottom: 15px;
@@ -43,7 +42,7 @@ export const PastContentHeader = styled.div<{
   align-items: center;
   justify-content: ${(props) => props.$content || 'none'};
   padding: ${(props) => props.$padding || '0'};
-  h1 {
+  span {
     font-size: 16px;
     color: #eee;
     @media (max-width: 640px) {

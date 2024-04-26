@@ -40,8 +40,8 @@ function PastContents() {
     isPending,
   } = useInfiniteQuery({
     queryKey: ['worries', whoseContent],
-    queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
-    initialPageParam: 0,
+    queryFn: ({ pageParam = 1 }) => getPastContent(pageParam),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.result.length === 0) {
         return undefined;
@@ -79,7 +79,7 @@ function PastContents() {
   return (
     <>
       <PastContentHeader $content={'center'}>
-        <h1>보관함</h1>
+        <span>보관함</span>
       </PastContentHeader>
       <LockerTabWrap>
         <Button

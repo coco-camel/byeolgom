@@ -65,8 +65,9 @@ function PlanetShop() {
       buyPlanet(planet);
       deleteStarCount(planetCost);
       queryClient.invalidateQueries({
-        queryKey: ['starCount'],
+        queryKey: [['starCount'], ['getPlanets']],
       });
+
       setAddPlanets(planet);
       setUserPlanet(planet);
     }
