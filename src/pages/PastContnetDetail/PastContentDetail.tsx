@@ -6,11 +6,13 @@ import Back from '@/back.svg?react';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
+import takeStar from '@/takeStar.svg';
 import { usePastContentDetail } from '../../hooks/queries/usePastContentDetail';
 import { useWhoseContentStore } from '../../store/whoseContentStore';
 import {
   CommentLayOut,
   CommentListWrap,
+  CommentRocketState,
   PastContentContainer,
   PastContentHeader,
   PastContentWrap,
@@ -66,6 +68,21 @@ function PastContentDetail() {
               {pastContentDetailQuery.data.comments.map((item, index) => (
                 <PastContentComment key={index} comment={item} />
               ))}
+              {pastContentDetailQuery.data.isSolved ? (
+                <CommentRocketState $text={false}>
+                  <img src={takeStar} width={170} height={50} />
+                </CommentRocketState>
+              ) : pastContentDetailQuery.data.hasReports ? (
+                <CommentRocketState $text={true}>
+                  폭파(신고) 당한 로켓이에요!!
+                </CommentRocketState>
+              ) : (
+                pastContentDetailQuery.data.deletedAt !== null && (
+                  <CommentRocketState $text={true}>
+                    어딘가로 사라진 로켓이에요...ㅠㅠ
+                  </CommentRocketState>
+                )
+              )}
             </CommentListWrap>
           </CommentLayOut>
         </div>

@@ -35,6 +35,7 @@ export const worriesDetail = async (params: WorriesDetailParams) => {
     const res = await authInstance.get<PastContent>(
       `/${params.whosecontent}/${params.worryid}`,
     );
+    console.log(res);
     return res.data;
   } catch (error) {
     throw new Error('');
