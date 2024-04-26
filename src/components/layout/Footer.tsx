@@ -96,7 +96,7 @@ const FooterInner = styled.div`
   width: 100%;
   padding: 15px 15px;
   gap: 20px;
-  background: #2f4768;
+  background: ${({ theme }) => theme.footerArea};
 `;
 
 const HoverableImage = styled.img`

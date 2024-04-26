@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
-import background from '@/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
 import SendMyWorry from '../../pages/SendContent/SendMyWorry';
@@ -81,7 +80,7 @@ const MainWrap = styled.div`
   width: 320px;
   height: 568px;
   min-width: 320px;
-  background-image: url(${background});
+  background-image: ${({ theme }) => theme.bgImage};
   background-size: cover;
   overflow: hidden;
   z-index: 0;
