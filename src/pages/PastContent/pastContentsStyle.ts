@@ -223,19 +223,21 @@ export const CommentRocketState = styled.div<CommentRocketStateProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
   width: 100%;
   background-color: ${({ $text }) =>
-    $text ? 'rgba(255, 255, 255, 0.1)' : 'inherit'};
+    $text ? 'rgba(255, 255, 255, 0.2)' : 'inherit'};
   margin: ${({ $text }) => ($text ? '20px auto' : '10px auto')};
   padding: ${({ $text }) => ($text ? '10px' : '0')};
   border-radius: ${({ $text }) => ($text ? '10px' : '0')};
 
-  @media (max-width: 640px) {
-    font-size: 14px;
-  }
-
-  @media (max-width: 480px) {
+  span {
     font-size: 12px;
+    @media (max-width: 640px) {
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+    }
   }
 `;

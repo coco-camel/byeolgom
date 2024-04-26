@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Comment } from '../../types/Comment.interface';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
-import { CommentContent } from '../PastContent/PastContentsStyle';
+import { CommentContent } from '../PastContent/pastContentsStyle';
 import { useThemeStore } from '../../store/themeStore';
 
 function PastContentComment({

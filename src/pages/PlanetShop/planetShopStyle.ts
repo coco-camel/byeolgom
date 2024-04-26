@@ -111,6 +111,6 @@ export const StarCount = styled.div`
   align-items: center;
   justify-content: center;
   span {
-    color: '#eeeeee';
+    color: #eeeeee;
   }
 `;

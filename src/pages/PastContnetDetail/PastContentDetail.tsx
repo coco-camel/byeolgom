@@ -74,12 +74,12 @@ function PastContentDetail() {
                 </CommentRocketState>
               ) : pastContentDetailQuery.data.hasReports ? (
                 <CommentRocketState $text={true}>
-                  폭파(신고) 당한 로켓이에요!!
+                  <span>폭파(신고) 당한 로켓이에요!!</span>
                 </CommentRocketState>
               ) : (
                 pastContentDetailQuery.data.deletedAt !== null && (
                   <CommentRocketState $text={true}>
-                    어딘가로 사라진 로켓이에요...ㅠㅠ
+                    <span>어딘가로 사라진 로켓이에요...ㅠㅠ</span>
                   </CommentRocketState>
                 )
               )}
