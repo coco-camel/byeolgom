@@ -179,6 +179,12 @@ export const CommentContent = styled.div<CommentContentProps>`
   }
 `;
 
+export const CommentLayOut = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
 export const CommentListWrap = styled.div`
   width: 100%;
   height: 370px;
