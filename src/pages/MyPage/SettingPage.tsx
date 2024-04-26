@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
 import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
+import toggleBg from '@/toggleBg.png';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -59,7 +60,9 @@ function SettingPage() {
             <Theme>
               <DarkModeTitle>다크모드</DarkModeTitle>
               <DarkModeSwitch onClick={toggleTheme}>
-                <ToggleSwitch $isDark={isDarkMode} />{' '}
+                <ToggleSwitch $isDark={isDarkMode}>
+                  <ToggleBG src={toggleBg} $isDark={isDarkMode} />
+                </ToggleSwitch>
               </DarkModeSwitch>
             </Theme>
           </Wrapper>
@@ -170,12 +173,31 @@ const SubTitle = styled.p`
 const DarkModeSwitch = styled.div`
   border-radius: 10px;
   margin-top: 10px;
+  overflow: hidden;
 
   p {
     color: white;
     font-size: 18px;
     font-weight: 500;
   }
+`;
+
+const moveUpwards = keyframes`
+from {
+transform: translateY(-50%);
+}
+to {
+transform: translateY(0);
+}
+`;
+
+const moveDownwards = keyframes`
+from {
+transform: translateY(0);
+}
+to {
+transform: translateY(-50%);
+}
 `;
 
 const ToggleSwitch = styled.div<{ $isDark: boolean }>`
@@ -185,18 +207,10 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   border-radius: 30px;
   position: relative;
   cursor: pointer;
-  transition:
-    background-color 0.3s,
-    box-shadow 0.3s;
-
-  ${(props) =>
-    props.$isDark &&
-    css`
-      background-color: #e88439;
-      box-shadow: 0 0 5px 0 #e88439;
-    `}
 
   &:after {
+    background-image: url('/src/assets/images/sun.png');
+    background-size: cover;
     content: '';
     position: absolute;
     top: 1px;
@@ -205,14 +219,24 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
     height: 15px;
     background-color: white;
     border-radius: 50%;
-    transition: left 0.3s;
+    transition: left 0.5s;
 
     ${(props) =>
       props.$isDark &&
       css`
+        background-image: url('/src/assets/images/moon.png');
+        background-size: cover;
         left: 16px;
       `}
   }
+`;
+
+const ToggleBG = styled.img<{ $isDark: boolean }>`
+  width: 32px;
+  height: auto;
+
+  animation: ${(props) => (props.$isDark ? moveUpwards : moveDownwards)} 0.5s
+    forwards;
 `;
 
 const LogoutButton = styled.button`
