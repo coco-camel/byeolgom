@@ -1,30 +1,18 @@
 import PostArrived from '../../components/postArrived/PostArrived.tsx';
 import MyElement3D from '../../components/3dMotion/MyElement3D.tsx';
-import styled from 'styled-components';
 import MainPageButton from '../../components/button/MainPageButton.tsx';
+import { refreshAccessToken } from '../../api/api.ts';
 
 function Main() {
+  refreshAccessToken();
   return (
     <>
-      <MainPage>
-        <PostArrived />
-        <MyElement3D />
-        {/* <MainPageButton $link="/!" /> */}
-        <MainPageButton link="/planetshop" item="shop" />
-      </MainPage>
+      <PostArrived />
+      <MyElement3D />
+      {/* <MainPageButton $link="/!" /> */}
+      <MainPageButton link="/planetshop" item="shop" />
     </>
   );
 }
 
 export default Main;
-
-const MainPage = styled.div`
-  margin-left: 30px;
-  color: white;
-
-  .title {
-    font-weight: bold;
-    font-size: 24px;
-    margin-top: 250px;
-  }
-`;

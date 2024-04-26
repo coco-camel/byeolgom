@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
-import chevronRight from '@/chevronRight.svg';
+import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
 
 function SettingPage() {
@@ -47,7 +47,12 @@ function SettingPage() {
               <ProfilePic />
               <NicknameAndChange>
                 <Nickname>{NickName?.nickname || '익명'}</Nickname>
-                <ChangeArrow onClick={handleNicknameChange} />
+                <ChevronRight
+                  width={20}
+                  height={20}
+                  fill="#EEEEEE"
+                  onClick={handleNicknameChange}
+                />
               </NicknameAndChange>
             </ProfileSection>
             <SubTitle>테마</SubTitle>
@@ -113,16 +118,6 @@ const Nickname = styled.p`
   color: white;
 `;
 
-const ChangeArrow = styled.div`
-  width: 10px;
-  height: 20px;
-  padding-right: 20px;
-  cursor: pointer;
-  background-image: url(${chevronRight});
-  background-size: cover;
-  background-position: center;
-`;
-
 const MyPageHeader = styled.div`
   height: 54px;
   display: flex;
@@ -130,6 +125,7 @@ const MyPageHeader = styled.div`
   justify-content: center;
   p {
     font-size: 16px;
+    color: #eee;
     font-weight: 300;
     @media (max-width: 640px) {
       font-size: 1.1rem;
@@ -196,8 +192,8 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   ${(props) =>
     props.$isDark &&
     css`
-      background-color: #abcd53;
-      box-shadow: 0 0 5px 0 #abcd53;
+      background-color: #e88439;
+      box-shadow: 0 0 5px 0 #e88439;
     `}
 
   &:after {

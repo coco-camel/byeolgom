@@ -7,8 +7,6 @@ import { lightTheme, darkTheme } from './styles/Theme';
 
 function App() {
   const { isDarkMode } = useThemeStore();
-  console.log(isDarkMode);
-
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
   return (
