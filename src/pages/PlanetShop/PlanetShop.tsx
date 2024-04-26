@@ -19,6 +19,8 @@ import star from '@/star.svg';
 import { SkeletonDiv } from '../../components/skeleton/skeletonStyle';
 import { useAuthStore } from '../../store/authStore';
 import { buyPlanet, changePlanet } from '../../api/planetShopApi';
+import { useQueryClient } from '@tanstack/react-query';
+import { useStarCountStore } from '../../store/starConuntStore';
 
 function PlanetShop() {
   const planets = [
@@ -38,7 +40,9 @@ function PlanetShop() {
   const [userPlanet, setUserPlanet] = useAuthStore(
     useShallow((state) => [state.userPlanet, state.setUserPlanet]),
   );
-
+  const deleteStarCount = useStarCountStore(
+    (state) => state.setDeleteStarCount,
+  );
   const [selectedPlanet, setSelectedPlanet] = useState('');
 
   useEffect(() => {
@@ -47,13 +51,22 @@ function PlanetShop() {
 
   const [buttonLabel, setButtonLabel] = useState('');
 
+  const queryClient = useQueryClient();
+
   const handlePlanetChangeClick = (planet: string) => {
+    const planetCostFind = planets.find((p) => p[1] === planet);
+    const planetCost = planetCostFind ? Number(planetCostFind[2]) : 0;
+
     if (buttonLabel === '사용하기') {
       changePlanet(planet);
       setUserPlanet(planet);
     }
     if (buttonLabel === '구매하기') {
       buyPlanet(planet);
+      deleteStarCount(planetCost);
+      queryClient.invalidateQueries({
+        queryKey: ['starCount'],
+      });
       setAddPlanets(planet);
       setUserPlanet(planet);
     }

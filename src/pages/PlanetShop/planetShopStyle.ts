@@ -9,6 +9,7 @@ export const PlanetStatecontainer = styled.div`
   span {
     font-size: 12px;
     padding: 0 5px;
+    color: #eeeeee;
   }
 `;
 
@@ -23,6 +24,7 @@ export const PlanetItem = styled.div<PlanetItemProps>`
   align-items: center;
   padding: 20px;
   border-radius: 10px;
+  max-height: 180px;
   box-shadow: ${({ $isSelected }) =>
     $isSelected ? 'inset 0 0 0 2px #e88439' : 'none'};
   &:hover {
@@ -32,22 +34,19 @@ export const PlanetItem = styled.div<PlanetItemProps>`
 
 export const PlanetShopContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
   padding: 0 20px;
   width: 100%;
-  height: calc(100% - 100px);
-  overflow-x: auto;
+  overflow: auto;
 
-  // 스크롤바 숨기기 (Webkit 브라우저용)
   &::-webkit-scrollbar {
     display: none;
   }
 
-  // 스크롤바 숨기기 (Firefox 브라우저용)
   scrollbar-width: none;
-  -ms-overflow-style: none; // IE, Edge 브라우저용
+  -ms-overflow-style: none; // IE, Edge 브라우저용 스크롤바 숨기기
 `;
 
 interface ButtonProps {
@@ -93,6 +92,7 @@ export const PlanetShopHeaderContainer = styled.div`
     left: 50%;
     transform: translateX(-50%);
     font-size: 16px;
+    color: #eeeeee;
     @media (max-width: 640px) {
       font-size: 1.1rem;
     }
@@ -110,4 +110,7 @@ export const StarCount = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  span {
+    color: '#eeeeee';
+  }
 `;

@@ -41,7 +41,6 @@ function initializeUser() {
   if (accessToken) {
     const decoded: CustomJwtPayload = jwtDecode(accessToken.slice(7));
     useAuthStore.getState().setUserPlanet(decoded.planet);
-    console.log(decoded.planet);
   }
 }
 
