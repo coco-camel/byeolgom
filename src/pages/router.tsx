@@ -87,7 +87,7 @@ export const router = createBrowserRouter([
             element: <ChatList />,
           },
           {
-            path: '/chatlist/:roomid',
+            path: '/chat',
             element: <ChatDetail />,
           },
         ],

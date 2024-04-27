@@ -3,6 +3,7 @@ import KakaoLogin from './kakaoLogin/KakaoLogin';
 import NaverLogin from './naverLogin/NaverLogin';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
+import byeolgom_logo from '@/byeolgom_logo.gif';
 import mainImg from '@/mainImg.svg';
 
 function LoginPage() {
@@ -16,9 +17,10 @@ function LoginPage() {
     <LoginContainer>
       <LoginTitle>
         <span>별별고민</span>
-        <h2>별곰</h2>
+        <LogoImg src={byeolgom_logo} />
+        {/* <h2>별곰</h2> */}
       </LoginTitle>
-      <img className="Logo" src={mainImg} />
+      <PlenetImg className="Logo" src={mainImg} />
       <LoginButtonContainer>
         <KakaoLogin />
         <NaverLogin />
@@ -68,12 +70,19 @@ const LoginContainer = styled.div`
       font-size: 1rem;
     }
   }
-  img {
-    position: absolute;
-    width: 40%;
-    top: 35%;
-  }
 `;
+
+const LogoImg = styled.img`
+  width: 200px;
+  margin-top: 12px;
+`;
+
+const PlenetImg = styled.img`
+  position: absolute;
+  width: 40%;
+  top: 38%;
+`;
+
 const LoginButtonContainer = styled.div`
   display: flex;
   flex-direction: column;

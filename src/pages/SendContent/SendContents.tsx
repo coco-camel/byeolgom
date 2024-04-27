@@ -8,6 +8,7 @@ import {
   ColorButtonContainer,
   ColorSelectButton,
 } from './ContentStyle';
+import { useThemeStore } from '../../store/themeStore';
 
 interface SendContentProps {
   onSend: (content: string, fontColor: string) => void;
@@ -22,11 +23,14 @@ function SendContents({
   placeholder = '',
   containerHeight = '33vh',
 }: SendContentProps) {
+  const { isDarkMode } = useThemeStore();
+  const defaultColor = isDarkMode ? '#EEEEEE' : '#000239';
+
   const [content, setContent] = useState<string>('');
-  const [fontColor, setFontColor] = useState<string>('#EEEEEE');
+  const [fontColor, setFontColor] = useState<string>(defaultColor);
   const [showColorButtons, setShowColorButtons] = useState<boolean>(false);
 
-  const colors = ['#EEEEEE', '#E88439', '#FFE45E', '#4C76B0'];
+  const colors = [defaultColor, '#E88439', '#FFE45E', '#4C76B0'];
 
   const handleColorChange = (color: string) => {
     setFontColor(color);
