@@ -3,8 +3,8 @@ import ButtonContainer from '../../../components/button/ButtonContainer';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { buyPlanet } from '../../../api/planetShopApi';
 import { useQueryClient } from '@tanstack/react-query';
-import { userStateStore } from '../../../store/userStateStore';
 import { useStarCountStore } from '../../../store/starConuntStore';
+import { usePlanetShopStore } from '../../../store/planetShopStore';
 
 interface BuyPlanetProps {
   setShowBuyPlanetModal: (isOpen: boolean) => void;
@@ -16,7 +16,10 @@ function BuyPlanetModal(props: BuyPlanetProps) {
   const queryClient = useQueryClient();
 
   const openStateModal = useStateModalStore((state) => state.openStateModal);
-  const setChangePlanet = userStateStore((state) => state.setChangePlanet);
+  const setAddPlanets = usePlanetShopStore((state) => state.setAddPlanets);
+  const setDeleteStarCount = useStarCountStore(
+    (state) => state.setDeleteStarCount,
+  );
   const starCount = useStarCountStore((state) => state.starCount);
 
   const handleBuyPlanet = () => {
@@ -24,7 +27,8 @@ function BuyPlanetModal(props: BuyPlanetProps) {
     queryClient.invalidateQueries({
       queryKey: [['starCount'], ['getPlanets']],
     });
-    setChangePlanet(props.planet);
+    setAddPlanets(props.planet);
+    setDeleteStarCount(props.planetCost);
     props.setShowBuyPlanetModal(false);
     openStateModal('구매가 완료되었어요!');
   };
@@ -35,7 +39,7 @@ function BuyPlanetModal(props: BuyPlanetProps) {
         <PlanetModalContainer>
           <NoticeContainer>
             <NoticeText>
-              정말 <SpanText>구매</SpanText>하시겠습니까?x
+              정말 <SpanText>구매</SpanText>하시겠습니까?
             </NoticeText>
             <SmallNoticeText>*구매하면 되돌릴 수 없어요.</SmallNoticeText>
           </NoticeContainer>

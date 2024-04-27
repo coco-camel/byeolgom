@@ -97,7 +97,9 @@ const MyElement3D = React.memo(function MyElement3D() {
                 <Star
                   key={index}
                   texture={textureStar}
-                  offsetTime={(index * (2 * Math.PI)) / starCount}
+                  offsetTime={
+                    (index * (2 * Math.PI)) / (starCount < 6 ? starCount : 5)
+                  }
                 />
               ),
             )}
