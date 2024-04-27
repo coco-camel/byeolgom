@@ -1,26 +1,19 @@
 import { create } from 'zustand';
 
 export interface PlanetShopState {
-  darkMode: boolean;
   planet: string;
-  setUsersState: (items: PlanetShopState) => void;
-  toggleDarkMode: () => void;
+  setUsersState: (item: string) => void;
   setChangePlanet: (item: string) => void;
 }
 
 export const userStateStore = create<PlanetShopState>((set) => ({
-  darkMode: true,
   planet: '',
 
-  setUsersState: (items) =>
+  setUsersState: (item) =>
     set(() => ({
-      darkMode: items.darkMode,
-      planet: items.planet,
+      planet: item,
     })),
-  toggleDarkMode: () =>
-    set((state) => ({
-      darkMode: !state.darkMode,
-    })),
+
   setChangePlanet: (item) =>
     set(() => ({
       planet: item,

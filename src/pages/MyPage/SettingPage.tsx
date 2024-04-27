@@ -107,6 +107,7 @@ const ProfileSection = styled.div`
 
 const ProfilePic = styled.div`
   width: 45px;
+  min-width: 45px;
   height: 45px;
   border-radius: 50%;
   background-color: #121212;
@@ -124,6 +125,8 @@ const NicknameAndChange = styled.div`
 const Nickname = styled.p`
   font-size: 16px;
   color: white;
+  max-width: 200px;
+  word-wrap: break-word;
 `;
 
 const MyPageHeader = styled.div`

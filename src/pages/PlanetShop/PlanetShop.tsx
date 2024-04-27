@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import planetA from '@/planetA.svg';
 import planetB from '@/planetB.svg';
 import planetC from '@/planetC.svg';
@@ -17,58 +17,47 @@ import { usePlanetShopStore } from '../../store/planetShopStore';
 import { useShallow } from 'zustand/react/shallow';
 import star from '@/star.svg';
 import { SkeletonDiv } from '../../components/skeleton/skeletonStyle';
-import { buyPlanet, changePlanet } from '../../api/planetShopApi';
-import { useQueryClient } from '@tanstack/react-query';
-import { useStarCountStore } from '../../store/starConuntStore';
+import { changePlanet } from '../../api/planetShopApi';
 import { userStateStore } from '../../store/userStateStore';
+import { useStateModalStore } from '../../store/stateModalStore';
+import BuyPlanetModal from './Modal/BuyPlanetModal';
 
 function PlanetShop() {
-  const planets = [
-    [planetA, 'A', 0],
-    [planetB, 'B', 1],
-    [planetC, 'C', 3],
-    [planetD, 'D', 5],
-  ];
+  const planets = useMemo(
+    () => [
+      [planetA, 'A', 0],
+      [planetB, 'B', 1],
+      [planetC, 'C', 3],
+      [planetD, 'D', 5],
+    ],
+    [],
+  );
 
-  const [planetsState, setPlanetsState, setAddPlanets] = usePlanetShopStore(
-    useShallow((state) => [
-      state.planetsState,
-      state.setPlanetsState,
-      state.setAddPlanets,
-    ]),
+  const [planetsState, setPlanetsState] = usePlanetShopStore(
+    useShallow((state) => [state.planetsState, state.setPlanetsState]),
   );
   const [planet, setChangePlanet] = userStateStore(
     useShallow((state) => [state.planet, state.setChangePlanet]),
   );
-  const deleteStarCount = useStarCountStore(
-    (state) => state.setDeleteStarCount,
-  );
+  const openStateModal = useStateModalStore((state) => state.openStateModal);
+
   const [selectedPlanet, setSelectedPlanet] = useState('');
+  const [planetCost, setPlanetCost] = useState(0);
+  const [buttonLabel, setButtonLabel] = useState('');
+  const [showBuyPlanetModal, setShowBuyPlanetModal] = useState(false);
 
   useEffect(() => {
     setSelectedPlanet(planet);
   }, [planet]);
 
-  const [buttonLabel, setButtonLabel] = useState('');
-
-  const queryClient = useQueryClient();
-
-  const handlePlanetChangeClick = (planet: string) => {
-    const planetCostFind = planets.find((p) => p[1] === planet);
-    const planetCost = planetCostFind ? Number(planetCostFind[2]) : 0;
-
-    if (buttonLabel === '사용하기') {
-      setChangePlanet(planet);
-      changePlanet(planet);
+  const handlePlanetChangeClick = () => {
+    if (buttonLabel === '적용하기') {
+      setChangePlanet(selectedPlanet);
+      changePlanet(selectedPlanet);
+      openStateModal('적용이 완료되었어요!');
     }
     if (buttonLabel === '구매하기') {
-      deleteStarCount(planetCost);
-      buyPlanet(planet);
-      setAddPlanets(planet);
-      setChangePlanet(planet);
-      queryClient.invalidateQueries({
-        queryKey: [['starCount'], ['getPlanets']],
-      });
+      setShowBuyPlanetModal(true);
     }
   };
 
@@ -77,11 +66,17 @@ function PlanetShop() {
   };
 
   useEffect(() => {
+    const planetCostFind = planets.find((item) => item[1] === selectedPlanet);
+    const cost = planetCostFind ? Number(planetCostFind[2]) : 0;
+    setPlanetCost(cost);
+  }, [selectedPlanet, planets]);
+
+  useEffect(() => {
     if (planetsState && planetsState.includes(selectedPlanet)) {
       if (planet === selectedPlanet) {
         setButtonLabel('사용중');
       } else {
-        setButtonLabel('사용하기');
+        setButtonLabel('적용하기');
       }
     } else {
       setButtonLabel('구매하기');
@@ -125,12 +120,19 @@ function PlanetShop() {
         ))}
       </PlanetShopContainer>
       <Button
-        onClick={() => handlePlanetChangeClick(selectedPlanet)}
+        onClick={() => handlePlanetChangeClick()}
         disabled={planet === selectedPlanet}
         $isUsing={planet === selectedPlanet}
       >
         {buttonLabel}
       </Button>
+      {showBuyPlanetModal && (
+        <BuyPlanetModal
+          setShowBuyPlanetModal={setShowBuyPlanetModal}
+          planet={selectedPlanet}
+          planetCost={planetCost}
+        />
+      )}
     </PlanetShopArea>
   );
 }
