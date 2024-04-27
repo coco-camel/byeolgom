@@ -17,12 +17,6 @@ export const Button = styled.button`
     color: #e2e2e2;
     border-bottom: 2px solid #eee;
   }
-  @media (max-width: 640px) {
-    font-size: 1.1rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 1rem;
-  }
 `;
 
 export const LockerTabWrap = styled.div`
@@ -45,12 +39,6 @@ export const PastContentHeader = styled.div<{
   span {
     font-size: 16px;
     color: #eee;
-    @media (max-width: 640px) {
-      font-size: 1.1rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 1rem;
-    }
   }
 `;
 
@@ -78,25 +66,11 @@ export const PastContentContainer = styled.div`
     color: #e2e2e2;
     font-size: 14px;
     padding: 2px 0;
+    word-wrap: break-word;
   }
   :nth-child(1) {
+    word-wrap: break-word;
     font-size: 10px;
-  }
-  @media (max-width: 640px) {
-    :nth-child(1) {
-      font-size: 12px;
-    }
-    :nth-child(2) {
-      font-size: 1rem;
-    }
-  }
-  @media (max-width: 480px) {
-    :nth-child(1) {
-      font-size: 10px;
-    }
-    :nth-child(2) {
-      font-size: 14px;
-    }
   }
 `;
 
@@ -140,7 +114,7 @@ export const PastContentWrap = styled.div<{
   margin: ${(props) => props.$margin || '0'};
   padding: ${(props) => props.$padding || '0'};
   .content {
-    max-width: 80%;
+    max-width: 200px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -170,12 +144,6 @@ export const CommentContent = styled.div<CommentContentProps>`
         : 'rgba(255,255,255,0.7)'};
   margin-left: ${(props) => (props.$count % 2 === 0 ? '0' : 'auto')};
   margin-right: ${(props) => (props.$count % 2 === 0 ? 'auto' : '0')};
-  @media (max-width: 640px) {
-    font-size: 14px;
-  }
-  @media (max-width: 480px) {
-    font-size: 12px;
-  }
 `;
 
 export const CommentLayOut = styled.div`
@@ -209,7 +177,7 @@ export const CommentListWrap = styled.div`
     background: #555;
   }
   @media (max-width: 640px) {
-    width: 90vw;
+    width: 100vw;
     height: 75vh;
   }
 `;
@@ -231,12 +199,5 @@ export const CommentRocketState = styled.div<CommentRocketStateProps>`
 
   span {
     font-size: 12px;
-    @media (max-width: 640px) {
-      font-size: 14px;
-    }
-
-    @media (max-width: 480px) {
-      font-size: 12px;
-    }
   }
 `;

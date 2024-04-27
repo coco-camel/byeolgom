@@ -51,4 +51,5 @@ const Rank = styled.p`
   text-align: center;
   font-size: 12px;
   font-weight: normal;
+  max-width: 140px;
 `;
