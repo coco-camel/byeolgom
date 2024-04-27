@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useWorryCount } from '../../hooks/queries/useWorryCount ';
 import { useShallow } from 'zustand/react/shallow';
 import { rankingStore } from '../../store/rankingStore';
+import { SkeletonDiv } from '../skeleton/skeletonStyle';
 
 function Header() {
   const { isLoggedIn } = useAuthStore();
@@ -23,8 +24,6 @@ function Header() {
     setWorryCountState(worryCountQuery.data);
   }, [worryCountQuery.data, setWorryCountState]);
 
-  if (worryCountQuery.isPending) return <div>Loading...</div>;
-
   if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
@@ -37,7 +36,11 @@ function Header() {
           {isLoggedIn ? (
             <>
               <CountRocket fill="#EEEEEE" />
-              <span> x {worryCount}</span>
+              {worryCountQuery.isPending ? (
+                <SkeletonDiv $width="30px" $height="20px" />
+              ) : (
+                <span> x {worryCount}</span>
+              )}
             </>
           ) : (
             <div></div>

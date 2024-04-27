@@ -6,7 +6,6 @@ export const PastContentsContainer = styled.div`
 `;
 export const Button = styled.button`
   font-size: 16px;
-  font-weight: bold;
   border: none;
   cursor: pointer;
   padding-bottom: 15px;
@@ -43,7 +42,7 @@ export const PastContentHeader = styled.div<{
   align-items: center;
   justify-content: ${(props) => props.$content || 'none'};
   padding: ${(props) => props.$padding || '0'};
-  h1 {
+  span {
     font-size: 16px;
     color: #eee;
     @media (max-width: 640px) {
@@ -212,5 +211,32 @@ export const CommentListWrap = styled.div`
   @media (max-width: 640px) {
     width: 90vw;
     height: 75vh;
+  }
+`;
+
+interface CommentRocketStateProps {
+  $text?: boolean;
+}
+
+export const CommentRocketState = styled.div<CommentRocketStateProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: ${({ $text }) =>
+    $text ? 'rgba(255, 255, 255, 0.2)' : 'inherit'};
+  margin: ${({ $text }) => ($text ? '20px auto' : '10px auto')};
+  padding: ${({ $text }) => ($text ? '10px' : '0')};
+  border-radius: ${({ $text }) => ($text ? '10px' : '0')};
+
+  span {
+    font-size: 12px;
+    @media (max-width: 640px) {
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+    }
   }
 `;

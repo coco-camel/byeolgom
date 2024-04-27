@@ -20,5 +20,6 @@ export const changeUserName = async (nickname: string): Promise<string> => {
   }
 
   const response = await authInstance.put('/nickname', { nickname });
+  console.log(response);
   return response.data.message;
 };

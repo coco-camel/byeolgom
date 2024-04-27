@@ -13,7 +13,7 @@ import {
   PastContentContainer,
   PastContentNone,
   PastContentWrap,
-} from './PastContentsStyle';
+} from './pastContentsStyle';
 
 interface PastContentsListProps {
   pastContents: worryList[];
