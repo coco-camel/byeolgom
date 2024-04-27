@@ -8,10 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../store/starConuntStore';
 import { useStarCount } from '../../hooks/queries/useStarCount';
 import { useShallow } from 'zustand/react/shallow';
-
-// Assets
-const starImagePath = '/src/assets/images/star.png';
-const planetImagePath = '/src/assets/images/planetA.png';
+import { userStateStore } from '../../store/userStateStore';
 
 interface StarProps {
   texture: Texture;
@@ -53,6 +50,11 @@ const MyElement3D = React.memo(function MyElement3D() {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [texturePlanet, setTexturePlanet] = useState<Texture | null>(null);
 
+  const starImagePath = '/src/assets/images/star.png';
+
+  const planet = userStateStore((state) => state.planet);
+  const planetImagePath = `/src/assets/images/planet${planet}.png`;
+
   const [starCount, setStarCountState] = useStarCountStore(
     useShallow((state) => [state.starCount, state.setStarCountState]),
   );
@@ -79,7 +81,7 @@ const MyElement3D = React.memo(function MyElement3D() {
     new TextureLoader().load(planetImagePath, (texture) => {
       setTexturePlanet(texture);
     });
-  }, []);
+  }, [planetImagePath]);
 
   return (
     <AnimationGroup>

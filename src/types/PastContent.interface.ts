@@ -4,6 +4,9 @@ export interface PastContent extends Comment {
   content: string;
   createdAt: Date;
   comments: Comment[];
+  isSolved: boolean;
+  hasReports: boolean;
+  deletedAt?: Date;
 }
 interface Comment {
   content: string;

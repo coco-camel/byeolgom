@@ -13,12 +13,33 @@ import { Link } from 'react-router-dom';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useThemeStore } from '../../store/themeStore';
+import { useUserState } from '../../hooks/queries/useUserState.ts';
+import { userStateStore } from '../../store/userStateStore.ts';
 
+function initialStateDarkMode() {
+  const unsubscribe = userStateStore.subscribe((state) => {
+    useThemeStore.setState({ isDarkMode: state.darkMode });
+  });
+  return unsubscribe;
+}
 function Footer({ openModal }: { openModal: () => void }) {
   const [clickedButton, setClickedButton] = useState<string>('');
   const { worryCount } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
   const { isDarkMode } = useThemeStore();
+
+  const setUsersState = userStateStore((state) => state.setUsersState);
+  const userStateQuery = useUserState();
+
+  useEffect(() => {
+    if (userStateQuery.data) {
+      setUsersState(userStateQuery.data);
+      const unsubscribe = initialStateDarkMode();
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [userStateQuery.data, setUsersState]);
 
   useEffect(() => {
     setClickedButton('home');
