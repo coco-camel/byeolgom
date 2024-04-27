@@ -15,6 +15,7 @@ export const PlanetStatecontainer = styled.div`
 
 type PlanetItemProps = {
   $isSelected: boolean;
+  $isUsing: boolean;
 };
 
 export const PlanetItem = styled.div<PlanetItemProps>`
@@ -25,8 +26,12 @@ export const PlanetItem = styled.div<PlanetItemProps>`
   padding: 20px;
   border-radius: 10px;
   max-height: 180px;
-  box-shadow: ${({ $isSelected }) =>
-    $isSelected ? 'inset 0 0 0 2px #e88439' : 'none'};
+  box-shadow: ${(props) =>
+    props.$isUsing
+      ? 'inset 0 0 0 2px #e88439'
+      : props.$isSelected
+        ? 'inset 0 0 0 2px white'
+        : 'none'};
   &:hover {
     box-shadow: inset 0 0 0 2px white;
   }

@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../store/starConuntStore';
 import { useStarCount } from '../../hooks/queries/useStarCount';
 import { useShallow } from 'zustand/react/shallow';
-import { useAuthStore } from '../../store/authStore';
+import { userStateStore } from '../../store/userStateStore';
 
 interface StarProps {
   texture: Texture;
@@ -52,12 +52,13 @@ const MyElement3D = React.memo(function MyElement3D() {
 
   const starImagePath = '/src/assets/images/star.png';
 
-  const userPlanet = useAuthStore((state) => state.userPlanet);
-  const planetImagePath = `/src/assets/images/planet${userPlanet}.png`;
+  const planet = userStateStore((state) => state.planet);
+  const planetImagePath = `/src/assets/images/planet${planet}.png`;
 
   const [starCount, setStarCountState] = useStarCountStore(
     useShallow((state) => [state.starCount, state.setStarCountState]),
   );
+
   const queryClient = useQueryClient();
 
   const starCountQuery = useStarCount();

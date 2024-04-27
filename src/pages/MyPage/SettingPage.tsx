@@ -6,6 +6,7 @@ import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
 import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
 import toggleBg from '@/toggleBg.png';
+import { updateDarkMode } from '../../api/themeApi';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -27,6 +28,10 @@ function SettingPage() {
 
   const handleNicknameChange = () => {
     navigate('/changenickname');
+  };
+  const handleToggleThemeChange = () => {
+    updateDarkMode(!isDarkMode);
+    toggleTheme();
   };
 
   useEffect(() => {
@@ -59,7 +64,7 @@ function SettingPage() {
             <SubTitle>테마</SubTitle>
             <Theme>
               <DarkModeTitle>다크모드</DarkModeTitle>
-              <DarkModeSwitch onClick={toggleTheme}>
+              <DarkModeSwitch onClick={handleToggleThemeChange}>
                 <ToggleSwitch $isDark={isDarkMode}>
                   <ToggleBG src={toggleBg} $isDark={isDarkMode} />
                 </ToggleSwitch>

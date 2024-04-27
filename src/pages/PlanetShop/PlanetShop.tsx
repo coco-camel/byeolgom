@@ -13,14 +13,14 @@ import {
   PlanetStatecontainer,
 } from './planetShopStyle';
 import { useGetPlanets } from '../../hooks/queries/useGetPlanets';
-import { usePlanetShopStore } from '../../store/planetShop';
+import { usePlanetShopStore } from '../../store/planetShopStore';
 import { useShallow } from 'zustand/react/shallow';
 import star from '@/star.svg';
 import { SkeletonDiv } from '../../components/skeleton/skeletonStyle';
-import { useAuthStore } from '../../store/authStore';
 import { buyPlanet, changePlanet } from '../../api/planetShopApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../store/starConuntStore';
+import { userStateStore } from '../../store/userStateStore';
 
 function PlanetShop() {
   const planets = [
@@ -37,8 +37,8 @@ function PlanetShop() {
       state.setAddPlanets,
     ]),
   );
-  const [userPlanet, setUserPlanet] = useAuthStore(
-    useShallow((state) => [state.userPlanet, state.setUserPlanet]),
+  const [planet, setChangePlanet] = userStateStore(
+    useShallow((state) => [state.planet, state.setChangePlanet]),
   );
   const deleteStarCount = useStarCountStore(
     (state) => state.setDeleteStarCount,
@@ -46,8 +46,8 @@ function PlanetShop() {
   const [selectedPlanet, setSelectedPlanet] = useState('');
 
   useEffect(() => {
-    setSelectedPlanet(userPlanet ?? '');
-  }, [userPlanet]);
+    setSelectedPlanet(planet);
+  }, [planet]);
 
   const [buttonLabel, setButtonLabel] = useState('');
 
@@ -58,18 +58,17 @@ function PlanetShop() {
     const planetCost = planetCostFind ? Number(planetCostFind[2]) : 0;
 
     if (buttonLabel === '사용하기') {
+      setChangePlanet(planet);
       changePlanet(planet);
-      setUserPlanet(planet);
     }
     if (buttonLabel === '구매하기') {
-      buyPlanet(planet);
       deleteStarCount(planetCost);
+      buyPlanet(planet);
+      setAddPlanets(planet);
+      setChangePlanet(planet);
       queryClient.invalidateQueries({
         queryKey: [['starCount'], ['getPlanets']],
       });
-
-      setAddPlanets(planet);
-      setUserPlanet(planet);
     }
   };
 
@@ -79,7 +78,7 @@ function PlanetShop() {
 
   useEffect(() => {
     if (planetsState && planetsState.includes(selectedPlanet)) {
-      if (userPlanet === selectedPlanet) {
+      if (planet === selectedPlanet) {
         setButtonLabel('사용중');
       } else {
         setButtonLabel('사용하기');
@@ -87,7 +86,7 @@ function PlanetShop() {
     } else {
       setButtonLabel('구매하기');
     }
-  }, [planetsState, selectedPlanet, userPlanet]);
+  }, [planetsState, selectedPlanet, planet]);
 
   const getPlanetsQuery = useGetPlanets();
 
@@ -99,26 +98,27 @@ function PlanetShop() {
     <PlanetShopArea>
       <PlanetShopHeader />
       <PlanetShopContainer>
-        {planets.map((planet, index) => (
+        {planets.map((item, index) => (
           <PlanetItem
             key={index}
-            onClick={() => handlePlanetClick(String(planet[1]))}
-            $isSelected={selectedPlanet === planet[1]}
+            onClick={() => handlePlanetClick(String(item[1]))}
+            $isSelected={selectedPlanet === item[1]}
+            $isUsing={planet === item[1]}
           >
-            <img src={String(planet[0])} />
+            <img src={String(item[0])} />
             {getPlanetsQuery.isPending ? (
               <PlanetStatecontainer>
                 <SkeletonDiv $width="50px" $height="20px" />
               </PlanetStatecontainer>
-            ) : planetsState && planetsState.includes(String(planet[1])) ? (
+            ) : planetsState && planetsState.includes(String(item[1])) ? (
               <PlanetStatecontainer>
-                <Check fill="white" />
-                <span>보유중</span>
+                <Check fill={planet === item[1] ? '#e88439' : '#eeeeee'} />
+                <span>{planet === item[1] ? '사용중' : '보유중'}</span>
               </PlanetStatecontainer>
             ) : (
               <PlanetStatecontainer>
                 <img src={star} height={24} />
-                <span>x &nbsp; {planet[2]}</span>
+                <span>x &nbsp; {item[2]}</span>
               </PlanetStatecontainer>
             )}
           </PlanetItem>
@@ -126,8 +126,8 @@ function PlanetShop() {
       </PlanetShopContainer>
       <Button
         onClick={() => handlePlanetChangeClick(selectedPlanet)}
-        disabled={userPlanet === selectedPlanet}
-        $isUsing={userPlanet === selectedPlanet}
+        disabled={planet === selectedPlanet}
+        $isUsing={planet === selectedPlanet}
       >
         {buttonLabel}
       </Button>
