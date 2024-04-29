@@ -77,7 +77,7 @@ body.hovering {
 }
 
 body {
-	background-image: url("/src/assets/images/backGroundTest.svg");
+	background-image: url("/src/assets/images/webBG.png");
 	background-size: cover;
 	/* background-color: #2f3438; */
 	color: ${({ theme }) => theme.fontColor};
