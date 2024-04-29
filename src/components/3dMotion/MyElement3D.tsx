@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, Suspense } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame, Canvas } from '@react-three/fiber';
 import { TextureLoader, Mesh } from 'three';
 import styled from 'styled-components';
@@ -88,22 +88,17 @@ const MyElement3D = React.memo(function MyElement3D() {
       <Canvas>
         <ambientLight intensity={1.5} />
         <directionalLight position={[0, 5, 5]} />
-        <Suspense fallback={<div>Loading...</div>}>
-          {texturePlanet && <CentralImage texture={texturePlanet} />}
-          {textureStar &&
-            Array.from(
-              { length: starCount < 6 ? starCount : 5 },
-              (_, index) => (
-                <Star
-                  key={index}
-                  texture={textureStar}
-                  offsetTime={
-                    (index * (2 * Math.PI)) / (starCount < 6 ? starCount : 5)
-                  }
-                />
-              ),
-            )}
-        </Suspense>
+        {texturePlanet && <CentralImage texture={texturePlanet} />}
+        {textureStar &&
+          Array.from({ length: starCount < 6 ? starCount : 5 }, (_, index) => (
+            <Star
+              key={index}
+              texture={textureStar}
+              offsetTime={
+                (index * (2 * Math.PI)) / (starCount < 6 ? starCount : 5)
+              }
+            />
+          ))}
       </Canvas>
     </AnimationGroup>
   );
