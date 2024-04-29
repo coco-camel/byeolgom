@@ -61,7 +61,7 @@ const MainLayout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 200px;
+  gap: 300px;
   height: 100vh;
 `;
 
@@ -77,9 +77,9 @@ const MainWrap = styled.div`
   position: relative;
   overflow: auto;
   border-radius: 10px;
-  width: 320px;
-  height: 568px;
-  min-width: 320px;
+  width: 380px;
+  height: 720px;
+  min-width: 380px;
   background-image: ${({ theme }) => theme.bgImage};
   background-size: cover;
   overflow: hidden;
