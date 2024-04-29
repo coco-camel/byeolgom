@@ -15,31 +15,25 @@ import { useStateModalStore } from '../../store/stateModalStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useUserState } from '../../hooks/queries/useUserState.ts';
 import { userStateStore } from '../../store/userStateStore.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-function initialStateDarkMode() {
-  const unsubscribe = userStateStore.subscribe((state) => {
-    useThemeStore.setState({ isDarkMode: state.darkMode });
-  });
-  return unsubscribe;
-}
 function Footer({ openModal }: { openModal: () => void }) {
   const [clickedButton, setClickedButton] = useState<string>('');
   const { worryCount } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
-  const { isDarkMode } = useThemeStore();
+  const [isDarkMode, setTheme] = useThemeStore(
+    useShallow((state) => [state.isDarkMode, state.setTheme]),
+  );
 
   const setUsersState = userStateStore((state) => state.setUsersState);
   const userStateQuery = useUserState();
 
   useEffect(() => {
     if (userStateQuery.data) {
-      setUsersState(userStateQuery.data);
-      const unsubscribe = initialStateDarkMode();
-      return () => {
-        unsubscribe();
-      };
+      setUsersState(userStateQuery.data.planet);
+      setTheme(userStateQuery.data.darkMode);
     }
-  }, [userStateQuery.data, setUsersState]);
+  }, [userStateQuery.data, setUsersState, setTheme]);
 
   useEffect(() => {
     setClickedButton('home');
