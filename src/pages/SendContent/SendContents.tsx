@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import textchange from '@/textchange.svg';
 import {
   SendContainer,
@@ -31,6 +31,20 @@ function SendContents({
   const [showColorButtons, setShowColorButtons] = useState<boolean>(false);
 
   const colors = [defaultColor, '#E88439', '#FFE45E', '#4C76B0'];
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        console.log('Animation ended and timeout completed');
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   const handleColorChange = (color: string) => {
     setFontColor(color);
@@ -43,6 +57,7 @@ function SendContents({
   return (
     <SendContainer height={containerHeight}>
       <StyledInput
+        ref={inputRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         onClick={onInputClick}
