@@ -217,7 +217,7 @@ function GetContents({
                 }}
                 onInputClick={() => setReplyWrite(true)}
                 placeholder={`답장을 입력해주세요.`}
-                containerHeight={replyWrite ? '67%' : '38.5%'}
+                containerHeight={replyWrite ? '74.5%' : '48%'}
               />
             </>
           )}

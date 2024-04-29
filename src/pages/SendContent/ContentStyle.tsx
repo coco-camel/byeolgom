@@ -205,7 +205,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 19%;
+  bottom: 15%;
 `;
 
 export const TakeStarImg = styled.img`
