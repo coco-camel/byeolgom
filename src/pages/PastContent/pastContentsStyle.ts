@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 
-export const PastContentsContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`;
 export const Button = styled.button`
   font-size: 16px;
   border: none;
@@ -74,9 +70,16 @@ export const PastContentContainer = styled.div`
   }
 `;
 
+export const PastContentsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100%;
+`;
+
 export const LockerListWrap = styled.div`
+  position: relative;
   width: 100%;
-  height: 370px;
+  height: 70%;
   overflow: auto;
   padding: 0 20px;
   box-sizing: border-box;

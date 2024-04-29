@@ -7,12 +7,7 @@ import _ from 'lodash';
 import useObserver from '../../hooks/observer/useObserver';
 import { useWhoseContentStore } from '../../store/whoseContentStore';
 import { useShallow } from 'zustand/react/shallow';
-import {
-  Button,
-  LockerTabWrap,
-  PastContentHeader,
-  PastContentsContainer,
-} from './pastContentsStyle';
+import { Button, LockerTabWrap, PastContentHeader } from './pastContentsStyle';
 
 function PastContents() {
   const [whoseContent, setWhoseContentState] = useWhoseContentStore(
@@ -95,14 +90,12 @@ function PastContents() {
           익명의 고민
         </Button>
       </LockerTabWrap>
-      <PastContentsContainer>
-        <PastContentsList
-          pastContents={pastContents}
-          whoseContent={whoseContent}
-          isPending={isPending}
-          ref={loadMoreRef}
-        />
-      </PastContentsContainer>
+      <PastContentsList
+        pastContents={pastContents}
+        whoseContent={whoseContent}
+        isPending={isPending}
+        ref={loadMoreRef}
+      />
     </>
   );
 }

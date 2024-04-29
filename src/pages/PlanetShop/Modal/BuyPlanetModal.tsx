@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { buyPlanet } from '../../../api/planetShopApi';
@@ -75,6 +75,25 @@ function BuyPlanetModal(props: BuyPlanetProps) {
 
 export default BuyPlanetModal;
 
+const modalAnimation = keyframes`
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
 const PlanetModalArea = styled.div`
   position: absolute;
   display: flex;
@@ -82,6 +101,7 @@ const PlanetModalArea = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 const PlanetModalContainer = styled.div`
   display: flex;
@@ -92,6 +112,7 @@ const PlanetModalContainer = styled.div`
   height: 155px;
   border-radius: 15px;
   background-color: #eeeeee;
+  animation: ${modalAnimation} 0.3s ease-out forwards;
 `;
 const NoticeContainer = styled.div`
   display: flex;
