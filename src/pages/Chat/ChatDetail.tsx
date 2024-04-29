@@ -1,48 +1,52 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { useLocation } from 'react-router-dom';
-import io from 'socket.io-client';
+import { useState, useEffect } from 'react';
+import io, { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import Back from '@/back.svg?react';
 
-const socket = io('localhost:3000');
-
 function ChatDetail() {
-  const location = useLocation();
-  const [chats, setChats] = useState<string[]>([]);
-  const params = new URLSearchParams(location.search);
-  const name = params.get('name') ?? '';
-  const room = params.get('room') ?? '';
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [roomJoined, setRoomJoined] = useState<boolean>(false);
+  const [messageInput, setMessageInput] = useState<string>('');
 
   useEffect(() => {
-    socket.emit('join room', { name, room });
+    const newSocket = io('localhost:3000');
+    setSocket(newSocket);
 
-    socket.on('message', (message: string) => {
-      setChats((prevChats) => [...prevChats, message]);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('connect', () => {
+      console.log('소켓 연결됨:', socket.id);
+    });
+
+    socket.on('chatting', (data) => {
+      console.log('메시지 수신:', data);
+      setMessages((prevMessages) => [...prevMessages, data.msg]);
+    });
+
+    socket.on('joined room', (data) => {
+      console.log(`방 ${data.roomId}에 입장하였습니다.`);
+      setRoomJoined(true);
     });
 
     return () => {
-      socket.disconnect();
+      socket.off('connect');
+      socket.off('chatting');
+      socket.off('joined room');
     };
-  }, [name, room]);
+  }, [socket]);
 
-  const sendMessage = (message: string) => {
-    socket.emit('chatting', message);
-  };
-
-  const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const target = e.target as HTMLFormElement;
-    const messageInput = target.elements.namedItem(
-      'message',
-    ) as HTMLInputElement;
-
-    if (messageInput) {
-      const message = messageInput.value.trim();
-
-      if (message) {
-        sendMessage(message);
-        messageInput.value = '';
-      }
+  const sendMessage = () => {
+    if (socket && messageInput.trim() !== '') {
+      socket.emit('chatting', { msg: messageInput });
+      setMessages((prevMessages) => [...prevMessages, messageInput]);
+      setMessageInput('');
     }
   };
 
@@ -54,15 +58,21 @@ function ChatDetail() {
       </ChatDetailHeader>
 
       <ChatContainer>
-        {chats.map((message, index) => (
-          <ChatBubble key={index}>{message}</ChatBubble>
+        {roomJoined && <p>방에 입장하였습니다.</p>}
+        {messages.map((message, index) => (
+          <div key={index}>{message}</div>
         ))}
       </ChatContainer>
 
-      <ChatInputForm onSubmit={handleSendMessage}>
-        <input type="text" name="message" placeholder="메시지 입력..." />
-        <button type="submit">전송</button>
-      </ChatInputForm>
+      <InputContainer>
+        <ChatInput
+          type="text"
+          placeholder="메시지 입력"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+        />
+        <SendButton onClick={sendMessage}>전송</SendButton>
+      </InputContainer>
     </>
   );
 }
@@ -97,29 +107,20 @@ const ChatContainer = styled.div`
   margin-top: 20px;
 `;
 
-const ChatBubble = styled.div`
-  background-color: #f0f0f0;
-  padding: 8px;
-  margin-bottom: 8px;
-  border-radius: 8px;
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 `;
 
-const ChatInputForm = styled.form`
-  margin-top: 20px;
-  display: flex;
-  input {
-    flex: 1;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-right: 8px;
-  }
-  button {
-    padding: 8px 16px;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-  }
+const ChatInput = styled.input`
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+`;
+
+const SendButton = styled.button`
+  margin-left: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
 `;
