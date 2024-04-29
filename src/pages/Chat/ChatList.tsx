@@ -1,13 +1,7 @@
 import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
 import styled from 'styled-components';
 
 function ChatList() {
-  const joinRoom = (roomId: string) => {
-    const socket = io('http://localhost:3000');
-    socket.emit('join room', roomId);
-  };
-
   return (
     <>
       <PageHeader>
@@ -15,7 +9,7 @@ function ChatList() {
       </PageHeader>
 
       <Link to="/chatroom">
-        <button onClick={() => joinRoom('chat_room')}>방 입장</button>
+        <button>방 입장</button>
       </Link>
     </>
   );

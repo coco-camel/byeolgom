@@ -10,8 +10,11 @@ function ChatDetail() {
   const [messageInput, setMessageInput] = useState<string>('');
 
   useEffect(() => {
-    const newSocket = io('localhost:3000');
+    const newSocket = io('http://localhost:3000');
+
     setSocket(newSocket);
+    newSocket.emit('join room', { roomId: roomId });
+    console.log('연결 상태:', newSocket.connected);
 
     return () => {
       newSocket.disconnect();
@@ -21,24 +24,18 @@ function ChatDetail() {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('connect', () => {
-      console.log('소켓 연결됨:', socket.id);
-    });
-
     socket.on('chatting', (data) => {
       console.log('메시지 수신:', data);
       setMessages((prevMessages) => [...prevMessages, data.msg]);
     });
 
-    socket.on('joined room', (data) => {
-      console.log(`방 ${data.roomId}에 입장하였습니다.`);
+    socket.on('room message', (message) => {
+      console.log(message);
       setRoomJoined(true);
     });
 
     return () => {
-      socket.off('connect');
-      socket.off('chatting');
-      socket.off('joined room');
+      socket.disconnect();
     };
   }, [socket]);
 
