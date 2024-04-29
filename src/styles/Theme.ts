@@ -10,6 +10,7 @@ export const lightTheme = {
   sendButton: '#eee',
   commentContent: '#D7E5FA',
   commentContentme: '#eee',
+  loadingBG: 'rgba(43,66,187,0.3)',
 };
 
 export const darkTheme = {
@@ -24,6 +25,7 @@ export const darkTheme = {
   sendButton: '#eee',
   commentContent: '#2F4768',
   commentContentme: '#121212',
+  loadingBG: 'rgba(47,71,104,0.3)',
 };
 
 export const theme = {
