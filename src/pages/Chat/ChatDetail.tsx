@@ -10,11 +10,15 @@ function ChatDetail() {
   const [messageInput, setMessageInput] = useState<string>('');
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000');
+    const token = localStorage.getItem('access_Token');
+    const newSocket = io('https://friendj.store', {
+      auth: {
+        token: token,
+      },
+    });
 
     setSocket(newSocket);
-    newSocket.emit('join room', { roomId: roomId });
-    console.log('연결 상태:', newSocket.connected);
+    newSocket.emit('join room', 'chat_room');
 
     return () => {
       newSocket.disconnect();
