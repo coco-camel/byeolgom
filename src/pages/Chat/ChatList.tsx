@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
 import _ from 'lodash';
 import { formatDate } from '../../utills/formatDate/formatDate';
+import Loading from '../../components/loading/Loading';
 import {
   LoadMoreDiv,
   LockerListWrap,
@@ -102,10 +103,9 @@ function ChatList() {
                   </PastContentNone>
                 </PastContentWrap>
               )}
-          {/* {isPending &&
-            } */}
           <LoadMoreDiv ref={loadMoreRef} />
         </LockerListWrap>
+        {isPending && <Loading />}
       </PastContentsContainer>
     </>
   );

@@ -35,6 +35,7 @@ export const PastContentHeader = styled.div<{
   span {
     font-size: 16px;
     color: #eee;
+    font-weight: 300;
   }
 `;
 
@@ -45,9 +46,6 @@ export const PastContentNone = styled.div`
   flex-direction: column;
   width: 100%;
   margin-top: 20px;
-  span {
-    margin-top: 10px;
-  }
 `;
 
 export const NoneText = styled.div`

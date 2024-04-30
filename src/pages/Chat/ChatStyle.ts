@@ -81,9 +81,6 @@ export const PastContentNone = styled.div`
   flex-direction: column;
   width: 100%;
   margin-top: 30px;
-  span {
-    margin-top: 10px;
-  }
 `;
 
 export const PageHeader = styled.div`
@@ -91,16 +88,9 @@ export const PageHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  p {
-    font-size: 16px;
-    font-weight: 300;
-    @media (max-width: 640px) {
-      font-size: 1.1rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 1rem;
-    }
-  }
+  font-size: 16px;
+  color: #eee;
+  font-weight: 300;
 `;
 
 export const NoneText = styled.div`
