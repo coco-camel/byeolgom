@@ -69,7 +69,7 @@ function Footer({ openModal }: { openModal: () => void }) {
           )}
         </Link>
         <div></div>
-        <Link to={'/chat'}>
+        <Link to={'/chatlist'}>
           {clickedButton !== 'chat' && (
             <Chat fill={theme} onClick={() => handleButtonClick('chat')} />
           )}

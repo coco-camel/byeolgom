@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import { useState, useEffect } from 'react';
 import Back from '@/back.svg?react';
 import deleteWorry from '@/deleteWorry.svg';
@@ -36,6 +37,7 @@ import { usePostArrivedStore } from '../../store/postArrivedStore';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { useStateModalStore } from '../../store/stateModalStore';
 import PageModal from '../../components/modal/PageModal';
+import { useThemeStore } from '../../store/themeStore';
 
 function GetContents({
   detail,
@@ -63,6 +65,7 @@ function GetContents({
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
+  const { isDarkMode } = useThemeStore();
 
   const handleContentSubmit = async () => {
     try {
@@ -107,6 +110,14 @@ function GetContents({
         return rocketC;
       default:
         return rocketA;
+    }
+  };
+
+  const colorChange = (fontColor: string) => {
+    if (fontColor === '#EEEEEE' || fontColor === '#000239') {
+      return isDarkMode ? '#EEEEEE' : '#000239';
+    } else {
+      return detail.fontColor;
     }
   };
 
@@ -175,7 +186,7 @@ function GetContents({
                 </>
               )}
               <ContentText
-                color={detail.fontColor}
+                color={colorChange(detail.fontColor)}
                 $marginTop={
                   detail.parentContent && showDetail
                     ? '40px'
@@ -206,7 +217,7 @@ function GetContents({
                 }}
                 onInputClick={() => setReplyWrite(true)}
                 placeholder={`답장을 입력해주세요.`}
-                containerHeight={replyWrite ? '67%' : '38.5%'}
+                containerHeight={replyWrite ? '74.5%' : '48%'}
               />
             </>
           )}

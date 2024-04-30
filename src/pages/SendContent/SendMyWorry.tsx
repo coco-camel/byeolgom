@@ -117,7 +117,7 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
               setFontColor(fontColor);
             }}
             placeholder={`어떤 고민이 있나요?\n자유롭게 입력해보세요.`}
-            containerHeight="75%"
+            containerHeight="80.5%"
           />
         </WhiteBox>
       </AnimatedWrapper>
