@@ -44,10 +44,17 @@ export const PastContentNone = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  font-size: 14px;
+  margin-top: 20px;
   span {
     margin-top: 10px;
   }
+`;
+
+export const NoneText = styled.div`
+  font-size: 13px;
+  font-size: light;
+  color: #8b8b8b;
+  margin-top: 6px;
 `;
 
 export const LoadMoreDiv = styled.div`
