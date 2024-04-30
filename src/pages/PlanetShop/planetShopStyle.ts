@@ -38,14 +38,15 @@ export const PlanetItem = styled.div<PlanetItemProps>`
 `;
 
 export const PlanetShopContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
+  grid-gap: 16px;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   padding: 0 20px;
   width: 100%;
   overflow: auto;
-
   &::-webkit-scrollbar {
     display: none;
   }
