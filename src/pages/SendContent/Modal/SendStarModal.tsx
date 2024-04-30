@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import cancel from '@/cancel.svg';
-import { sendStarReply } from '../../../api/sendContentApi';
+import { sendStarReply, createChat } from '../../../api/sendContentApi';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
@@ -45,6 +45,34 @@ function SendStarModal({
     }
   };
 
+  const handleCreateChat = async () => {
+    try {
+      const createChatData = {
+        worryId: detail.worryId,
+        userId: detail.worryUserId,
+        commentAuthorId: detail.commentAuthorId,
+      };
+
+      await createChat(createChatData);
+
+      const contentData = { content, fontColor };
+      const params = { worryid: detail.worryId, commentid: detail.commentId };
+      if (detail.commentId !== null) {
+        params.commentid = detail.commentId;
+      }
+
+      await sendStarReply(params, contentData);
+      setRemovePostArrived(detail.worryId);
+      queryClient.invalidateQueries({
+        queryKey: ['worryCount'],
+      });
+      closeModal();
+      openStateModal('답례와 함께 1:1 채팅 요청을 보냈어요!');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <CancelImg src={cancel} onClick={closePageModal} />
@@ -59,11 +87,10 @@ function SendStarModal({
         </SmallNoticeText>
       </NoticeContainer>
       <ButtonContainer
-        buttons={['답례 전송', '1:1 대화 요청']}
-        width={['90px', '130px']}
-        backColor={['#E88439', '#B5B5BD']}
-        color={['#white', '#black']}
-        onClickHandlers={[handleContentSubmit, closePageModal]}
+        buttons={['답례만 전송', '답례와 함께 채팅 요청']}
+        width={['90px', '140px']}
+        onClickHandlers={[handleContentSubmit, handleCreateChat]}
+        hasHover={true}
       />
     </>
   );

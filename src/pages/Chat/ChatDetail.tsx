@@ -1,17 +1,46 @@
 import { useState, useEffect } from 'react';
-import useSocket from '../../components/socket/useSocket';
+import io, { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import Back from '@/back.svg?react';
 
+interface UserInfo {
+  userId: string;
+  username: string;
+  email: string;
+}
+
 function ChatDetail() {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
   const [messageInput, setMessageInput] = useState<string>('');
 
-  const socket = useSocket();
+  useEffect(() => {
+    const token = localStorage.getItem('access_Token');
+    const newSocket = io('https://friendj.store', {
+      auth: {
+        token: token,
+      },
+    });
+
+    setSocket(newSocket);
+    newSocket.emit('join room', 'chat room');
+
+    newSocket.on('connected', () => {
+      console.log('Front 서버 연결 성공');
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
+
+    socket.on('userInfo', (userData: UserInfo) => {
+      console.log('유저 정보:', userData);
+    });
 
     socket.on('chatting', (data) => {
       console.log('메시지 수신:', data);

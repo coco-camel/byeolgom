@@ -1,20 +1,7 @@
-import useSocket from '../../components/socket/useSocket';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 function ChatList() {
-  const socket = useSocket();
-
-  const joinRoom = (roomId: string) => {
-    if (socket) {
-      socket.emit('join room', { roomId: roomId });
-    }
-  };
-
-  const handleJoinRoom = () => {
-    joinRoom('chat_room');
-  };
-
   return (
     <>
       <PageHeader>
@@ -22,7 +9,7 @@ function ChatList() {
       </PageHeader>
 
       <Link to="/chatroom">
-        <button onClick={handleJoinRoom}>방 입장</button>
+        <button>방 입장</button>
       </Link>
     </>
   );
