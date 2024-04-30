@@ -17,10 +17,10 @@ import { usePlanetShopStore } from '../../store/planetShopStore';
 import { useShallow } from 'zustand/react/shallow';
 import star from '@/star.svg';
 import { SkeletonDiv } from '../../components/skeleton/skeletonStyle';
-import { changePlanet } from '../../api/planetShopApi';
 import { userStateStore } from '../../store/userStateStore';
 import { useStateModalStore } from '../../store/stateModalStore';
 import BuyPlanetModal from './Modal/BuyPlanetModal';
+import { useChangePlanetMutation } from '../../hooks/mutations/useChangePlanet';
 
 function PlanetShop() {
   const planets = useMemo(
@@ -45,6 +45,7 @@ function PlanetShop() {
   const [planetCost, setPlanetCost] = useState(0);
   const [buttonLabel, setButtonLabel] = useState('');
   const [showBuyPlanetModal, setShowBuyPlanetModal] = useState(false);
+  const { mutate: changePlanetMutate } = useChangePlanetMutation();
 
   useEffect(() => {
     setSelectedPlanet(planet);
@@ -52,9 +53,12 @@ function PlanetShop() {
 
   const handlePlanetChangeClick = () => {
     if (buttonLabel === '적용하기') {
-      setChangePlanet(selectedPlanet);
-      changePlanet(selectedPlanet);
-      openStateModal('적용이 완료되었어요!');
+      changePlanetMutate(selectedPlanet, {
+        onSuccess: () => {
+          setChangePlanet(selectedPlanet),
+            openStateModal('적용이 완료되었어요!');
+        },
+      });
     }
     if (buttonLabel === '구매하기') {
       setShowBuyPlanetModal(true);

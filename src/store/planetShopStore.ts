@@ -15,7 +15,9 @@ export const usePlanetShopStore = create<PlanetShopState>((set) => ({
     })),
   setAddPlanets: (item) => {
     set((state) => ({
-      planetsState: [...state.planetsState, item],
+      planetsState: state.planetsState.includes(item)
+        ? state.planetsState
+        : [...state.planetsState, item],
     }));
   },
 }));

@@ -69,15 +69,15 @@ a {
 }
 
 body {
-	cursor: url('/src/assets/images/starBearPo.png'), default;
+	cursor: url('/src/assets/images/starBearPo.svg'), default;
 }
 
 body.hovering {
-  	cursor: url("/src/assets/images/starBearPo.png"), pointer;
+  	cursor: url("/src/assets/images/starBearPo.svg"), pointer;
 }
 
 body {
-	background-image: url("/src/assets/images/webBG.png");
+	background-image: url("/src/assets/images/webBG.svg");
 	background-size: cover;
 	/* background-color: #2f3438; */
 	color: ${({ theme }) => theme.fontColor};

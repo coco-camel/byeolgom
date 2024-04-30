@@ -82,7 +82,6 @@ const MyElement3D = React.memo(function MyElement3D() {
       setTexturePlanet(texture);
     });
   }, [planetImagePath]);
-
   return (
     <AnimationGroup>
       <Canvas>
@@ -116,4 +115,8 @@ const AnimationGroup = styled.div`
   transform: translate(-50%, -50%);
   max-width: 300px;
   max-height: 300px;
+  background: transparent !important; // 배경 투명으로 설정
+  canvas {
+    background: transparent !important; // 모든 하위 canvas 요소에도 투명 배경을 강제 적용
+  }
 `;
