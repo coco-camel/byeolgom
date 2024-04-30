@@ -118,7 +118,6 @@ export const StyledInput = styled.textarea`
   height: 75%;
   font-size: 16px;
   text-align: center;
-  color: '#EEEEEE';
   background-color: transparent;
   overflow: auto;
   white-space: pre-line;
@@ -206,7 +205,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 19%;
+  bottom: 15%;
 `;
 
 export const TakeStarImg = styled.img`

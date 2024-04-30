@@ -58,7 +58,7 @@ export const refreshAccessToken = async () => {
     throw new Error('리프레시 토큰이 필요합니다.');
   }
   try {
-    const res = await authInstance.post(
+    const res = await instance.post(
       `/refresh`,
       {},
       {
