@@ -32,8 +32,7 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const handleContentSubmit = async () => {
     try {
       const contentData = { content, icon: selectedIcon, fontColor };
-      const response = await sendContent(contentData);
-      console.log(response);
+      await sendContent(contentData);
       setWorryCounteDcrement();
       closeModal();
       openStateModal('로켓이 무사히 출발했어요!');

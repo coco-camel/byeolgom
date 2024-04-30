@@ -1,10 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import { useStateModalStore } from '../../../store/stateModalStore';
-import { buyPlanet } from '../../../api/planetShopApi';
 import { useQueryClient } from '@tanstack/react-query';
 import { useStarCountStore } from '../../../store/starConuntStore';
 import { usePlanetShopStore } from '../../../store/planetShopStore';
+import { useBuyPlanetMutation } from '../../../hooks/mutations/useBuyPlanet';
 
 interface BuyPlanetProps {
   setShowBuyPlanetModal: (isOpen: boolean) => void;
@@ -21,16 +21,23 @@ function BuyPlanetModal(props: BuyPlanetProps) {
     (state) => state.setDeleteStarCount,
   );
   const starCount = useStarCountStore((state) => state.starCount);
+  const { mutate: buyPlanetMutate } = useBuyPlanetMutation();
 
-  const handleBuyPlanet = () => {
-    buyPlanet(props.planet);
-    queryClient.invalidateQueries({
-      queryKey: [['starCount'], ['getPlanets']],
+  const handleBuyPlanet = async () => {
+    buyPlanetMutate(props.planet, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['starCount'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['getPlanets'],
+        });
+        setAddPlanets(props.planet);
+        setDeleteStarCount(props.planetCost);
+        props.setShowBuyPlanetModal(false);
+        openStateModal('구매가 완료되었어요!');
+      },
     });
-    setAddPlanets(props.planet);
-    setDeleteStarCount(props.planetCost);
-    props.setShowBuyPlanetModal(false);
-    openStateModal('구매가 완료되었어요!');
   };
 
   return (

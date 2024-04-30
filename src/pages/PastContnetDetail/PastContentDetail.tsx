@@ -17,6 +17,7 @@ import {
   PastContentHeader,
   PastContentWrap,
 } from '../PastContent/pastContentsStyle';
+import Loading from '../../components/loading/Loading';
 
 function PastContentDetail() {
   const rocket: { [key: string]: string } = {
@@ -36,7 +37,7 @@ function PastContentDetail() {
 
   const pastContentDetailQuery = usePastContentDetail(params);
 
-  if (pastContentDetailQuery.isPending) return <div>Loading...</div>;
+  if (pastContentDetailQuery.isPending) return <Loading />;
 
   if (pastContentDetailQuery.isError) return <div>Error</div>;
 

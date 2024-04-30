@@ -9,6 +9,7 @@ import { usePostArrivedStore } from '../../store/postArrivedStore';
 import PostArrivedList from './PostArrivedList';
 import { usePostArrived } from '../../hooks/queries/usePostArrived';
 import { useShallow } from 'zustand/react/shallow';
+import Loading from '../loading/Loading';
 
 function PostArrived() {
   const [detail, setDetail] = useState<WorryDetail>({} as WorryDetail);
@@ -70,7 +71,7 @@ function PostArrived() {
     setShowModal(false);
   };
 
-  if (postArrivedQuery.isPending) return <div>Loading...</div>;
+  if (postArrivedQuery.isPending) return <Loading />;
 
   if (postArrivedQuery.isError) return <div>Error</div>;
 
