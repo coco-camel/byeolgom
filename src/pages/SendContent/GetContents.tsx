@@ -242,7 +242,10 @@ function GetContents({
               )}
               {detail.isSolved && (
                 <>
-                  <TakeStarImg src={takeStar} />
+                  <TakeStarImg>
+                    <img src={takeStar} />
+                    <span>답례를 받았아요</span>
+                  </TakeStarImg>
                   <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
                     확인
                   </ReplyButton>

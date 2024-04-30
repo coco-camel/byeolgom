@@ -208,9 +208,16 @@ export const ButtonContainer = styled.div`
   bottom: 15%;
 `;
 
-export const TakeStarImg = styled.img`
+export const TakeStarImg = styled.div`
   position: absolute;
   margin-top: -90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    font-size: 12px;
+    position: absolute;
+  }
 `;
 
 export const LineContainer = styled.div<{ $marginTop?: string }>`
