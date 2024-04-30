@@ -1,29 +1,14 @@
 import { useState, useEffect } from 'react';
-import io, { Socket } from 'socket.io-client';
+import useSocket from '../../components/socket/useSocket';
 import styled from 'styled-components';
 import Back from '@/back.svg?react';
 
 function ChatDetail() {
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
   const [messageInput, setMessageInput] = useState<string>('');
 
-  useEffect(() => {
-    const token = localStorage.getItem('access_Token');
-    const newSocket = io('https://friendj.store', {
-      auth: {
-        token: token,
-      },
-    });
-
-    setSocket(newSocket);
-    newSocket.emit('join room', 'chat_room');
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+  const socket = useSocket();
 
   useEffect(() => {
     if (!socket) return;
