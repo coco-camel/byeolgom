@@ -38,6 +38,7 @@ import { formatDate } from '../../utills/formatDate/formatDate';
 import { useStateModalStore } from '../../store/stateModalStore';
 import PageModal from '../../components/modal/PageModal';
 import { useThemeStore } from '../../store/themeStore';
+import { badWordsFilter } from '../../utills/badWords/badWords';
 
 function GetContents({
   detail,
@@ -68,6 +69,11 @@ function GetContents({
   const { isDarkMode } = useThemeStore();
 
   const handleContentSubmit = async () => {
+    const filteredText = badWordsFilter(content);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
+    }
     try {
       const contentData = { content, fontColor };
       const params = { worryid: detail.worryId, commentid: detail.commentId };
