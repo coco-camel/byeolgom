@@ -5,15 +5,16 @@ import { useChatInfoStore } from '../../store/chatInfoStore';
 import styled from 'styled-components';
 import Back from '@/back.svg?react';
 
-interface UserInfo {
-  userId: string;
-  username: string;
-  email: string;
+interface Message {
+  userId: number;
+  text: string;
+  roomId: number;
+  time: string;
 }
 
 function ChatDetail() {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
   const [messageInput, setMessageInput] = useState<string>('');
 
@@ -35,26 +36,25 @@ function ChatDetail() {
     setSocket(newSocket);
     newSocket.emit('join room', { roomId });
 
-    newSocket.on('connected', () => {
-      console.log('Front 서버 연결 성공');
+    newSocket.on('chatting', (data) => {
+      const { userId, text, roomId, time } = data;
+      const newMessage = {
+        userId,
+        text,
+        roomId,
+        time,
+      };
+      console.log(newMessage);
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [roomId]);
 
   useEffect(() => {
     if (!socket) return;
-
-    socket.on('userInfo', (userData: UserInfo) => {
-      console.log('유저 정보:', userData);
-    });
-
-    socket.on('chatting', (data) => {
-      console.log('메시지 수신:', data);
-      setMessages((prevMessages) => [...prevMessages, data.msg]);
-    });
 
     socket.on('room message', (message) => {
       console.log(message);
@@ -69,7 +69,6 @@ function ChatDetail() {
   const sendMessage = () => {
     if (socket && messageInput.trim() !== '') {
       socket.emit('chatting', { msg: messageInput });
-      setMessages((prevMessages) => [...prevMessages, messageInput]);
       setMessageInput('');
     }
   };
@@ -97,7 +96,7 @@ function ChatDetail() {
         <ChatContainer>
           {roomJoined && <p>방에 입장하였습니다.</p>}
           {messages.map((message, index) => (
-            <div key={index}>{message}</div>
+            <div key={index}>{message.text}</div>
           ))}
         </ChatContainer>
 

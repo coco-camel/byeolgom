@@ -94,7 +94,7 @@ function ChatList() {
       case 'PENDING':
         return '1:1 채팅 요청 중입니다!';
       case 'ACCEPTED':
-        return '상대방에게서 1:1 채팅 요청이 수락되었습니다';
+        return '1:1 채팅 요청이 수락되었습니다';
       default:
         return '';
     }
