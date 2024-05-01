@@ -42,7 +42,7 @@ function BuyPlanetModal(props: BuyPlanetProps) {
 
   return (
     <PlanetModalArea>
-      {starCount > props.planetCost ? (
+      {starCount >= props.planetCost ? (
         <PlanetModalContainer>
           <NoticeContainer>
             <NoticeText>
