@@ -9,6 +9,8 @@ import SendMyWorry from '../../pages/SendContent/SendMyWorry';
 import Header from './Header';
 import RankingModal from '../../pages/Ranking/RankingModal';
 import StateModal from '../modal/StateModal';
+import character from '@/character_star.svg';
+import byeolgom_logo from '@/byeolgom_logo.gif';
 import { useStateModalStore } from '../../store/stateModalStore';
 
 function Layout() {
@@ -37,12 +39,13 @@ function Layout() {
   return (
     <MainLayout>
       <MainContent>
-        {/* <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div> */}
+        <LogoImg src={byeolgom_logo} />
+        <span>말할 수 없는 고민이 있는 현대인들을 위한</span>
+        <div>
+          <SpanText>1:1 익명 고민공유</SpanText>
+          <span>웹사이트</span>
+        </div>
+        <img src={character} alt="character" />
       </MainContent>
       <MainWrap>
         {showHeader && <Header />}
@@ -61,7 +64,11 @@ function Layout() {
 }
 
 export default Layout;
-
+const SpanText = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+  color: #e88439;
+`;
 const MainLayout = styled.div`
   display: flex;
   align-items: center;
@@ -71,9 +78,19 @@ const MainLayout = styled.div`
 `;
 
 const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 320px;
   height: 568px;
-  @media (max-width: 640px) {
+  span {
+    padding: 3px;
+  }
+  img {
+    margin: auto;
+  }
+  @media (max-width: 900px) {
     display: none;
   }
 `;
@@ -93,4 +110,9 @@ const MainWrap = styled.div`
     width: 100vw;
     height: 100vh;
   }
+`;
+
+const LogoImg = styled.img`
+  width: 200px;
+  margin: auto;
 `;
