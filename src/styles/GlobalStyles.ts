@@ -18,7 +18,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 16px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'pretendard';
 	vertical-align: baseline;
     box-sizing: border-box;
 }
@@ -77,7 +77,7 @@ body.hovering {
 }
 
 body {
-	background-image: url("/src/assets/images/webBG.svg");
+	background-image: url("/src/assets/images/webBG.png");
 	background-size: cover;
 	/* background-color: #2f3438; */
 	color: ${({ theme }) => theme.fontColor};
