@@ -10,5 +10,6 @@ export interface WorryDetail {
   worryId: number;
   userId: number;
   worryUserId: number;
+  commentAuthorId: number;
   isSolved: boolean;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
@@ -13,6 +13,7 @@ import { useStateModalStore } from '../../store/stateModalStore';
 
 function Layout() {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showFooter, setShowFooter] = useState(true);
   const { modalOpen } = useStateModalStore();
 
   const { isLoggedIn } = useAuthStore();
@@ -29,6 +30,10 @@ function Layout() {
   const showHeader: boolean =
     location.pathname === '/' || location.pathname === 'login';
 
+  useEffect(() => {
+    setShowFooter(!location.pathname.startsWith('/chatlist/'));
+  }, [location.pathname]);
+
   return (
     <MainLayout>
       <MainContent>
@@ -43,7 +48,7 @@ function Layout() {
         {showHeader && <Header />}
         {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         {modalOpen && <StateModal />}
-        {isLoggedIn && <Footer openModal={handleOpenModal} />}
+        {isLoggedIn && showFooter && <Footer openModal={handleOpenModal} />}
         <RankingModal />
         <div>
           <StarBackGround />

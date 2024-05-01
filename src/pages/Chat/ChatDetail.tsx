@@ -1,17 +1,55 @@
 import { useState, useEffect } from 'react';
-import useSocket from '../../components/socket/useSocket';
+import { Link, useNavigate } from 'react-router-dom';
+import io, { Socket } from 'socket.io-client';
+import { useChatInfoStore } from '../../store/chatInfoStore';
 import styled from 'styled-components';
 import Back from '@/back.svg?react';
 
+interface UserInfo {
+  userId: string;
+  username: string;
+  email: string;
+}
+
 function ChatDetail() {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
   const [messageInput, setMessageInput] = useState<string>('');
 
-  const socket = useSocket();
+  const navigate = useNavigate();
+  const { roomId, worryId, isSolved } = useChatInfoStore();
+
+  const targetPath = isSolved
+    ? `/pastcontents/mySolvedWorry/${worryId}`
+    : `/pastcontents/myHelpedSolvedWorry/${worryId}`;
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_Token');
+    const newSocket = io('https://friendj.store', {
+      auth: {
+        token: token,
+      },
+    });
+
+    setSocket(newSocket);
+    newSocket.emit('join room', { roomId });
+
+    newSocket.on('connected', () => {
+      console.log('Front 서버 연결 성공');
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
+
+    socket.on('userInfo', (userData: UserInfo) => {
+      console.log('유저 정보:', userData);
+    });
 
     socket.on('chatting', (data) => {
       console.log('메시지 수신:', data);
@@ -36,29 +74,43 @@ function ChatDetail() {
     }
   };
 
+  const handleBackNavigation = () => {
+    navigate(-1);
+  };
+
   return (
     <>
       <ChatDetailHeader>
-        <Back width={20} height={20} fill="#EEEEEE" />
-        <PastContentButton>이전 대화확인</PastContentButton>
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          style={{ cursor: 'pointer' }}
+          onClick={handleBackNavigation}
+        />
+        <Link to={targetPath}>
+          <PastContentButton>이전 대화확인</PastContentButton>
+        </Link>
       </ChatDetailHeader>
 
-      <ChatContainer>
-        {roomJoined && <p>방에 입장하였습니다.</p>}
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))}
-      </ChatContainer>
+      <ChatroomContainer>
+        <ChatContainer>
+          {roomJoined && <p>방에 입장하였습니다.</p>}
+          {messages.map((message, index) => (
+            <div key={index}>{message}</div>
+          ))}
+        </ChatContainer>
 
-      <InputContainer>
-        <ChatInput
-          type="text"
-          placeholder="메시지 입력"
-          value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)}
-        />
-        <SendButton onClick={sendMessage}>전송</SendButton>
-      </InputContainer>
+        <InputContainer>
+          <ChatInput
+            type="text"
+            placeholder="내용을 입력해주세요"
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+          />
+          <SendButton onClick={sendMessage}>전송</SendButton>
+        </InputContainer>
+      </ChatroomContainer>
     </>
   );
 }
@@ -75,6 +127,12 @@ const ChatDetailHeader = styled.div`
   justify-content: space-between;
 `;
 
+const ChatroomContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 88%;
+`;
+
 const PastContentButton = styled.button`
   width: 86px;
   height: 27px;
@@ -88,25 +146,40 @@ const PastContentButton = styled.button`
 `;
 
 const ChatContainer = styled.div`
-  max-height: 300px;
+  height: 90%;
+  padding: 20px;
   overflow-y: auto;
-  margin-top: 20px;
 `;
 
 const InputContainer = styled.div`
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
 `;
 
 const ChatInput = styled.input`
-  flex: 1;
+  width: 70%;
+  height: 46px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 12px;
+  border-radius: 15px;
 `;
 
 const SendButton = styled.button`
-  margin-left: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+  width: 60px;
+  height: 46px;
+  padding: 10px;
+  font-size: 12px;
+  border-radius: 25px;
+  background-color: #2f4768;
+  color: #eee;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+
+  &:hover {
+    background-color: #253954;
+  }
 `;

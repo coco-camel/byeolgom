@@ -262,7 +262,7 @@ export const StarButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  top: 77%;
+  top: 82%;
 
   @media screen and (max-width: 641px) {
     top: 71%;

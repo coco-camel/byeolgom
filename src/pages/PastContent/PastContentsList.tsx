@@ -14,6 +14,7 @@ import {
   PastContentNone,
   PastContentWrap,
   PastContentsContainer,
+  NoneText,
 } from './pastContentsStyle';
 
 interface PastContentsListProps {
@@ -66,13 +67,13 @@ const PastContentsList = forwardRef<HTMLDivElement, PastContentsListProps>(
                 <PastContentWrap>
                   {whoseContent === 'mySolvedWorry' ? (
                     <PastContentNone>
-                      <span>보관 중인 글이 없어요</span>
-                      <span>상대방의 답변에 답례를 보내주세요</span>
+                      <NoneText>보관 중인 글이 없어요</NoneText>
+                      <NoneText>상대방의 답변에 답례를 보내주세요</NoneText>
                     </PastContentNone>
                   ) : (
                     <PastContentNone>
-                      <span>보관 중인 글이 없어요</span>
-                      <span>정성껏 답변을 작성해 보세요</span>
+                      <NoneText>보관 중인 글이 없어요</NoneText>
+                      <NoneText>정성껏 답변을 작성해 보세요</NoneText>
                     </PastContentNone>
                   )}
                 </PastContentWrap>

@@ -39,7 +39,7 @@ function SendContents({
         inputRef.current.focus();
         console.log('Animation ended and timeout completed');
       }
-    }, 300);
+    }, 350);
 
     return () => {
       clearTimeout(timeoutId);

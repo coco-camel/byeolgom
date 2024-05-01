@@ -91,7 +91,7 @@ const ModalContainer = styled.div<{ $isClosing: boolean }>`
   bottom: 14%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 300;
+  z-index: 800;
   animation: ${({ $isClosing }) => ($isClosing ? fadeOut : fadeIn)} 0.3s ease
     forwards;
 
