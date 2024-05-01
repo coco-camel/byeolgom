@@ -59,6 +59,21 @@ export const sendStarReply = async (
   }
 };
 
+export const createChat = async (createChatData: ContentData) => {
+  const { worryId, userId, commentAuthorId } = createChatData;
+
+  try {
+    const res = await authInstance.post('/createChatRoom', {
+      worryId,
+      userId,
+      commentAuthorId,
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('');
+  }
+};
+
 export const deleteContent = async (params: WorriesDetailParams) => {
   try {
     const res = await authInstance.delete(`/worries/${params.worryid}`);

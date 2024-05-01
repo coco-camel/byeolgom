@@ -97,7 +97,7 @@ const ModalContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 999;
+  z-index: 750;
 `;
 
 const WhiteBox = styled.div`
@@ -118,5 +118,5 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: #00000087;
-  z-index: 995;
+  z-index: 700;
 `;
