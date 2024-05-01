@@ -138,7 +138,7 @@ function ChatList() {
                 </Link>
               ))
             : !isPending && (
-                <PastContentWrap>
+                <PastContentWrap $unread={false}>
                   <PastContentNone>
                     <NoneText>아직 시작된 채팅이 없어요!</NoneText>
                     <NoneText>더 대화를 나눠보고 싶은 유저에게</NoneText>
