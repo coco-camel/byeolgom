@@ -40,10 +40,10 @@ function Layout() {
     <MainLayout>
       <MainContent>
         <LogoImg src={byeolgom_logo} />
-        <span>말할 수 없는 고민이 있는 현대인들을 위한</span>
+        <Text>말할 수 없는 고민이 있는 현대인들을 위한</Text>
         <div>
           <SpanText>1:1 익명 고민공유</SpanText>
-          <span>웹사이트</span>
+          <Text>웹사이트</Text>
         </div>
         <img src={character} alt="character" />
       </MainContent>
@@ -64,6 +64,11 @@ function Layout() {
 }
 
 export default Layout;
+const Text = styled.span`
+  color: white;
+  padding: 3px;
+`;
+
 const SpanText = styled.span`
   font-size: 14px;
   font-weight: bold;
@@ -84,9 +89,7 @@ const MainContent = styled.div`
   justify-content: center;
   width: 320px;
   height: 568px;
-  span {
-    padding: 3px;
-  }
+
   img {
     margin: auto;
   }
