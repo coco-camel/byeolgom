@@ -66,7 +66,7 @@ function SettingPage() {
             </ProfileSection>
             <SubTitle>테마</SubTitle>
             <Theme>
-              <DarkModeTitle>다크모드</DarkModeTitle>
+              <DarkModeTitle>테마변경</DarkModeTitle>
               <DarkModeSwitch onClick={handleToggleThemeChange}>
                 <ToggleSwitch $isDark={isDarkMode}>
                   <ToggleBG src={toggleBg} $isDark={isDarkMode} />
