@@ -18,6 +18,7 @@ import {
 } from './ContentStyle';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { badWordsFilter } from '../../utills/badWords/badWords';
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -30,6 +31,11 @@ function SendMyWorry({ closeModal }: { closeModal: () => void }) {
   const { openStateModal } = useStateModalStore();
 
   const handleContentSubmit = async () => {
+    const filteredText = badWordsFilter(content);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
+    }
     try {
       const contentData = { content, icon: selectedIcon, fontColor };
       await sendContent(contentData);

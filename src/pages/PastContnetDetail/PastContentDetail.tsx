@@ -13,6 +13,7 @@ import {
   CommentLayOut,
   CommentListWrap,
   CommentRocketState,
+  ImgSpan,
   PastContentContainer,
   PastContentHeader,
   PastContentWrap,
@@ -26,12 +27,13 @@ function PastContentDetail() {
     rocketC: rocketC,
   };
   const params = useParams() as Readonly<WorriesDetailParams>;
+  const whosecontent = params.whosecontent;
   const navigate = useNavigate();
   const setWhoseContentState = useWhoseContentStore(
     (state) => state.setWhoseContentState,
   );
   const handleBackNavigation = () => {
-    setWhoseContentState(params.whosecontent);
+    setWhoseContentState(whosecontent);
     navigate(-1);
   };
 
@@ -71,7 +73,13 @@ function PastContentDetail() {
               ))}
               {pastContentDetailQuery.data.isSolved ? (
                 <CommentRocketState $text={false}>
-                  <img src={takeStar} width={170} height={50} />
+                  <img src={takeStar} />
+                  <ImgSpan>
+                    답례를
+                    {whosecontent === 'mySolvedWorry'
+                      ? ' 보냈어요'
+                      : ' 받았어요'}
+                  </ImgSpan>
                 </CommentRocketState>
               ) : pastContentDetailQuery.data.hasReports ? (
                 <CommentRocketState $text={true}>

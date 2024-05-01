@@ -6,6 +6,7 @@ import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickNa
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
 import Back from '@/back.svg?react';
+import { badWordsFilter } from '../../utills/badWords/badWords';
 
 function ChangeNickName() {
   const [nickname, setNickname] = useState('');
@@ -28,6 +29,7 @@ function ChangeNickName() {
     } else {
       setNicknameError('');
     }
+
     setNickname(e.target.value);
   };
 
@@ -38,6 +40,11 @@ function ChangeNickName() {
   const queryClient = useQueryClient();
 
   const submitNickname = () => {
+    const filteredText = badWordsFilter(nickname);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
+    }
     mutation.mutate(nickname, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['rankings'] });

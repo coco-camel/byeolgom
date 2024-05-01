@@ -209,3 +209,8 @@ export const CommentRocketState = styled.div<CommentRocketStateProps>`
     font-size: 12px;
   }
 `;
+
+export const ImgSpan = styled.div`
+  position: absolute;
+  font-size: 12px;
+`;

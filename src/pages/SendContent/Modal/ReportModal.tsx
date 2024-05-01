@@ -7,6 +7,7 @@ import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { useQueryClient } from '@tanstack/react-query';
+import { badWordsFilter } from '../../../utills/badWords/badWords';
 
 function ReportModal({
   detail,
@@ -26,6 +27,11 @@ function ReportModal({
   const queryClient = useQueryClient();
 
   const handleReport = async () => {
+    const filteredText = badWordsFilter(customReason);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
+    }
     try {
       let reasonsToSend = selectedReason;
       if (customReason.trim() !== '') {
