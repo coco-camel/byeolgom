@@ -7,7 +7,7 @@ function Main() {
     <>
       <PostArrived />
       <MyElement3D />
-      {/* <MainPageButton $link="/!" /> */}
+      <MainPageButton link="/" />
       <MainPageButton link="/planetshop" item="shop" />
     </>
   );
