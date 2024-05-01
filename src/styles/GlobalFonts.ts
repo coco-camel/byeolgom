@@ -13,6 +13,8 @@ import NotoSansKRThin from '/assets/fonts/Noto_Sans_KR/static/NotoSansKR-Thin.tt
 import PyeongChangPeaceLight from '/assets/fonts/pyeongChangPeace/PyeongChangPeace-Light.ttf';
 import PyeongChangPeaceBold from '/assets/fonts/pyeongChangPeace/PyeongChangPeace-Bold.ttf';
 
+import PretendardVariable from '/assets/fonts/pretendard/PretendardVariable.ttf';
+
 const GlobalFonts = createGlobalStyle`
   @font-face {
     font-family: 'Noto Sans KR';
@@ -83,7 +85,12 @@ const GlobalFonts = createGlobalStyle`
     font-weight: Bold;
     font-style: normal;
   }
-
+  @font-face {
+    font-family: 'pretendard';
+    src: url(${PretendardVariable}) format('truetype');
+    font-style: normal;
+    line-height: 140%;
+  }
 `;
 
 export default GlobalFonts;
