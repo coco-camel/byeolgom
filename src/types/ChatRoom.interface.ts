@@ -3,4 +3,9 @@ export interface ChatRoom {
   createdAt: Date;
   updatedAt: Date;
   userIds?: string;
+  worryId: number;
+  comment_lastContent?: string;
+  unRead: boolean;
+  status: string;
+  isSolved: boolean;
 }

@@ -5,6 +5,7 @@ export const LoadMoreDiv = styled.div`
 `;
 
 export const PastContentContainer = styled.div`
+  position: relative;
   flex-grow: 1;
   margin: 0 10px;
   overflow: hidden;
@@ -29,9 +30,8 @@ export const PastContentsContainer = styled.div`
 export const LockerListWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 85%;
   overflow: auto;
-  padding: 0 20px;
   box-sizing: border-box;
   &::-webkit-scrollbar {
     width: 12px;
@@ -52,20 +52,18 @@ export const LockerListWrap = styled.div`
   }
   @media (max-width: 640px) {
     width: 90vw;
-    height: 75vh;
+    height: 85vh;
   }
 `;
 
 export const PastContentWrap = styled.div<{
-  $margin?: string;
-  $padding?: string;
-  $backgroundcolor?: string;
+  $unread?: boolean;
 }>`
   display: flex;
   align-items: center;
-  background-color: ${(props) => props.$backgroundcolor || 'none'};
-  margin: ${(props) => props.$margin || '0'};
-  padding: ${(props) => props.$padding || '0'};
+  width: 100%;
+  height: 64px;
+  background-color: ${(props) => (props.$unread ? 'none' : '#eeeeee20')};
   .content {
     max-width: 200px;
     overflow: hidden;
@@ -98,4 +96,14 @@ export const NoneText = styled.div`
   font-size: light;
   color: #8b8b8b;
   margin-top: 6px;
+`;
+
+export const UnreadIndicator = styled.div`
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+  background-color: #d30000;
 `;

@@ -7,6 +7,9 @@ import useObserver from '../../hooks/observer/useObserver';
 import _ from 'lodash';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import Loading from '../../components/loading/Loading';
+import { useChatInfoStore } from '../../store/chatInfoStore';
+import rocket from '@/rocketA.svg';
+import star from '@/star.svg';
 import {
   LoadMoreDiv,
   LockerListWrap,
@@ -16,48 +19,49 @@ import {
   PastContentsContainer,
   PageHeader,
   NoneText,
+  UnreadIndicator,
 } from './ChatStyle';
 
 function ChatList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
+  const { setRoomId, setWorryId, setIsSolved } = useChatInfoStore();
 
   const getChatList = async (pageParam: number) => {
     const data = await chatRoomList(pageParam);
+    const { page, totalCount, rooms } = data;
+    const isLast = (page - 1) * 10 + rooms.length >= totalCount;
     return {
-      result: data,
-      nextPage: pageParam + 1,
-      isLast: data.length < 10 || data.length === 0,
-      hasNextPage: data.length === 10,
+      rooms,
+      nextPage: isLast ? undefined : page + 1,
+      isLast,
+      hasNextPage: !isLast,
     };
   };
 
   const {
-    data: pastchat,
+    data: chatList,
     fetchNextPage,
     hasNextPage,
     isPending,
   } = useInfiniteQuery({
-    queryKey: ['chatRooms'],
+    queryKey: ['rooms'],
     queryFn: ({ pageParam = 1 }) => getChatList(pageParam),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (lastPage.result.length === 0) {
-        return undefined;
-      }
-      return lastPage.isLast ? undefined : lastPage.nextPage;
-    },
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     retry: 1,
     staleTime: 1000 * 20,
   });
 
-  const pastList = useMemo(() => {
+  const roomList = useMemo(() => {
     let list: ChatRoom[] = [];
-    pastchat?.pages.forEach(({ result }) => {
-      list = [...list, ...result];
+    chatList?.pages.forEach(({ rooms }) => {
+      if (Array.isArray(rooms)) {
+        list = [...list, ...rooms];
+      }
     });
     return list;
-  }, [pastchat]);
+  }, [chatList]);
 
   const handleLoadMore = useMemo(
     () =>
@@ -75,6 +79,27 @@ function ChatList() {
     threshold: 0.25,
   });
 
+  const handleChatDetail = (
+    roomId: number,
+    worryId: number,
+    isSolved: boolean,
+  ) => {
+    setRoomId(roomId);
+    setWorryId(worryId);
+    setIsSolved(isSolved);
+  };
+
+  function getStatusMessage(status: string) {
+    switch (status) {
+      case 'PENDING':
+        return '1:1 채팅 요청 중입니다!';
+      case 'ACCEPTED':
+        return '상대방에게서 1:1 채팅 요청이 수락되었습니다';
+      default:
+        return '';
+    }
+  }
+
   return (
     <>
       <PageHeader>
@@ -83,13 +108,31 @@ function ChatList() {
 
       <PastContentsContainer>
         <LockerListWrap>
-          {pastList && pastList.length > 0
-            ? pastList.map((list, index) => (
-                <Link to={`/pastcontents/${list.roomId}`} key={index}>
-                  <PastContentWrap $margin={'15px 0'}>
+          {roomList && roomList.length > 0
+            ? roomList.map((list, index) => (
+                <Link
+                  to={{
+                    pathname: `/chatlist/${list.roomId}`,
+                  }}
+                  onClick={() =>
+                    handleChatDetail(list.roomId, list.worryId, list.isSolved)
+                  }
+                  key={index}
+                >
+                  <PastContentWrap $unread={list.unRead}>
+                    <img
+                      src={list.isSolved ? rocket : star}
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        marginLeft: '20px',
+                        marginRight: '10px',
+                      }}
+                    />
                     <PastContentContainer>
-                      <div>{formatDate(list.createdAt)}</div>
-                      {/* <div className="content">{list.content}</div> */}
+                      <div>{formatDate(list.updatedAt)}</div>
+                      <div>{getStatusMessage(list.status)}</div>
+                      {!list.unRead && <UnreadIndicator />}
                     </PastContentContainer>
                   </PastContentWrap>
                 </Link>
