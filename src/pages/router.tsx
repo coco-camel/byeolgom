@@ -13,6 +13,7 @@ import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import PlanetShop from './PlanetShop/PlanetShop';
 import ChatList from './Chat/ChatList';
 import ChatDetail from './Chat/ChatDetail';
+import HowTo from './HowTo/HowTo';
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +90,14 @@ export const router = createBrowserRouter([
           {
             path: '/chatlist/:roomId',
             element: <ChatDetail />,
+          },
+          {
+            path: '/howto',
+            element: (
+              <ProtectedRoute>
+                <HowTo />
+              </ProtectedRoute>
+            ),
           },
         ],
       },
