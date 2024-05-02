@@ -49,8 +49,6 @@ function SendStarModal({
     try {
       const createChatData = {
         worryId: detail.worryId,
-        userId: detail.worryUserId,
-        commentAuthorId: detail.commentAuthorId,
       };
 
       await createChat(createChatData);

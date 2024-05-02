@@ -60,13 +60,11 @@ export const sendStarReply = async (
 };
 
 export const createChat = async (createChatData: ContentData) => {
-  const { worryId, userId, commentAuthorId } = createChatData;
+  const { worryId } = createChatData;
 
   try {
     const res = await authInstance.post('/createChatRoom', {
       worryId,
-      userId,
-      commentAuthorId,
     });
     return res.data;
   } catch (error) {
