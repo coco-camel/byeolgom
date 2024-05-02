@@ -7,6 +7,7 @@ import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
 import toggleBg from '@/toggleBg.png';
 import { updateDarkMode } from '../../api/themeApi';
+import GOM from '@/GOM.svg';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -50,7 +51,9 @@ function SettingPage() {
           <Wrapper>
             <SubTitle>닉네임</SubTitle>
             <ProfileSection>
-              <ProfilePic />
+              <ProfilePic>
+                <img src={GOM} alt="GOM" width={50} />
+              </ProfilePic>
               <NicknameAndChange>
                 <Nickname>{NickName?.nickname || '익명'}</Nickname>
                 <ChevronRight
@@ -63,7 +66,7 @@ function SettingPage() {
             </ProfileSection>
             <SubTitle>테마</SubTitle>
             <Theme>
-              <DarkModeTitle>다크모드</DarkModeTitle>
+              <DarkModeTitle>테마변경</DarkModeTitle>
               <DarkModeSwitch onClick={handleToggleThemeChange}>
                 <ToggleSwitch $isDark={isDarkMode}>
                   <ToggleBG src={toggleBg} $isDark={isDarkMode} />
@@ -107,12 +110,24 @@ const ProfileSection = styled.div`
 
 const ProfilePic = styled.div`
   width: 45px;
-  min-width: 45px;
   height: 45px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
   border-radius: 50%;
-  background-color: #121212;
-  border: 1px solid white;
+  background-size: cover;
+  background-color: #ffecb6;
   margin-right: 15px;
+  position: relative;
+
+  img {
+    width: 110%;
+    height: 110%;
+    position: absolute;
+    top: 62%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const NicknameAndChange = styled.div`

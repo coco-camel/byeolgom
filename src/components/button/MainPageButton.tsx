@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Shop from '@/shop.svg?react';
+import Lightbulb from '@/Lightbulb.svg?react';
 import { Link } from 'react-router-dom';
 import { useThemeStore } from '../../store/themeStore';
 
@@ -18,7 +19,7 @@ function MainPageButton({ link, item = '' }: MainPageBtnProps) {
   return (
     <Link to={link}>
       <PlanetWrap $item={item}>
-        {item === 'shop' ? <Shop fill={theme} /> : <div>g</div>}
+        {item === 'shop' ? <Shop fill={theme} /> : <Lightbulb />}
       </PlanetWrap>
     </Link>
   );
