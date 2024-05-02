@@ -210,29 +210,35 @@ export const AcceptedButton = styled.button<{
 `;
 
 export const MessageContainer = styled.div`
-  display: flex;
-  align-items: flex-end;
   padding: 5px;
   width: 100%;
 `;
 
-export const MessageBubble = styled.div`
+export const MessageWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+export const MyMessageWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+export const MessageBubble = styled.div<{
+  $backColor: string;
+}>`
   max-width: 184px;
   font-size: 12px;
   color: #eee;
   border-radius: 20px;
   padding: 10px;
+  background-color: ${(props) => props.$backColor || '#121212'};
+  word-wrap: break-word;
+`;
 
-  .mymessage {
-    background-color: #2f4768;
-    word-wrap: break-word;
-    align-self: flex-end;
-  }
-  .usermessage {
-    background-color: #121212;
-    word-wrap: break-word;
-    align-self: flex-end;
-  }
+export const TimeText = styled.div`
+  display: flex;
+  align-items: flex-end;
+  font-size: 10px;
+  padding: 0px 5px;
 `;

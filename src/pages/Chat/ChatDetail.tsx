@@ -27,6 +27,9 @@ import {
   PastContentNone,
   MessageContainer,
   MessageBubble,
+  MessageWrapper,
+  MyMessageWrapper,
+  TimeText,
 } from './ChatStyle';
 
 // interface Message {
@@ -42,7 +45,6 @@ function ChatDetail() {
 
   const [socket, setSocket] = useState<Socket | null>(null);
   // const [messages, setMessages] = useState<Message[]>([]);
-  // const [roomJoined, setRoomJoined] = useState<boolean>(false);
   const [messageInput, setMessageInput] = useState<string>('');
 
   const navigate = useNavigate();
@@ -150,11 +152,6 @@ function ChatDetail() {
   useEffect(() => {
     if (!socket) return;
 
-    // socket.on('room message', (message) => {
-    //   console.log(message);
-    //   setRoomJoined(true);
-    // });
-
     // socket.on('chatting', (data) => {
     //   const { userId, text, roomId, time } = data;
     //   const newMessage = {
@@ -201,16 +198,23 @@ function ChatDetail() {
       <ChatroomContainer>
         <ChatContainer>
           {roomMessage && roomMessage.length > 0
-            ? roomMessage.map((list) => (
-                <MessageContainer>
-                  <MessageBubble
-                    className={
-                      userId === list.userId ? 'mymessage' : 'usermessage'
-                    }
-                  >
-                    {list.text}
-                  </MessageBubble>
-                  <div>{list.createdAt}</div>
+            ? roomMessage.map((list, index) => (
+                <MessageContainer key={index}>
+                  {userId === list.userId ? (
+                    <MyMessageWrapper>
+                      <TimeText>{list.createdAt}</TimeText>
+                      <MessageBubble $backColor={'#2F4768'}>
+                        {list.text}
+                      </MessageBubble>
+                    </MyMessageWrapper>
+                  ) : (
+                    <MessageWrapper>
+                      <MessageBubble $backColor={'#121212'}>
+                        {list.text}
+                      </MessageBubble>
+                      <TimeText>{list.createdAt}</TimeText>
+                    </MessageWrapper>
+                  )}
                 </MessageContainer>
               ))
             : !isPending && (
