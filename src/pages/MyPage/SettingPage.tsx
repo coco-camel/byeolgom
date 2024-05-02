@@ -6,8 +6,9 @@ import { useFetchNickName } from '../../hooks/queries/useFetchNickName';
 import ChevronRight from '@/chevronRight.svg?react';
 import { useThemeStore } from '../../store/themeStore';
 import toggleBg from '@/toggleBg.png';
-import { updateDarkMode } from '../../api/themeApi';
 import GOM from '@/GOM.svg';
+import { useUpdateThemaMutation } from '../../hooks/mutations/useUpdateThema';
+import { useStateModalStore } from '../../store/stateModalStore';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ function SettingPage() {
   const { isLoggedIn } = useAuthStore();
   const { data: NickName, isError, error } = useFetchNickName();
   const { isDarkMode, toggleTheme } = useThemeStore();
+  const { mutate: UpdateThemaMutate } = useUpdateThemaMutation();
+  const openStateModal = useStateModalStore((state) => state.openStateModal);
 
   if (isError) {
     console.error('닉네임 정보를 불러오는 데 실패했습니다.', error);
@@ -32,9 +35,12 @@ function SettingPage() {
   };
 
   const handleToggleThemeChange = () => {
-    updateDarkMode(!isDarkMode);
-
-    toggleTheme();
+    UpdateThemaMutate(!isDarkMode, {
+      onSuccess: () => {
+        toggleTheme();
+        openStateModal('테마가 변경되었어요');
+      },
+    });
   };
 
   useEffect(() => {
