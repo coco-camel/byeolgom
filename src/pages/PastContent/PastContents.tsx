@@ -45,6 +45,7 @@ function PastContents() {
     },
     retry: 1,
     staleTime: 1000 * 20,
+    gcTime: 1000 * 60,
   });
 
   const pastContents = useMemo(() => {
