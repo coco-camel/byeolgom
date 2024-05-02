@@ -27,8 +27,13 @@ import {
 function ChatList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
-  const { setRoomId, setWorryId, setIsOwner, setIsAccepted } =
-    useChatInfoStore();
+  const {
+    setRoomId,
+    setWorryId,
+    setCommentAuthorId,
+    setIsOwner,
+    setIsAccepted,
+  } = useChatInfoStore();
 
   const getChatList = async (pageParam: number) => {
     const data = await chatRoomList(pageParam);
@@ -85,11 +90,13 @@ function ChatList() {
   const handleChatDetail = (
     roomId: number,
     worryId: number,
+    commentAuthorId: number,
     isOwner: boolean,
     isAccepted: boolean,
   ) => {
     setRoomId(roomId);
     setWorryId(worryId);
+    setCommentAuthorId(commentAuthorId);
     setIsOwner(isOwner);
     setIsAccepted(isAccepted);
   };
@@ -129,6 +136,7 @@ function ChatList() {
                     handleChatDetail(
                       list.roomId,
                       list.worryId,
+                      list.commentAuthorId,
                       list.isOwner,
                       list.isAccepted,
                     )

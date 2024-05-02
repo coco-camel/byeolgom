@@ -4,7 +4,7 @@ export interface ChatRoom {
   isAccepted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  userIds?: string;
+  commentAuthorId: number;
   worryId: number;
   comment_lastContent?: string;
   isRead: boolean;

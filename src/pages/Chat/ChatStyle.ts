@@ -208,3 +208,31 @@ export const AcceptedButton = styled.button<{
   background-color: ${(props) => props.$backColor || '#eee'};
   color: ${(props) => props.$color || '#eee'};
 `;
+
+export const MessageContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  padding: 5px;
+  width: 100%;
+`;
+
+export const MessageBubble = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  max-width: 184px;
+  font-size: 12px;
+  color: #eee;
+  border-radius: 20px;
+  padding: 10px;
+
+  .mymessage {
+    background-color: #2f4768;
+    word-wrap: break-word;
+    align-self: flex-end;
+  }
+  .usermessage {
+    background-color: #121212;
+    word-wrap: break-word;
+    align-self: flex-end;
+  }
+`;

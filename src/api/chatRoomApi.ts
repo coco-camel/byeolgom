@@ -32,3 +32,21 @@ export const chatRoomMessage = async (
     throw new Error('');
   }
 };
+
+export const chatAccept = async (params: { roomid: number }) => {
+  try {
+    const res = await authInstance.put(`/acceptChat/${params.roomid}`);
+    return res.data;
+  } catch (error) {
+    throw new Error('');
+  }
+};
+
+export const chatReject = async (params: { roomid: number }) => {
+  try {
+    const res = await authInstance.delete(`/rejectChat/${params.roomid}`);
+    return res.data;
+  } catch (error) {
+    throw new Error('');
+  }
+};

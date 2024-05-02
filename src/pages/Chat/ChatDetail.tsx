@@ -6,8 +6,10 @@ import _ from 'lodash';
 import { useChatInfoStore } from '../../store/chatInfoStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
-import { chatRoomMessage } from '../../api/chatRoomApi';
+import { chatRoomMessage, chatAccept, chatReject } from '../../api/chatRoomApi';
 import { ChatMessage } from '../../types/ChatMessage.interface';
+import { useStateModalStore } from '../../store/stateModalStore';
+import useUserInfo from '../../utills/userInfo/userInfo';
 import Back from '@/back.svg?react';
 import {
   ChatDetailHeader,
@@ -23,6 +25,8 @@ import {
   LoadMoreDiv,
   NoneText,
   PastContentNone,
+  MessageContainer,
+  MessageBubble,
 } from './ChatStyle';
 
 // interface Message {
@@ -42,8 +46,12 @@ function ChatDetail() {
   const [messageInput, setMessageInput] = useState<string>('');
 
   const navigate = useNavigate();
-  const { roomId, worryId, isOwner, isAccepted } = useChatInfoStore();
+  const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
+    useChatInfoStore();
+  const { openStateModal } = useStateModalStore();
+  const userId = useUserInfo();
 
+  // 이전 내역 이동 코드
   const targetPath = isOwner
     ? `/pastcontents/mySolvedWorry/${worryId}`
     : `/pastcontents/myHelpedSolvedWorry/${worryId}`;
@@ -51,10 +59,10 @@ function ChatDetail() {
   // 무한스크롤 관련 코드
   const getMessageList = async (pageParam: number) => {
     const data = await chatRoomMessage(pageParam, { roomid: roomId });
-    const { page, totalCount, pastMessages } = data;
-    const isLast = (page - 1) * 10 + pastMessages.length >= totalCount;
+    const { page, totalCount, formattedPastMessages } = data;
+    const isLast = (page - 1) * 10 + formattedPastMessages.length >= totalCount;
     return {
-      pastMessages,
+      formattedPastMessages,
       nextPage: isLast ? undefined : page + 1,
       isLast,
       hasNextPage: !isLast,
@@ -77,9 +85,9 @@ function ChatDetail() {
 
   const roomMessage = useMemo(() => {
     let list: ChatMessage[] = [];
-    chatMessages?.pages.forEach(({ pastMessages }) => {
-      if (Array.isArray(pastMessages)) {
-        list = [...list, ...pastMessages];
+    chatMessages?.pages.forEach(({ formattedPastMessages }) => {
+      if (Array.isArray(formattedPastMessages)) {
+        list = [...list, ...formattedPastMessages];
       }
     });
     return list;
@@ -100,6 +108,27 @@ function ChatDetail() {
     rootMargin: '100px',
     threshold: 0.25,
   });
+
+  // 채팅 승인&거절 api 호출
+  const handleChatAccept = async () => {
+    try {
+      await chatAccept({ roomid: roomId });
+      navigate(-1);
+      openStateModal('채팅 승인이 전달됐어요!');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChatReject = async () => {
+    try {
+      await chatReject({ roomid: roomId });
+      navigate(-1);
+      openStateModal('채팅 요청을 거절했어요');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // socket.io 연결 관련 코드
   useEffect(() => {
@@ -149,6 +178,7 @@ function ChatDetail() {
     }
   };
 
+  // 기타 코드...
   const handleBackNavigation = () => {
     navigate(-1);
   };
@@ -172,10 +202,16 @@ function ChatDetail() {
         <ChatContainer>
           {roomMessage && roomMessage.length > 0
             ? roomMessage.map((list) => (
-                <>
-                  <div>{list.text}</div>
+                <MessageContainer>
+                  <MessageBubble
+                    className={
+                      userId === list.userId ? 'mymessage' : 'usermessage'
+                    }
+                  >
+                    {list.text}
+                  </MessageBubble>
                   <div>{list.createdAt}</div>
-                </>
+                </MessageContainer>
               ))
             : !isPending && (
                 <PastContentNone>
@@ -197,18 +233,31 @@ function ChatDetail() {
             />
             <SendButton onClick={sendMessage}>전송</SendButton>
           </InputContainer>
-        ) : (
+        ) : userId === commentAuthorId ? (
           <AcceptedContainer>
             <BorderBox />
             <span>1:1 대화를 수락하시겠습니까?</span>
             <div style={{ display: 'flex', gap: '5px' }}>
-              <AcceptedButton $color={'#121212'} $backColor={'#eee'}>
+              <AcceptedButton
+                $color={'#121212'}
+                $backColor={'#eee'}
+                onClick={handleChatAccept}
+              >
                 수락
               </AcceptedButton>
-              <AcceptedButton $color={'#eee'} $backColor={'#B5B5BD'}>
+              <AcceptedButton
+                $color={'#eee'}
+                $backColor={'#B5B5BD'}
+                onClick={handleChatReject}
+              >
                 거절
               </AcceptedButton>
             </div>
+          </AcceptedContainer>
+        ) : (
+          <AcceptedContainer>
+            <BorderBox />
+            <span>1:1 대화 승인을 기다리는 중이에요...</span>
           </AcceptedContainer>
         )}
       </ChatroomContainer>
