@@ -7,7 +7,7 @@ function Main() {
     <>
       <PostArrived />
       <MyElement3D />
-      <MainPageButton link="/" />
+      <MainPageButton link="/howto" />
       <MainPageButton link="/planetshop" item="shop" />
     </>
   );

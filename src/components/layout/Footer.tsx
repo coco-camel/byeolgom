@@ -24,8 +24,8 @@ function Footer({ openModal }: { openModal: () => void }) {
   const [isDarkMode, setTheme] = useThemeStore(
     useShallow((state) => [state.isDarkMode, state.setTheme]),
   );
-
   const setUsersState = userStateStore((state) => state.setUsersState);
+
   const userStateQuery = useUserState();
 
   useEffect(() => {

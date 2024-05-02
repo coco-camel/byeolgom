@@ -12,6 +12,7 @@ import StateModal from '../modal/StateModal';
 import character from '@/character_star.svg';
 import byeolgom_logo from '@/byeolgom_logo.gif';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 function Layout() {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -29,12 +30,23 @@ function Layout() {
     setShowModal(false);
   };
 
-  const showHeader: boolean =
-    location.pathname === '/' || location.pathname === 'login';
+  const queryClient = useQueryClient();
+
+  const showHeader: boolean = location.pathname === '/';
 
   useEffect(() => {
-    setShowFooter(!location.pathname.startsWith('/chatlist/'));
-  }, [location.pathname]);
+    const shouldShowFooter =
+      location.pathname.startsWith('/chatlist/') ||
+      location.pathname === '/howto';
+    if (shouldShowFooter) {
+      setShowFooter(false);
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ['userState'],
+      });
+      setShowFooter(true);
+    }
+  }, [location.pathname, queryClient]);
 
   return (
     <MainLayout>

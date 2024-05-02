@@ -30,8 +30,10 @@ function SettingPage() {
   const handleNicknameChange = () => {
     navigate('/changenickname');
   };
+
   const handleToggleThemeChange = () => {
     updateDarkMode(!isDarkMode);
+
     toggleTheme();
   };
 
