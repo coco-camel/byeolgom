@@ -40,7 +40,7 @@ function ChatDetail() {
 
   const [socket, setSocket] = useState<Socket>();
   const [messageInput, setMessageInput] = useState<string>('');
-  const [socketMessage, setSocketMessage] = useState<ChatMessage[]>([]);
+  const [roomMessages, setRoomMessages] = useState<ChatMessage[]>([]);
 
   const navigate = useNavigate();
   const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
@@ -80,16 +80,6 @@ function ChatDetail() {
     retry: 1,
   });
 
-  const roomMessage = useMemo(() => {
-    let list: ChatMessage[] = [];
-    chatMessages?.pages.forEach(({ formattedPastMessages }) => {
-      if (Array.isArray(formattedPastMessages)) {
-        list = [...list, ...formattedPastMessages];
-      }
-    });
-    return list;
-  }, [chatMessages?.pages]);
-
   const handleLoadMore = useMemo(
     () =>
       _.throttle(() => {
@@ -125,16 +115,19 @@ function ChatDetail() {
 
   useEffect(() => {
     if (socket !== undefined) {
-      socket.on('message', (message) => {
-        console.log('메세지도착');
-        setSocketMessage((messages) => [...messages, message]);
-      });
+      const handleMessage = (message: ChatMessage) => {
+        console.log('메세지 도착');
+        setRoomMessages((messages) => [...messages, message]);
+      };
+      socket.on('message', handleMessage);
+      return () => {
+        socket.off('message', handleMessage);
+      };
     }
-  });
-
+  }, [socket]);
   const sendMessage = () => {
     if (socket && messageInput.trim() !== '') {
-      socket.emit('chatting', { msg: messageInput });
+      socket.emit('chatting', { msg: messageInput, roomId });
       setMessageInput('');
     }
   };
@@ -167,6 +160,20 @@ function ChatDetail() {
     navigate(-1);
   };
 
+  useEffect(() => {
+    if (chatMessages) {
+      const formattedPastMessages = chatMessages.pages.flatMap(
+        (page) => page.formattedPastMessages,
+      );
+      setRoomMessages((prevMessages) => {
+        const uniqueMessages = formattedPastMessages.filter((msg) =>
+          prevMessages.every((prevMsg) => prevMsg.chatId !== msg.chatId),
+        );
+        return [...prevMessages, ...uniqueMessages];
+      });
+    }
+  }, [chatMessages]);
+
   return (
     <>
       <ChatDetailHeader>
@@ -184,8 +191,8 @@ function ChatDetail() {
 
       <ChatroomContainer>
         <ChatContainer>
-          {roomMessage && roomMessage.length > 0
-            ? roomMessage.map((list, index) => (
+          {roomMessages && roomMessages.length > 0
+            ? roomMessages.map((list, index) => (
                 <MessageContainer key={index}>
                   {userId === list.userId ? (
                     <MyMessageWrapper>
@@ -210,9 +217,6 @@ function ChatDetail() {
                   <NoneText>먼저 대화를 시작해보세요!</NoneText>
                 </PastContentNone>
               )}
-          {socketMessage.map((message, index) => (
-            <div key={index}>{message.text}</div>
-          ))}
           <LoadMoreDiv ref={loadMoreRef} />
           {isPending && <Loading />}
         </ChatContainer>

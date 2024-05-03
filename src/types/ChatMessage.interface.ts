@@ -5,4 +5,5 @@ export interface ChatMessage {
   text: string;
   isRead?: boolean;
   createdAt: Date;
+  time: Date;
 }
