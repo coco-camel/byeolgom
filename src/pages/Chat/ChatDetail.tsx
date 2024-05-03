@@ -222,7 +222,6 @@ function ChatDetail() {
 
   // 기타 코드...
   const handleBackNavigation = () => {
-    setRoomMessages([]);
     navigate(-1);
   };
 

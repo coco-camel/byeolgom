@@ -173,7 +173,11 @@ function ChatList() {
                     />
                     <PastContentContainer>
                       <div>{formatDate(list.updatedAt)}</div>
-                      <div>{getStatusMessage(list.status)}</div>
+                      {list.lastChattingMessage ? (
+                        <div>{list.lastChattingMessage}</div>
+                      ) : (
+                        <div>{getStatusMessage(list.status)}</div>
+                      )}
                       {!list.hasEntered && <UnreadIndicator />}
                     </PastContentContainer>
                   </PastContentWrap>

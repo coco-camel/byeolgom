@@ -12,4 +12,5 @@ export interface ChatRoom {
   status: string;
   isSolved: boolean;
   isOwner: boolean;
+  lastChattingMessage: string;
 }
