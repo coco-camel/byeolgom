@@ -9,6 +9,8 @@ import useObserver from '../../hooks/observer/useObserver';
 import { chatRoomMessage, chatAccept, chatReject } from '../../api/chatRoomApi';
 import { ChatMessage } from '../../types/ChatMessage.interface';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useChatListStore } from '../../store/chatListStore';
+import { formatTime } from '../../utills/formatDate/formatTime';
 import useUserInfo from '../../utills/userInfo/userInfo';
 import Back from '@/back.svg?react';
 import {
@@ -32,26 +34,20 @@ import {
   TimeText,
 } from './ChatStyle';
 
-// interface Message {
-//   userId: number;
-//   text: string;
-//   roomId: number;
-//   time: string;
-// }
-
 function ChatDetail() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
 
-  const [socket, setSocket] = useState<Socket | null>(null);
-  // const [messages, setMessages] = useState<Message[]>([]);
+  const [socket, setSocket] = useState<Socket>();
   const [messageInput, setMessageInput] = useState<string>('');
+  const [socketMessage, setSocketMessage] = useState<ChatMessage[]>([]);
 
   const navigate = useNavigate();
   const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
     useChatInfoStore();
   const { openStateModal } = useStateModalStore();
   const userId = useUserInfo();
+  const { setChatAccepted, setChatDelete } = useChatListStore();
 
   // 이전 내역 이동 코드
   const targetPath = isOwner
@@ -82,7 +78,6 @@ function ChatDetail() {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
     retry: 1,
-    staleTime: 1000 * 20,
   });
 
   const roomMessage = useMemo(() => {
@@ -93,7 +88,7 @@ function ChatDetail() {
       }
     });
     return list;
-  }, [chatMessages]);
+  }, [chatMessages?.pages]);
 
   const handleLoadMore = useMemo(
     () =>
@@ -111,31 +106,10 @@ function ChatDetail() {
     threshold: 0.25,
   });
 
-  // 채팅 승인&거절 api 호출
-  const handleChatAccept = async () => {
-    try {
-      await chatAccept({ roomid: roomId });
-      navigate(-1);
-      openStateModal('채팅 승인이 전달됐어요!');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleChatReject = async () => {
-    try {
-      await chatReject({ roomid: roomId });
-      navigate(-1);
-      openStateModal('채팅 요청을 거절했어요');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   // socket.io 연결 관련 코드
   useEffect(() => {
     const token = localStorage.getItem('access_Token');
-    const newSocket = io('https://friendj.store', {
+    const newSocket = io('https://friendj.store/', {
       auth: {
         token: token,
       },
@@ -150,28 +124,41 @@ function ChatDetail() {
   }, [roomId]);
 
   useEffect(() => {
-    if (!socket) return;
-
-    // socket.on('chatting', (data) => {
-    //   const { userId, text, roomId, time } = data;
-    //   const newMessage = {
-    //     userId,
-    //     text,
-    //     roomId,
-    //     time,
-    //   };
-    //   setMessages((prevMessages) => [...prevMessages, newMessage]);
-    // });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [socket]);
+    if (socket !== undefined) {
+      socket.on('message', (message) => {
+        console.log('메세지도착');
+        setSocketMessage((messages) => [...messages, message]);
+      });
+    }
+  });
 
   const sendMessage = () => {
     if (socket && messageInput.trim() !== '') {
       socket.emit('chatting', { msg: messageInput });
       setMessageInput('');
+    }
+  };
+
+  // 채팅 승인&거절 api 호출
+  const handleChatAccept = async () => {
+    try {
+      await chatAccept({ roomid: roomId });
+      navigate(-1);
+      setChatAccepted(roomId);
+      openStateModal('채팅 승인이 전달됐어요!');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChatReject = async () => {
+    try {
+      await chatReject({ roomid: roomId });
+      navigate(-1);
+      setChatDelete(roomId);
+      openStateModal('채팅 요청을 거절했어요');
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -202,7 +189,7 @@ function ChatDetail() {
                 <MessageContainer key={index}>
                   {userId === list.userId ? (
                     <MyMessageWrapper>
-                      <TimeText>{list.createdAt}</TimeText>
+                      <TimeText>{formatTime(list.createdAt)}</TimeText>
                       <MessageBubble $backColor={'#2F4768'}>
                         {list.text}
                       </MessageBubble>
@@ -212,7 +199,7 @@ function ChatDetail() {
                       <MessageBubble $backColor={'#121212'}>
                         {list.text}
                       </MessageBubble>
-                      <TimeText>{list.createdAt}</TimeText>
+                      <TimeText>{formatTime(list.createdAt)}</TimeText>
                     </MessageWrapper>
                   )}
                 </MessageContainer>
@@ -223,6 +210,9 @@ function ChatDetail() {
                   <NoneText>먼저 대화를 시작해보세요!</NoneText>
                 </PastContentNone>
               )}
+          {socketMessage.map((message, index) => (
+            <div key={index}>{message.text}</div>
+          ))}
           <LoadMoreDiv ref={loadMoreRef} />
           {isPending && <Loading />}
         </ChatContainer>

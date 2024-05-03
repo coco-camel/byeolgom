@@ -1,8 +1,8 @@
 export interface ChatMessage {
-  chatId: number;
+  chatId?: number;
   userId: number;
-  senderId: number;
+  senderId?: number;
   text: string;
-  isRead: boolean;
-  createdAt: string;
+  isRead?: boolean;
+  createdAt: Date;
 }

@@ -1,13 +1,15 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { chatRoomList } from '../../api/chatRoomApi';
-import { ChatRoom } from '../../types/ChatRoom.interface';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
 import _ from 'lodash';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import Loading from '../../components/loading/Loading';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNewChat } from '../../hooks/queries/useNewChat';
 import { useChatInfoStore } from '../../store/chatInfoStore';
+import { useChatListStore } from '../../store/chatListStore';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
@@ -35,6 +37,24 @@ function ChatList() {
     setIsAccepted,
   } = useChatInfoStore();
 
+  const { updateChatList, setChatListState, setChatEntered } =
+    useChatListStore();
+
+  const queryClient = useQueryClient();
+  const newChatQuery = useNewChat();
+
+  useEffect(() => {
+    if (newChatQuery.data) {
+      setChatListState(newChatQuery.data.rooms);
+    }
+  }, [newChatQuery.data, setChatListState]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['newChat'],
+    });
+  }, [setChatListState, queryClient]);
+
   const getChatList = async (pageParam: number) => {
     const data = await chatRoomList(pageParam);
     const { page, totalCount, rooms } = data;
@@ -61,15 +81,12 @@ function ChatList() {
     staleTime: 1000 * 20,
   });
 
-  const roomList = useMemo(() => {
-    let list: ChatRoom[] = [];
-    chatList?.pages.forEach(({ rooms }) => {
-      if (Array.isArray(rooms)) {
-        list = [...list, ...rooms];
-      }
-    });
-    return list;
-  }, [chatList]);
+  useEffect(() => {
+    if (chatList) {
+      const newList = chatList.pages.flatMap((page) => page.rooms);
+      setChatListState(newList);
+    }
+  }, [chatList, setChatListState]);
 
   const handleLoadMore = useMemo(
     () =>
@@ -126,21 +143,22 @@ function ChatList() {
 
       <PastContentsContainer>
         <LockerListWrap>
-          {roomList && roomList.length > 0
-            ? roomList.map((list, index) => (
+          {updateChatList && updateChatList.length > 0
+            ? updateChatList.map((list, index) => (
                 <Link
                   to={{
                     pathname: `/chatlist/${list.roomId}`,
                   }}
-                  onClick={() =>
+                  onClick={() => {
                     handleChatDetail(
                       list.roomId,
                       list.worryId,
                       list.commentAuthorId,
                       list.isOwner,
                       list.isAccepted,
-                    )
-                  }
+                    );
+                    setChatEntered(list.roomId);
+                  }}
                   key={index}
                 >
                   <PastContentWrap $hasEntered={list.hasEntered}>

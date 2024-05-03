@@ -14,21 +14,20 @@ export const useChatListStore = create<ChatListState>((set) => ({
   updateChatList: [],
   initialLoad: true,
   setChatListState: (items) => {
-    set((state) => {
-      if (state.initialLoad) {
-        return { updateChatList: items, initialLoad: false };
-      }
-      return state;
-    });
+    set((state) => ({
+      ...state,
+      updateChatList: items,
+      initialLoad: false,
+    }));
   },
 
   setChatEntered: (roomId) =>
     set((state) => {
-      let isUpdate = false;
+      let isUpdate = true;
       const updatedList = state.updateChatList.map((item) => {
-        if (item.roomId === roomId && item.hasEntered === true) {
-          isUpdate = true;
-          return { ...item, hasEntered: false };
+        if (item.roomId === roomId && item.hasEntered === false) {
+          isUpdate = false;
+          return { ...item, hasEntered: true };
         }
         return item;
       });
@@ -40,11 +39,11 @@ export const useChatListStore = create<ChatListState>((set) => ({
 
   setChatAccepted: (roomId) =>
     set((state) => {
-      let isUpdate = false;
+      let isUpdate = true;
       const updatedList = state.updateChatList.map((item) => {
-        if (item.roomId === roomId && item.isAccepted === true) {
-          isUpdate = true;
-          return { ...item, isAccepted: false };
+        if (item.roomId === roomId && item.isAccepted === false) {
+          isUpdate = false;
+          return { ...item, isAccepted: true };
         }
         return item;
       });

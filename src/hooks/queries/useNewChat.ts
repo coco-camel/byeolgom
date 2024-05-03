@@ -4,7 +4,7 @@ import { chatRoomList } from '../../api/chatRoomApi';
 export const useNewChat = () => {
   return useQuery({
     queryKey: ['newChat'],
-    queryFn: () => chatRoomList,
+    queryFn: () => chatRoomList(1),
     refetchInterval: 1000 * 20,
   });
 };
