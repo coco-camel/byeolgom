@@ -2,12 +2,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import RadioButton from '../../../components/button/RadioButton';
-import { reportContent } from '../../../api/sendContentApi';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { useQueryClient } from '@tanstack/react-query';
 import { badWordsFilter } from '../../../utills/badWords/badWords';
+import { useReportContentMutation } from '../../../hooks/mutations/useReportContent';
 
 function ReportModal({
   detail,
@@ -24,33 +24,38 @@ function ReportModal({
   const [selectedReason, setSelectedReason] = useState('');
   const [customReason, setCustomReason] = useState('');
 
+  const { mutate: reportContentMutate } = useReportContentMutation();
+
   const queryClient = useQueryClient();
 
-  const handleReport = async () => {
+  const handleReport = () => {
     const filteredText = badWordsFilter(customReason);
     if (filteredText) {
       openStateModal('바르고 고운 말 사용 부탁드려요!', true);
       return;
     }
-    try {
-      let reasonsToSend = selectedReason;
-      if (customReason.trim() !== '') {
-        reasonsToSend += `: ${customReason}`;
-      }
 
-      await reportContent(
-        { worryid: detail.worryId, commentid: detail.commentId },
-        reasonsToSend,
-      );
-      setRemovePostArrived(detail.worryId);
-      queryClient.invalidateQueries({
-        queryKey: ['worryCount'],
-      });
-      closeModal();
-      openStateModal('신고 접수가 완료되었습니다');
-    } catch (error) {
-      console.error(error);
+    let reasonsToSend = selectedReason;
+    if (customReason.trim() !== '') {
+      reasonsToSend += `: ${customReason}`;
     }
+
+    reportContentMutate(
+      {
+        params: { worryid: detail.worryId, commentid: detail.commentId },
+        reportReason: reasonsToSend,
+      },
+      {
+        onSuccess: () => {
+          setRemovePostArrived(detail.worryId);
+          queryClient.invalidateQueries({
+            queryKey: ['worryCount'],
+          });
+          closeModal();
+          openStateModal('신고 접수가 완료되었습니다');
+        },
+      },
+    );
   };
 
   const handleRadioButtonClick = (reason: string) => {
