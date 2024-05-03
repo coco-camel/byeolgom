@@ -31,7 +31,7 @@ export const PastContentsContainer = styled.div`
 export const LockerListWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 85%;
+  height: 80%;
   overflow: auto;
   box-sizing: border-box;
   &::-webkit-scrollbar {

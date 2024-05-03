@@ -155,6 +155,12 @@ function ChatDetail() {
     }
   }, [roomId]);
 
+  useEffect(() => {
+    if (roomMessages && roomMessages.length > 0 && chatScrollRef.current) {
+      chatScrollRef.current.scrollTop = chatScrollRef.current.scrollHeight;
+    }
+  }, [roomMessages]);
+
   // socket.io 연결 관련 코드
   useEffect(() => {
     const token = localStorage.getItem('access_Token');
@@ -183,6 +189,7 @@ function ChatDetail() {
       };
     }
   }, [socket]);
+
   const sendMessage = () => {
     if (socket && messageInput.trim() !== '') {
       socket.emit('chatting', { msg: messageInput, roomId });
@@ -215,7 +222,14 @@ function ChatDetail() {
 
   // 기타 코드...
   const handleBackNavigation = () => {
+    setRoomMessages([]);
     navigate(-1);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
   };
 
   useEffect(() => {
@@ -286,6 +300,7 @@ function ChatDetail() {
               placeholder="내용을 입력해주세요"
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
             <SendButton onClick={sendMessage}>전송</SendButton>
           </InputContainer>
