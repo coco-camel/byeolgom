@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
 import Loading from '../../components/loading/Loading';
-import _ from 'lodash';
 import { useChatInfoStore } from '../../store/chatInfoStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
@@ -35,19 +34,21 @@ import {
 } from './ChatStyle';
 
 function ChatDetail() {
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useRef(null);
-
   const [socket, setSocket] = useState<Socket>();
   const [messageInput, setMessageInput] = useState<string>('');
   const [roomMessages, setRoomMessages] = useState<ChatMessage[]>([]);
 
   const navigate = useNavigate();
+  const userId = useUserInfo();
+
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
+
+  const { openStateModal } = useStateModalStore();
+  const { setChatAccepted, setChatDelete } = useChatListStore();
   const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
     useChatInfoStore();
-  const { openStateModal } = useStateModalStore();
-  const userId = useUserInfo();
-  const { setChatAccepted, setChatDelete } = useChatListStore();
 
   // 이전 내역 이동 코드
   const targetPath = isOwner
@@ -80,21 +81,79 @@ function ChatDetail() {
     retry: 1,
   });
 
-  const handleLoadMore = useMemo(
-    () =>
-      _.throttle(() => {
-        if (hasNextPage) {
-          fetchNextPage();
+  useEffect(() => {
+    if (roomId) {
+      const key = `chatScrollPosition_${roomId}`;
+      const savedScrollPosition = sessionStorage.getItem(key);
+      if (savedScrollPosition && chatScrollRef.current) {
+        chatScrollRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+      }
+    }
+  }, [roomId]);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage) {
+      fetchNextPage().then((newData) => {
+        if (newData && newData.hasNextPage && chatScrollRef.current) {
+          const key = `chatScrollPosition_${roomId}`;
+          const savedScrollPosition = sessionStorage.getItem(key);
+          if (savedScrollPosition) {
+            chatScrollRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+          }
         }
-      }, 500),
-    [hasNextPage, fetchNextPage],
-  );
+      });
+    }
+  }, [hasNextPage, fetchNextPage, roomId]);
 
   useObserver(loadMoreRef, handleLoadMore, {
     root: scrollContainerRef.current,
     rootMargin: '100px',
     threshold: 0.25,
   });
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.25,
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const key = `chatScrollPosition_${roomId}`;
+          const savedScrollPosition = sessionStorage.getItem(key);
+          if (savedScrollPosition && chatScrollRef.current) {
+            chatScrollRef.current.scrollTop = parseInt(savedScrollPosition, 10);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+
+    const targetElement = chatScrollRef.current;
+    if (targetElement) {
+      observer.observe(targetElement);
+      return () => observer.unobserve(targetElement);
+    }
+  }, [roomId]);
+
+  useEffect(() => {
+    const scrollElement = chatScrollRef.current;
+    if (scrollElement) {
+      const handleScroll = () => {
+        const key = `chatScrollPosition_${roomId}`;
+        sessionStorage.setItem(key, scrollElement.scrollTop.toString());
+      };
+
+      scrollElement.addEventListener('scroll', handleScroll);
+
+      return () => {
+        scrollElement.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [roomId]);
 
   // socket.io 연결 관련 코드
   useEffect(() => {
@@ -116,7 +175,6 @@ function ChatDetail() {
   useEffect(() => {
     if (socket !== undefined) {
       const handleMessage = (message: ChatMessage) => {
-        console.log('메세지 도착');
         setRoomMessages((messages) => [...messages, message]);
       };
       socket.on('message', handleMessage);
@@ -190,7 +248,7 @@ function ChatDetail() {
       </ChatDetailHeader>
 
       <ChatroomContainer>
-        <ChatContainer>
+        <ChatContainer ref={chatScrollRef}>
           {roomMessages && roomMessages.length > 0
             ? roomMessages.map((list, index) => (
                 <MessageContainer key={index}>
