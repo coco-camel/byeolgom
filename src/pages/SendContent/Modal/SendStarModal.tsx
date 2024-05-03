@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
 import cancel from '@/cancel.svg';
-import { sendStarReply, createChat } from '../../../api/sendContentApi';
+import { createChat } from '../../../api/sendContentApi';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { useSendStarReplyMutation } from '../../../hooks/mutations/useSendStarReply';
 
 function SendStarModal({
   closeModal,
@@ -23,26 +24,29 @@ function SendStarModal({
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
 
+  const { mutate: sendStarReplyMutate } = useSendStarReplyMutation();
+
   const queryClient = useQueryClient();
 
-  const handleContentSubmit = async () => {
-    try {
-      const contentData = { content, fontColor };
-      const params = { worryid: detail.worryId, commentid: detail.commentId };
-      if (detail.commentId !== null) {
-        params.commentid = detail.commentId;
-      }
-
-      await sendStarReply(params, contentData);
-      setRemovePostArrived(detail.worryId);
-      queryClient.invalidateQueries({
-        queryKey: ['worryCount'],
-      });
-      closeModal();
-      openStateModal('답례가 무사히 전달되었어요!');
-    } catch (error) {
-      console.error(error);
+  const handleContentSubmit = () => {
+    const contentData = { content, fontColor };
+    const params = { worryid: detail.worryId, commentid: detail.commentId };
+    if (detail.commentId !== null) {
+      params.commentid = detail.commentId;
     }
+    sendStarReplyMutate(
+      { params, contentData },
+      {
+        onSuccess: () => {
+          setRemovePostArrived(detail.worryId);
+          queryClient.invalidateQueries({
+            queryKey: ['worryCount'],
+          });
+          closeModal();
+          openStateModal('답례가 무사히 전달되었어요!');
+        },
+      },
+    );
   };
 
   const handleCreateChat = async () => {
@@ -59,13 +63,19 @@ function SendStarModal({
         params.commentid = detail.commentId;
       }
 
-      await sendStarReply(params, contentData);
-      setRemovePostArrived(detail.worryId);
-      queryClient.invalidateQueries({
-        queryKey: ['worryCount'],
-      });
-      closeModal();
-      openStateModal('답례와 함께 1:1 채팅 요청을 보냈어요!');
+      sendStarReplyMutate(
+        { params, contentData },
+        {
+          onSuccess: () => {
+            setRemovePostArrived(detail.worryId);
+            queryClient.invalidateQueries({
+              queryKey: ['worryCount'],
+            });
+            closeModal();
+            openStateModal('답례와 함께 1:1 채팅 요청을 보냈어요!');
+          },
+        },
+      );
     } catch (error) {
       console.error(error);
     }

@@ -21,7 +21,7 @@ interface CentralImageProps {
 
 const CentralImage: React.FC<CentralImageProps> = ({ texture }) => (
   <mesh position={[0, 0, 0]}>
-    <planeGeometry args={[6, 6]} />
+    <planeGeometry args={[7, 7]} />
     <meshStandardMaterial map={texture} transparent />
   </mesh>
 );
@@ -32,7 +32,7 @@ const Star: React.FC<StarProps> = ({ texture, offsetTime }) => {
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime() * 0.3 + offsetTime;
     if (ref.current) {
-      ref.current.position.x = 4 * Math.sin(time);
+      ref.current.position.x = 5 * Math.sin(time);
       ref.current.position.y = (4 * Math.sin(time)) / 2;
       ref.current.position.z = 1.5 * Math.cos(time);
     }
@@ -115,8 +115,8 @@ const AnimationGroup = styled.div`
   transform: translate(-50%, -50%);
   max-width: 300px;
   max-height: 300px;
-  background: transparent !important; // 배경 투명으로 설정
+  background: transparent !important;
   canvas {
-    background: transparent !important; // 모든 하위 canvas 요소에도 투명 배경을 강제 적용
+    background: transparent !important;
   }
 `;

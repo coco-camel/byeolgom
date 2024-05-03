@@ -1,8 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
-import planetA from '@/planetA.svg';
-import planetB from '@/planetB.svg';
-import planetC from '@/planetC.svg';
-import planetD from '@/planetD.svg';
+import planetA from '@/planetA.png';
+import planetB from '@/planetB.png';
+import planetC from '@/planetC.png';
+import planetD from '@/planetD.png';
+import planetE from '@/planetE.png';
+import planetF from '@/planetF.png';
+import planetG from '@/planetG.png';
+import planetH from '@/planetH.png';
 import Check from '@/check.svg?react';
 import PlanetShopHeader from './PlanetShopHeader';
 import {
@@ -29,6 +33,10 @@ function PlanetShop() {
       [planetB, 'B', 1],
       [planetC, 'C', 3],
       [planetD, 'D', 5],
+      [planetE, 'E', 7],
+      [planetF, 'F', 10],
+      [planetG, 'G', 15],
+      [planetH, 'H', 20],
     ],
     [],
   );

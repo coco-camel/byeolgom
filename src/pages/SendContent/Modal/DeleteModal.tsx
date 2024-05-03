@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
-import { deleteContent } from '../../../api/sendContentApi';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { useQueryClient } from '@tanstack/react-query';
+import { useDeleteContentMutation } from '../../../hooks/mutations/useDeleteContent';
 
 function DeleteModal({
   detail,
@@ -18,20 +18,24 @@ function DeleteModal({
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
 
+  const { mutate: deleteContentMutate } = useDeleteContentMutation();
+
   const queryClient = useQueryClient();
 
-  const handleDelete = async () => {
-    try {
-      await deleteContent({ worryid: detail.worryId });
-      setRemovePostArrived(detail.worryId);
-      queryClient.invalidateQueries({
-        queryKey: ['worryCount'],
-      });
-      closeModal();
-      openStateModal('로켓이 어딘가로 떠났습니다...');
-    } catch (error) {
-      console.error(error);
-    }
+  const handleDelete = () => {
+    deleteContentMutate(
+      { worryid: detail.worryId },
+      {
+        onSuccess: () => {
+          setRemovePostArrived(detail.worryId);
+          queryClient.invalidateQueries({
+            queryKey: ['worryCount'],
+          });
+          closeModal();
+          openStateModal('로켓이 어딘가로 떠났습니다...');
+        },
+      },
+    );
   };
 
   return (

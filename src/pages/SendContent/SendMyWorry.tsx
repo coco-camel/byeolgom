@@ -4,7 +4,6 @@ import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
 import Back from '@/back.svg?react';
 import SendContents from './SendContents';
-import { sendContent } from '../../api/sendContentApi';
 import {
   ModalHeader,
   SendButton,
@@ -19,32 +18,32 @@ import {
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { badWordsFilter } from '../../utills/badWords/badWords';
+import { useSendContentMutation } from '../../hooks/mutations/useSendContent';
 
 function SendMyWorry({ closeModal }: { closeModal: () => void }) {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [selectedIcon, setSelectedIcon] = useState<string>('A');
-  const [content, setContent] = useState<string>('');
-  const [fontColor, setFontColor] = useState<string>('');
-  const [isSendButtonDisabled, setIsSendButtonDisabled] =
-    useState<boolean>(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState('A');
+  const [content, setContent] = useState('');
+  const [fontColor, setFontColor] = useState('');
+  const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(true);
   const { setWorryCounteDcrement } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
+  const { mutate: SendContentMutate } = useSendContentMutation();
 
-  const handleContentSubmit = async () => {
+  const handleContentSubmit = () => {
     const filteredText = badWordsFilter(content);
     if (filteredText) {
       openStateModal('바르고 고운 말 사용 부탁드려요!', true);
       return;
     }
-    try {
-      const contentData = { content, icon: selectedIcon, fontColor };
-      await sendContent(contentData);
-      setWorryCounteDcrement();
-      closeModal();
-      openStateModal('로켓이 무사히 출발했어요!');
-    } catch (error) {
-      console.error(error);
-    }
+    const contentData = { content, icon: selectedIcon, fontColor };
+    SendContentMutate(contentData, {
+      onSuccess: () => {
+        setWorryCounteDcrement();
+        closeModal();
+        openStateModal('로켓이 무사히 출발했어요!');
+      },
+    });
   };
 
   const handleIconClick = (icon: string) => {

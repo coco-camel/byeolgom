@@ -210,7 +210,7 @@ export const ButtonContainer = styled.div`
 
 export const TakeStarImg = styled.div`
   position: absolute;
-  margin-top: -90px;
+  margin-top: -140px;
   display: flex;
   align-items: center;
   justify-content: center;
