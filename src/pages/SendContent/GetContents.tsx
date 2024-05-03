@@ -10,7 +10,6 @@ import sendLine from '@/sendLine.svg';
 import starNotice from '@/starNotice.svg';
 import takeStar from '@/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { sendContentReply } from '../../api/sendContentApi';
 import {
   ModalHeader,
   AnimatedWrapper,
@@ -39,6 +38,7 @@ import { useStateModalStore } from '../../store/stateModalStore';
 import PageModal from '../../components/modal/PageModal';
 import { useThemeStore } from '../../store/themeStore';
 import { badWordsFilter } from '../../utills/badWords/badWords';
+import { useSendContentReplyMutation } from '../../hooks/mutations/useSendContentReply';
 
 function GetContents({
   detail,
@@ -55,10 +55,9 @@ function GetContents({
   const [showStarText, setShowStarText] = useState(false);
   const [sendStar, setSendStar] = useState(false);
 
-  const [content, setContent] = useState<string>('');
-  const [fontColor, setFontColor] = useState<string>('');
-  const [isSendButtonDisabled, setIsSendButtonDisabled] =
-    useState<boolean>(true);
+  const [content, setContent] = useState('');
+  const [fontColor, setFontColor] = useState('');
+  const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(true);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSendStarModal, setShowSendStarModal] = useState(false);
@@ -68,29 +67,34 @@ function GetContents({
   const { openStateModal } = useStateModalStore();
   const { isDarkMode } = useThemeStore();
 
-  const handleContentSubmit = async () => {
+  const { mutate: sendContentReplyMutate } = useSendContentReplyMutation();
+
+  const handleContentSubmit = () => {
     const filteredText = badWordsFilter(content);
     if (filteredText) {
       openStateModal('바르고 고운 말 사용 부탁드려요!', true);
       return;
     }
-    try {
-      const contentData = { content, fontColor };
-      const params = { worryid: detail.worryId, commentid: detail.commentId };
-      if (detail.commentId !== null) {
-        params.commentid = detail.commentId;
-      }
 
-      if (sendStar) {
-        setShowSendStarModal(true);
-      } else {
-        await sendContentReply(params, contentData);
-        setRemovePostArrived(detail.worryId);
-        closeModal();
-        openStateModal('로켓이 무사히 되돌아갔어요!');
-      }
-    } catch (error) {
-      console.error(error);
+    const contentData = { content, fontColor };
+    const params = { worryid: detail.worryId, commentid: detail.commentId };
+    if (detail.commentId !== null) {
+      params.commentid = detail.commentId;
+    }
+
+    if (sendStar) {
+      setShowSendStarModal(true);
+    } else {
+      sendContentReplyMutate(
+        { params, contentData },
+        {
+          onSuccess: () => {
+            setRemovePostArrived(detail.worryId);
+            closeModal();
+            openStateModal('로켓이 무사히 되돌아갔어요!');
+          },
+        },
+      );
     }
   };
 

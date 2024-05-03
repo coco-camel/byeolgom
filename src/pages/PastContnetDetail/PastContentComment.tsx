@@ -1,8 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { Comment } from '../../types/Comment.interface';
 import { WorriesDetailParams } from '../../types/WorriesDetailParams.interface';
-import { CommentContent } from '../PastContent/pastContentsStyle';
+import {
+  CommentContent,
+  CommentTimeWrap,
+} from '../PastContent/pastContentsStyle';
 import { useThemeStore } from '../../store/themeStore';
+import { formatTime } from '../../utills/formatDate/formatDate';
 
 function PastContentComment({
   comment,
@@ -25,6 +29,9 @@ function PastContentComment({
       <CommentContent $theme={isDarkMode} $count={initialCount}>
         {comment.content}
       </CommentContent>
+      <CommentTimeWrap $count={initialCount}>
+        {comment.createdAt && formatTime(comment.createdAt)}
+      </CommentTimeWrap>
       {comment.children &&
         comment.children.map((child, index) => (
           <PastContentComment

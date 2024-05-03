@@ -37,7 +37,6 @@ function SendContents({
     const timeoutId = setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus();
-        console.log('Animation ended and timeout completed');
       }
     }, 350);
 

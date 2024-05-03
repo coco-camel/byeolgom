@@ -131,15 +131,15 @@ export const PastContentWrap = styled.div<{
 
 interface CommentContentProps {
   $count: number;
-  $theme: boolean;
+  $theme?: boolean;
 }
 
 export const CommentContent = styled.div<CommentContentProps>`
   padding: 10px;
   width: 70%;
-  margin-top: 15px;
+  min-width: 100px;
+  margin-top: 10px;
   border-radius: 10px;
-  min-width: 130px;
   word-wrap: break-word;
   font-size: 12px;
   background-color: ${(props) =>
@@ -213,4 +213,18 @@ export const CommentRocketState = styled.div<CommentRocketStateProps>`
 export const ImgSpan = styled.div`
   position: absolute;
   font-size: 12px;
+`;
+
+export const CommentTimeWrap = styled.div<CommentContentProps>`
+  font-size: 10px;
+  padding: 5px 10px;
+  width: 68px;
+
+  margin-left: ${(props) => (props.$count % 2 === 0 ? '0' : 'auto')};
+  margin-right: ${(props) => (props.$count % 2 === 0 ? 'auto' : '0')};
+`;
+
+export const CommentContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
