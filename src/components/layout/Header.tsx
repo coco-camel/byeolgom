@@ -3,28 +3,17 @@ import Trophy from '@/trophy.svg?react';
 import CountRocket from '@/countRocket.svg?react';
 import { useAuthStore } from '../../store/authStore';
 import { useWorryCountStore } from '../../store/worryCountStore';
-import { useEffect } from 'react';
-import { useWorryCount } from '../../hooks/queries/useWorryCount ';
-import { useShallow } from 'zustand/react/shallow';
 import { rankingStore } from '../../store/rankingStore';
 import { SkeletonDiv } from '../skeleton/skeletonStyle';
+import { useWorryCount } from '../../hooks/queries/useWorryCount ';
 
 function Header() {
   const { isLoggedIn } = useAuthStore();
   const { openModal } = rankingStore((state) => ({
     openModal: state.openModal,
   }));
-  const [worryCount, setWorryCountState] = useWorryCountStore(
-    useShallow((state) => [state.worryCount, state.setWorryCountState]),
-  );
-
+  const worryCount = useWorryCountStore((state) => state.worryCount);
   const worryCountQuery = useWorryCount();
-
-  useEffect(() => {
-    setWorryCountState(worryCountQuery.data);
-  }, [worryCountQuery.data, setWorryCountState]);
-
-  if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
     <HeaderArea>
