@@ -165,14 +165,13 @@ export const SendButton = styled.button`
   padding: 10px;
   font-size: 12px;
   border-radius: 25px;
-  background-color: #2f4768;
-  color: #eee;
+  background-color: ${({ theme }) => theme.chatSendButton};
   border: none;
   cursor: pointer;
   margin-left: 5px;
 
   &:hover {
-    background-color: #253954;
+    filter: brightness(90%);
   }
 `;
 
@@ -186,8 +185,9 @@ export const AcceptedContainer = styled.div`
   gap: 20px;
   margin-top: -40px;
 
-  .span {
-    font-size: 12px;
+  span {
+    font-size: 14px;
+    color: #eee;
   }
 `;
 
@@ -229,7 +229,6 @@ export const MessageBubble = styled.div<{
 }>`
   max-width: 184px;
   font-size: 12px;
-  color: #eee;
   border-radius: 20px;
   padding: 10px;
   background-color: ${(props) => props.$backColor || '#121212'};
@@ -240,5 +239,6 @@ export const TimeText = styled.div`
   display: flex;
   align-items: flex-end;
   font-size: 10px;
+  color: #eee;
   padding: 0px 5px;
 `;

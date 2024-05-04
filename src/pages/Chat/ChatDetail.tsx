@@ -9,6 +9,7 @@ import { chatRoomMessage, chatAccept, chatReject } from '../../api/chatRoomApi';
 import { ChatMessage } from '../../types/ChatMessage.interface';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useChatListStore } from '../../store/chatListStore';
+import { useThemeStore } from '../../store/themeStore';
 import { formatTime } from '../../utills/formatDate/formatTime';
 import useUserInfo from '../../utills/userInfo/userInfo';
 import Back from '@/back.svg?react';
@@ -40,6 +41,7 @@ function ChatDetail() {
 
   const navigate = useNavigate();
   const userId = useUserInfo();
+  const { isDarkMode } = useThemeStore();
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
@@ -268,13 +270,17 @@ function ChatDetail() {
                   {userId === list.userId ? (
                     <MyMessageWrapper>
                       <TimeText>{formatTime(list.createdAt)}</TimeText>
-                      <MessageBubble $backColor={'#2F4768'}>
+                      <MessageBubble
+                        $backColor={isDarkMode ? '#2F4768' : '#D7E5FA'}
+                      >
                         {list.text}
                       </MessageBubble>
                     </MyMessageWrapper>
                   ) : (
                     <MessageWrapper>
-                      <MessageBubble $backColor={'#121212'}>
+                      <MessageBubble
+                        $backColor={isDarkMode ? '#121212' : '#eee'}
+                      >
                         {list.text}
                       </MessageBubble>
                       <TimeText>{formatTime(list.createdAt)}</TimeText>
@@ -289,7 +295,6 @@ function ChatDetail() {
                 </PastContentNone>
               )}
           <LoadMoreDiv ref={loadMoreRef} />
-          {isPending && <Loading />}
         </ChatContainer>
 
         {isAccepted ? (
@@ -330,6 +335,7 @@ function ChatDetail() {
             <span>1:1 대화 승인을 기다리는 중이에요...</span>
           </AcceptedContainer>
         )}
+        {isPending && <Loading />}
       </ChatroomContainer>
     </>
   );

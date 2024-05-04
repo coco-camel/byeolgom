@@ -6,7 +6,7 @@ import report from '@/report.svg';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
 import rocketC from '@/rocketC.svg';
-import sendLine from '@/sendLine.svg';
+import SendLine from '@/sendLine.svg?react';
 import starNotice from '@/starNotice.svg';
 import takeStar from '@/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
@@ -152,6 +152,8 @@ function GetContents({
     }
   }, [detail.worryUserId]);
 
+  const theme = isDarkMode ? '#eee' : '#000239';
+
   return (
     <>
       <ModalHeader>
@@ -191,7 +193,7 @@ function GetContents({
                     {detail.parentContent}
                   </ContentText>
                   <LineContainer>
-                    <img src={sendLine} />
+                    <SendLine fill={theme} />
                   </LineContainer>
                 </>
               )}
@@ -218,7 +220,7 @@ function GetContents({
                   setReplyWrite(false);
                 }}
               >
-                <img src={sendLine} />
+                <SendLine fill={theme} />
               </LineContainer>
               <SendContents
                 onSend={(content, fontColor) => {

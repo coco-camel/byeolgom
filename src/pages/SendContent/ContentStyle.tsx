@@ -232,9 +232,9 @@ export const ReplyButton = styled.button`
   width: 145px;
   height: 35px;
   font-size: 12px;
-  color: #2a2a2a;
+  color: ${({ theme }) => theme.contenttext};
   left: 50%;
-  background-color: #eeeeee;
+  background-color: ${({ theme }) => theme.contentSendButton};
   border-radius: 30px;
   cursor: pointer;
   &:hover {
