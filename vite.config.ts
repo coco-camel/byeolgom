@@ -11,6 +11,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'build',
+    assetsInlineLimit: 0,
+    chunkSizeWarningLimit: 5000,
   },
   resolve: {
     alias: [{ find: '@', replacement: '/src/assets/images/' }],

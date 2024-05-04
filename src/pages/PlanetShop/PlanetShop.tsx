@@ -1,12 +1,12 @@
 import { useState, useEffect, useMemo } from 'react';
-import planetA from '@/planetA.png';
-import planetB from '@/planetB.png';
-import planetC from '@/planetC.png';
-import planetD from '@/planetD.png';
-import planetE from '@/planetE.png';
-import planetF from '@/planetF.png';
-import planetG from '@/planetG.png';
-import planetH from '@/planetH.png';
+import planetA from '/assets/images/planetA.png';
+import planetB from '/assets/images/planetB.png';
+import planetC from '/assets/images/planetC.png';
+import planetD from '/assets/images/planetD.png';
+import planetE from '/assets/images/planetE.png';
+import planetF from '/assets/images/planetF.png';
+import planetG from '/assets/images/planetG.png';
+import planetH from '/assets/images/planetH.png';
 import Check from '@/check.svg?react';
 import PlanetShopHeader from './PlanetShopHeader';
 import {

@@ -9,6 +9,8 @@ import toggleBg from '@/toggleBg.png';
 import GOM from '@/GOM.svg';
 import { useUpdateThemaMutation } from '../../hooks/mutations/useUpdateThema';
 import { useStateModalStore } from '../../store/stateModalStore';
+import moon from '@/moon.png';
+import sun from '@/sun.png';
 
 function SettingPage() {
   const navigate = useNavigate();
@@ -240,7 +242,7 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
   cursor: pointer;
 
   &:after {
-    background-image: url('/src/assets/images/sun.png');
+    background-image: url(${sun});
     background-size: cover;
     content: '';
     position: absolute;
@@ -255,7 +257,7 @@ const ToggleSwitch = styled.div<{ $isDark: boolean }>`
     ${(props) =>
       props.$isDark &&
       css`
-        background-image: url('/src/assets/images/moon.png');
+        background-image: url(${moon});
         background-size: cover;
         left: 16px;
       `}

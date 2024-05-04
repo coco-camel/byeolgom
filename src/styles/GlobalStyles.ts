@@ -1,4 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
+import webBG from '@/webBG.png';
+import starBearPo from '@/starBearPo.svg';
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -69,17 +71,16 @@ a {
 }
 
 body {
-	cursor: url('/src/assets/images/starBearPo.svg'), default;
+	cursor: url(${starBearPo}), default;
 }
 
 body.hovering {
-  	cursor: url("/src/assets/images/starBearPo.svg"), pointer;
+  	cursor: url(${starBearPo}), pointer;
 }
 
 body {
-	background-image: url("/src/assets/images/webBG.png");
+	background-image: url(${webBG});
 	background-size: cover;
-	/* background-color: #2f3438; */
 	color: ${({ theme }) => theme.fontColor};
 }
 `;

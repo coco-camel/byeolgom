@@ -1,5 +1,8 @@
+import lightBackground from '@/lightBackground.svg';
+import background from '@/background.svg';
+
 export const lightTheme = {
-  bgImage: 'url("/src/assets/images/lightBackground.svg")',
+  bgImage: `url(${lightBackground})`,
   fontColor: '#000',
   ModalBox: '#eee',
   ModalOverlay: '#456BF0',
@@ -17,7 +20,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  bgImage: 'url("/src/assets/images/background.svg")',
+  bgImage: `url(${background})`,
   fontColor: '#eee',
   ModalBox: '#1E2734',
   ModalOverlay: '#2F4768',

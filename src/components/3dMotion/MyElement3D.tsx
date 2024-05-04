@@ -9,6 +9,7 @@ import { useStarCountStore } from '../../store/starConuntStore';
 import { useStarCount } from '../../hooks/queries/useStarCount';
 import { useShallow } from 'zustand/react/shallow';
 import { userStateStore } from '../../store/userStateStore';
+import star from '@/star.png';
 
 interface StarProps {
   texture: Texture;
@@ -50,10 +51,10 @@ const MyElement3D = React.memo(function MyElement3D() {
   const [textureStar, setTextureStar] = useState<Texture | null>(null);
   const [texturePlanet, setTexturePlanet] = useState<Texture | null>(null);
 
-  const starImagePath = '/src/assets/images/star.png';
+  const starImagePath = star;
 
   const planet = userStateStore((state) => state.planet);
-  const planetImagePath = `/src/assets/images/planet${planet}.png`;
+  const planetImagePath = `/assets/images/planet${planet}.png`;
 
   const [starCount, setStarCountState] = useStarCountStore(
     useShallow((state) => [state.starCount, state.setStarCountState]),
