@@ -30,7 +30,7 @@ function PlanetShop() {
   const planets = useMemo(
     () => [
       [planetA, 'A', 0],
-      [planetB, 'B', 1],
+      [planetB, 'B', 0],
       [planetC, 'C', 3],
       [planetD, 'D', 5],
       [planetE, 'E', 7],
