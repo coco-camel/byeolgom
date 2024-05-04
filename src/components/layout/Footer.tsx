@@ -9,7 +9,7 @@ import Chat from '@/chat.svg?react';
 import HoverChat from '@/hoverChat.svg?react';
 import Setting from '@/setting.svg?react';
 import HoverSetting from '@/hoverSetting.svg?react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useThemeStore } from '../../store/themeStore';
@@ -18,6 +18,7 @@ import { userStateStore } from '../../store/userStateStore.ts';
 import { useShallow } from 'zustand/react/shallow';
 
 function Footer({ openModal }: { openModal: () => void }) {
+  const location = useLocation();
   const [clickedButton, setClickedButton] = useState<string>('');
   const { worryCount } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
@@ -43,6 +44,27 @@ function Footer({ openModal }: { openModal: () => void }) {
     if (clickedButton === buttonName) return;
     setClickedButton(buttonName);
   };
+
+  useEffect(() => {
+    const path = location.pathname;
+    switch (path) {
+      case '/':
+        setClickedButton('home');
+        break;
+      case '/pastcontents':
+        setClickedButton('locker');
+        break;
+      case '/chatlist':
+        setClickedButton('chat');
+        break;
+      case '/mypage':
+        setClickedButton('setting');
+        break;
+      default:
+        setClickedButton('');
+        break;
+    }
+  }, [location]);
 
   const theme = isDarkMode ? '#eee' : '#000239';
 

@@ -1,14 +1,18 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { chatRoomList } from '../../api/chatRoom';
-import { ChatRoom } from '../../types/ChatRoom.interface';
+import { chatRoomList } from '../../api/chatRoomApi';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
 import _ from 'lodash';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import Loading from '../../components/loading/Loading';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNewChat } from '../../hooks/queries/useNewChat';
 import { useChatInfoStore } from '../../store/chatInfoStore';
-import rocket from '@/rocketA.svg';
+import { useChatListStore } from '../../store/chatListStore';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
 import star from '@/star.svg';
 import {
   LoadMoreDiv,
@@ -25,7 +29,31 @@ import {
 function ChatList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
-  const { setRoomId, setWorryId, setIsSolved } = useChatInfoStore();
+  const {
+    setRoomId,
+    setWorryId,
+    setCommentAuthorId,
+    setIsOwner,
+    setIsAccepted,
+  } = useChatInfoStore();
+
+  const { updateChatList, setChatListState, setChatEntered } =
+    useChatListStore();
+
+  const queryClient = useQueryClient();
+  const newChatQuery = useNewChat();
+
+  useEffect(() => {
+    if (newChatQuery.data) {
+      setChatListState(newChatQuery.data.rooms);
+    }
+  }, [newChatQuery.data, setChatListState]);
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: ['newChat'],
+    });
+  }, [setChatListState, queryClient]);
 
   const getChatList = async (pageParam: number) => {
     const data = await chatRoomList(pageParam);
@@ -53,15 +81,12 @@ function ChatList() {
     staleTime: 1000 * 20,
   });
 
-  const roomList = useMemo(() => {
-    let list: ChatRoom[] = [];
-    chatList?.pages.forEach(({ rooms }) => {
-      if (Array.isArray(rooms)) {
-        list = [...list, ...rooms];
-      }
-    });
-    return list;
-  }, [chatList]);
+  useEffect(() => {
+    if (chatList) {
+      const newList = chatList.pages.flatMap((page) => page.rooms);
+      setChatListState(newList);
+    }
+  }, [chatList, setChatListState]);
 
   const handleLoadMore = useMemo(
     () =>
@@ -82,23 +107,33 @@ function ChatList() {
   const handleChatDetail = (
     roomId: number,
     worryId: number,
-    isSolved: boolean,
+    commentAuthorId: number,
+    isOwner: boolean,
+    isAccepted: boolean,
   ) => {
     setRoomId(roomId);
     setWorryId(worryId);
-    setIsSolved(isSolved);
+    setCommentAuthorId(commentAuthorId);
+    setIsOwner(isOwner);
+    setIsAccepted(isAccepted);
   };
 
   function getStatusMessage(status: string) {
     switch (status) {
       case 'PENDING':
-        return '1:1 채팅 요청 중입니다!';
+        return '1:1 채팅 요청 중입니다...';
       case 'ACCEPTED':
-        return '상대방에게서 1:1 채팅 요청이 수락되었습니다';
+        return '1:1 채팅 요청이 수락되었습니다';
       default:
         return '';
     }
   }
+
+  const rocket: { [key: string]: string } = {
+    rocketA: rocketA,
+    rocketB: rocketB,
+    rocketC: rocketC,
+  };
 
   return (
     <>
@@ -108,20 +143,27 @@ function ChatList() {
 
       <PastContentsContainer>
         <LockerListWrap>
-          {roomList && roomList.length > 0
-            ? roomList.map((list, index) => (
+          {updateChatList && updateChatList.length > 0
+            ? updateChatList.map((list, index) => (
                 <Link
                   to={{
                     pathname: `/chatlist/${list.roomId}`,
                   }}
-                  onClick={() =>
-                    handleChatDetail(list.roomId, list.worryId, list.isSolved)
-                  }
+                  onClick={() => {
+                    handleChatDetail(
+                      list.roomId,
+                      list.worryId,
+                      list.commentAuthorId,
+                      list.isOwner,
+                      list.isAccepted,
+                    );
+                    setChatEntered(list.roomId);
+                  }}
                   key={index}
                 >
-                  <PastContentWrap $unread={list.unRead}>
+                  <PastContentWrap $hasEntered={list.hasEntered}>
                     <img
-                      src={list.isSolved ? rocket : star}
+                      src={list.isOwner ? rocket[`rocket${list.icon}`] : star}
                       style={{
                         width: '30px',
                         height: '30px',
@@ -131,20 +173,22 @@ function ChatList() {
                     />
                     <PastContentContainer>
                       <div>{formatDate(list.updatedAt)}</div>
-                      <div>{getStatusMessage(list.status)}</div>
-                      {!list.unRead && <UnreadIndicator />}
+                      {list.lastChattingMessage ? (
+                        <div>{list.lastChattingMessage}</div>
+                      ) : (
+                        <div>{getStatusMessage(list.status)}</div>
+                      )}
+                      {!list.hasEntered && <UnreadIndicator />}
                     </PastContentContainer>
                   </PastContentWrap>
                 </Link>
               ))
             : !isPending && (
-                <PastContentWrap>
-                  <PastContentNone>
-                    <NoneText>아직 시작된 채팅이 없어요!</NoneText>
-                    <NoneText>더 대화를 나눠보고 싶은 유저에게</NoneText>
-                    <NoneText>답례 전송과 함께 채팅 요청을 보내보세요</NoneText>
-                  </PastContentNone>
-                </PastContentWrap>
+                <PastContentNone>
+                  <NoneText>아직 시작된 채팅이 없어요!</NoneText>
+                  <NoneText>더 대화를 나눠보고 싶은 유저에게</NoneText>
+                  <NoneText>답례 전송과 함께 채팅 요청을 보내보세요</NoneText>
+                </PastContentNone>
               )}
           <LoadMoreDiv ref={loadMoreRef} />
         </LockerListWrap>
