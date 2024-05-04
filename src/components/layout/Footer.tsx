@@ -16,6 +16,7 @@ import { useThemeStore } from '../../store/themeStore';
 import { useUserState } from '../../hooks/queries/useUserState.ts';
 import { userStateStore } from '../../store/userStateStore.ts';
 import { useShallow } from 'zustand/react/shallow';
+import { useWorryCount } from '../../hooks/queries/useWorryCount .ts';
 
 function Footer({ openModal }: { openModal: () => void }) {
   const location = useLocation();
@@ -26,8 +27,16 @@ function Footer({ openModal }: { openModal: () => void }) {
     useShallow((state) => [state.isDarkMode, state.setTheme]),
   );
   const setUsersState = userStateStore((state) => state.setUsersState);
-
+  const setWorryCountState = useWorryCountStore(
+    (state) => state.setWorryCountState,
+  );
   const userStateQuery = useUserState();
+
+  const worryCountQuery = useWorryCount();
+
+  useEffect(() => {
+    setWorryCountState(worryCountQuery.data);
+  }, [worryCountQuery.data, setWorryCountState]);
 
   useEffect(() => {
     if (userStateQuery.data) {
@@ -67,6 +76,8 @@ function Footer({ openModal }: { openModal: () => void }) {
   }, [location]);
 
   const theme = isDarkMode ? '#eee' : '#000239';
+
+  if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
     <FooterArea>
