@@ -303,7 +303,6 @@ export const Circle = styled.div`
 `;
 
 export const StarText = styled.div`
-  color: white;
   font-size: 14px;
   margin-left: 6px;
 `;

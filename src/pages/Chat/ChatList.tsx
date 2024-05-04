@@ -2,13 +2,12 @@ import { useMemo, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { chatRoomList } from '../../api/chatRoomApi';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import useObserver from '../../hooks/observer/useObserver';
-import _ from 'lodash';
 import { formatDate } from '../../utills/formatDate/formatDate';
+import _ from 'lodash';
+import useObserver from '../../hooks/observer/useObserver';
 import Loading from '../../components/loading/Loading';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNewChat } from '../../hooks/queries/useNewChat';
-import { useChatInfoStore } from '../../store/chatInfoStore';
 import { useChatListStore } from '../../store/chatListStore';
 import rocketA from '@/rocketA.svg';
 import rocketB from '@/rocketB.svg';
@@ -29,13 +28,6 @@ import {
 function ChatList() {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef(null);
-  const {
-    setRoomId,
-    setWorryId,
-    setCommentAuthorId,
-    setIsOwner,
-    setIsAccepted,
-  } = useChatInfoStore();
 
   const { updateChatList, setChatListState, setChatEntered } =
     useChatListStore();
@@ -104,20 +96,6 @@ function ChatList() {
     threshold: 0.25,
   });
 
-  const handleChatDetail = (
-    roomId: number,
-    worryId: number,
-    commentAuthorId: number,
-    isOwner: boolean,
-    isAccepted: boolean,
-  ) => {
-    setRoomId(roomId);
-    setWorryId(worryId);
-    setCommentAuthorId(commentAuthorId);
-    setIsOwner(isOwner);
-    setIsAccepted(isAccepted);
-  };
-
   function getStatusMessage(status: string) {
     switch (status) {
       case 'PENDING':
@@ -146,17 +124,15 @@ function ChatList() {
           {updateChatList && updateChatList.length > 0
             ? updateChatList.map((list, index) => (
                 <Link
-                  to={{
-                    pathname: `/chatlist/${list.roomId}`,
+                  to={`/chatlist/${list.roomId}`}
+                  state={{
+                    roomId: list.roomId,
+                    worryId: list.worryId,
+                    commentAuthorId: list.commentAuthorId,
+                    isOwner: list.isOwner,
+                    isAccepted: list.isAccepted,
                   }}
                   onClick={() => {
-                    handleChatDetail(
-                      list.roomId,
-                      list.worryId,
-                      list.commentAuthorId,
-                      list.isOwner,
-                      list.isAccepted,
-                    );
                     setChatEntered(list.roomId);
                   }}
                   key={index}
