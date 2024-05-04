@@ -82,7 +82,7 @@ const MyElement3D = React.memo(function MyElement3D() {
     new TextureLoader().load(planetImagePath, (texture) => {
       setTexturePlanet(texture);
     });
-  }, [planetImagePath]);
+  }, [planetImagePath, starImagePath]);
   return (
     <AnimationGroup>
       <Canvas>
