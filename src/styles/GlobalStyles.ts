@@ -1,4 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
+import webBG from '@/webBG.png';
+import starBearPo from '@/starBearPo.svg';
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -18,7 +20,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 16px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'pretendard';
 	vertical-align: baseline;
     box-sizing: border-box;
 }
@@ -27,7 +29,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+	line-height: 1.4;
 }
 ol, ul {
 	list-style: none;
@@ -57,6 +59,7 @@ button {
     border:none;
     cursor: pointer;
     outline:none;
+	padding: 0;
 }
 a {
 	text-decoration: none;
@@ -68,18 +71,17 @@ a {
 }
 
 body {
-	cursor: url('assets/images/starBearPo.png'), default;
+	cursor: url(${starBearPo}), default;
 }
 
 body.hovering {
-  	cursor: url("assets/images/starBearPo.png"), pointer;
+  	cursor: url(${starBearPo}), pointer;
 }
 
 body {
-	background-image: url("/assets/images/backGroundTest.svg");
+	background-image: url(${webBG});
 	background-size: cover;
-	/* background-color: #2f3438; */
-	color: white;
+	color: ${({ theme }) => theme.fontColor};
 }
 `;
 

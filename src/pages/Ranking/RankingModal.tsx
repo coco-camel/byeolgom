@@ -1,33 +1,36 @@
+import { rankingStore } from '../../store/rankingStore';
 import RankingBoard from './RankingBoard';
 import styled, { keyframes } from 'styled-components';
-import back from '/assets/images/back.svg';
-import trophy from '/assets/images/trophy.svg';
-import { RankingModalProps } from '../../types/RankingProps.interface';
+import Back from '@/back.svg?react';
+import Trophy from '@/trophy.svg?react';
+import { useThemeStore } from '../../store/themeStore';
 
-function RankingModal({
-  isOpen,
-  currentUser,
-  onRequestClose,
-}: RankingModalProps) {
+function RankingModal() {
+  const { isOpen, closeModal } = rankingStore();
+  const { isDarkMode } = useThemeStore();
+
   if (!isOpen) return null;
+
+  const backbutton = isDarkMode ? '#eee' : '#000239';
+  const trophyColor = isDarkMode ? '#eee' : '#000239';
 
   return (
     <>
       <ModalOverlay />
-      <AnimatedWrapper onClick={onRequestClose}>
+      <AnimatedWrapper onClick={() => closeModal()}>
         <WhiteContainer>
           <RankingHeader>
-            <BackButton src={back} onClick={onRequestClose} />
-            <img className="trophy" src={trophy} alt="Trophy" />
+            <Back
+              width={20}
+              height={20}
+              fill={backbutton}
+              onClick={() => closeModal()}
+              className="backButton"
+            />
+            <Trophy fill={trophyColor} className="trophy" />
           </RankingHeader>
           <Title>고민을 많이 해결해준 순위</Title>
-          <RankingBoard
-            isOpen={isOpen}
-            currentUser={currentUser}
-            onRequestClose={function (): void {
-              throw new Error('Function not implemented.');
-            }}
-          />
+          <RankingBoard />
         </WhiteContainer>
       </AnimatedWrapper>
     </>
@@ -53,7 +56,11 @@ const RankingHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .backButton {
+    margin-left: 20px;
 
+    cursor: pointer;
+  }
   .trophy {
     height: 20px;
     flex: 1;
@@ -62,18 +69,9 @@ const RankingHeader = styled.div`
   }
 `;
 
-export const BackButton = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-
-  cursor: pointer;
-`;
-
 const Title = styled.p`
   position: relative;
   top: 16%;
-  color: white;
 `;
 
 export const ModalOverlay = styled.div`
@@ -83,7 +81,8 @@ export const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: none;
-  z-index: 150;
+  background-color: ${({ theme }) => theme.ModalOverlay};
+  z-index: 90;
 `;
 
 const AnimatedWrapper = styled.div`
@@ -101,7 +100,7 @@ const WhiteContainer = styled.div`
   transform: translateY(-0px);
   border-bottom-left-radius: 35px;
   border-bottom-right-radius: 35px;
-  background-color: #1e2734;
+  background-color: ${({ theme }) => theme.ModalBox};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

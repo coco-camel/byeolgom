@@ -3,15 +3,18 @@ import { create } from 'zustand';
 interface ModalState {
   statusMessage: string;
   modalOpen: boolean;
-  openStateModal: (message: string) => void;
+  checkbox: boolean;
+  openStateModal: (message: string, check?: boolean) => void;
   closeStateModal: () => void;
 }
 
 export const useStateModalStore = create<ModalState>((set) => ({
   statusMessage: '',
   modalOpen: false,
-  openStateModal: (message: string) => {
-    set({ statusMessage: message, modalOpen: true });
+  checkbox: false,
+  openStateModal: (message: string, check?: boolean) => {
+    set({ statusMessage: message, modalOpen: true, checkbox: check });
   },
-  closeStateModal: () => set({ statusMessage: '', modalOpen: false }),
+  closeStateModal: () =>
+    set({ statusMessage: '', modalOpen: false, checkbox: false }),
 }));

@@ -1,12 +1,27 @@
 // RankingBoard.tsx
+import { useEffect } from 'react';
 import { useRankingBoard } from '../../hooks/queries/useRankingBoard';
-import { RankingModalProps } from '../../types/RankingProps.interface';
 import RankingList from './RankingList';
 import styled from 'styled-components';
-import threeDot from '/assets/images/threeDot.png';
+import ThreeDot from '@/threeDot.svg?react';
+import { rankingStore } from '../../store/rankingStore';
+import { useShallow } from 'zustand/react/shallow';
 
-function RankingBoard({ isOpen, currentUser }: RankingModalProps) {
+function RankingBoard() {
+  const [isOpen, isCurrentUser, setCurrentUser] = rankingStore(
+    useShallow((state) => [
+      state.isOpen,
+      state.isCurrentUser,
+      state.setCurrentUser,
+    ]),
+  );
   const RankingBoardQuery = useRankingBoard(isOpen);
+
+  useEffect(() => {
+    if (RankingBoardQuery.data && RankingBoardQuery.data.length > 0) {
+      setCurrentUser(RankingBoardQuery.data);
+    }
+  }, [RankingBoardQuery.data, setCurrentUser]);
 
   if (!isOpen) return null;
 
@@ -22,15 +37,13 @@ function RankingBoard({ isOpen, currentUser }: RankingModalProps) {
                 rank={index + 1}
                 nickname={rank.nickname}
                 likes={rank.likes}
-                isCurrentUser={rank.userId === currentUser}
+                userId={rank.userId}
+                isCurrentUser={isCurrentUser(rank.userId)}
               />
             ))}
-        <img
-          className="threeDot"
-          src={threeDot}
-          alt="ThreeDot"
-          color="#B5B5BD"
-        />
+        <IconBox>
+          <ThreeDot fill="#b5b5bd" />
+        </IconBox>
         {RankingBoardQuery.data && RankingBoardQuery.data.length > 1 && (
           <RankingList
             rank={
@@ -43,10 +56,12 @@ function RankingBoard({ isOpen, currentUser }: RankingModalProps) {
             likes={
               RankingBoardQuery.data[RankingBoardQuery.data.length - 1].likes
             }
-            isCurrentUser={
-              RankingBoardQuery.data[RankingBoardQuery.data.length - 1]
-                .userId === currentUser
+            userId={
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1].userId
             }
+            isCurrentUser={isCurrentUser(
+              RankingBoardQuery.data[RankingBoardQuery.data.length - 1].userId,
+            )}
           />
         )}
       </RankingWrapper>
@@ -77,12 +92,10 @@ const RankingWrapper = styled.div`
   &:last-child {
     border-bottom: none;
   }
+`;
 
-  .threeDot {
-    width: 20%;
-    margin: 0 auto;
-    padding-top: 10px;
-  }
+const IconBox = styled.div`
+  padding-top: 15px;
 `;
 
 const Rank = styled.p`

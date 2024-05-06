@@ -1,18 +1,17 @@
+/* eslint-disable no-constant-condition */
 import { useState, useEffect } from 'react';
-import back from '/assets/images/back.svg';
-import deleteWorry from '/assets/images/deleteWorry.svg';
-import report from '/assets/images/report.svg';
-import rocketA from '/assets/images/rocketA.svg';
-import rocketB from '/assets/images/rocketB.svg';
-import rocketC from '/assets/images/rocketC.svg';
-import sendLine from '/assets/images/sendLine.svg';
-import starNotice from '/assets/images/starNotice.svg';
-import takeStar from '/assets/images/takeStar.svg';
+import Back from '@/back.svg?react';
+import deleteWorry from '@/deleteWorry.svg';
+import report from '@/report.svg';
+import rocketA from '@/rocketA.svg';
+import rocketB from '@/rocketB.svg';
+import rocketC from '@/rocketC.svg';
+import SendLine from '@/sendLine.svg?react';
+import starNotice from '@/starNotice.svg';
+import takeStar from '@/takeStar.svg';
 import { WorryDetail } from '../../types/WorryDetail.interface';
-import { reportContent, sendContentReply } from '../../api/sendContentApi';
 import {
   ModalHeader,
-  BackButton,
   AnimatedWrapper,
   StyledImg,
   WhiteBox,
@@ -37,6 +36,9 @@ import { usePostArrivedStore } from '../../store/postArrivedStore';
 import { formatDate } from '../../utills/formatDate/formatDate';
 import { useStateModalStore } from '../../store/stateModalStore';
 import PageModal from '../../components/modal/PageModal';
+import { useThemeStore } from '../../store/themeStore';
+import { badWordsFilter } from '../../utills/badWords/badWords';
+import { useSendContentReplyMutation } from '../../hooks/mutations/useSendContentReply';
 
 function GetContents({
   detail,
@@ -53,48 +55,46 @@ function GetContents({
   const [showStarText, setShowStarText] = useState(false);
   const [sendStar, setSendStar] = useState(false);
 
-  const [content, setContent] = useState<string>('');
-  const [fontColor, setFontColor] = useState<string>('');
-  const [isSendButtonDisabled, setIsSendButtonDisabled] =
-    useState<boolean>(true);
+  const [content, setContent] = useState('');
+  const [fontColor, setFontColor] = useState('');
+  const [isSendButtonDisabled, setIsSendButtonDisabled] = useState(true);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSendStarModal, setShowSendStarModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
+  const { isDarkMode } = useThemeStore();
 
-  const handleContentSubmit = async () => {
-    try {
-      const contentData = { content, fontColor };
-      const params = { worryid: detail.worryId, commentid: detail.commentId };
-      if (detail.commentId !== null) {
-        params.commentid = detail.commentId;
-      }
+  const { mutate: sendContentReplyMutate } = useSendContentReplyMutation();
 
-      if (sendStar) {
-        setShowSendStarModal(true);
-      } else {
-        await sendContentReply(params, contentData);
-        setRemovePostArrived(detail.worryId);
-        closeModal();
-        openStateModal('로켓이 무사히 되돌아갔어요!');
-      }
-    } catch (error) {
-      console.error(error);
+  const handleContentSubmit = () => {
+    const filteredText = badWordsFilter(content);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
     }
-  };
 
-  const handleReport = async () => {
-    try {
-      await reportContent(
-        { worryid: detail.worryId, commentid: detail.commentId },
-        '불쾌한 언행',
+    const contentData = { content, fontColor };
+    const params = { worryid: detail.worryId, commentid: detail.commentId };
+    if (detail.commentId !== null) {
+      params.commentid = detail.commentId;
+    }
+
+    if (sendStar) {
+      setShowSendStarModal(true);
+    } else {
+      sendContentReplyMutate(
+        { params, contentData },
+        {
+          onSuccess: () => {
+            setRemovePostArrived(detail.worryId);
+            closeModal();
+            openStateModal('로켓이 무사히 되돌아갔어요!');
+          },
+        },
       );
-      setRemovePostArrived(detail.worryId);
-      closeModal();
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -104,6 +104,10 @@ function GetContents({
 
   const handleShowSendStarModal = () => {
     setShowSendStarModal(!showSendStarModal);
+  };
+
+  const handleShowReportModal = () => {
+    setShowReportModal(!showReportModal);
   };
 
   const getRocketImage = (icon: string) => {
@@ -116,6 +120,14 @@ function GetContents({
         return rocketC;
       default:
         return rocketA;
+    }
+  };
+
+  const colorChange = (fontColor: string) => {
+    if (fontColor === '#EEEEEE' || fontColor === '#000239') {
+      return isDarkMode ? '#EEEEEE' : '#000239';
+    } else {
+      return detail.fontColor;
     }
   };
 
@@ -140,11 +152,21 @@ function GetContents({
     }
   }, [detail.worryUserId]);
 
+  const theme = isDarkMode ? '#eee' : '#000239';
+
   return (
     <>
       <ModalHeader>
-        <BackButton src={back} onClick={closeModal} />
-        {showDetail && <ReportImg src={report} onClick={handleReport} />}
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          className="backButton"
+          onClick={closeModal}
+        />
+        {showDetail && (
+          <ReportImg src={report} onClick={handleShowReportModal} />
+        )}
         {sendReply && (
           <SendButton
             onClick={handleContentSubmit}
@@ -171,12 +193,12 @@ function GetContents({
                     {detail.parentContent}
                   </ContentText>
                   <LineContainer>
-                    <img src={sendLine} />
+                    <SendLine fill={theme} />
                   </LineContainer>
                 </>
               )}
               <ContentText
-                color={detail.fontColor}
+                color={colorChange(detail.fontColor)}
                 $marginTop={
                   detail.parentContent && showDetail
                     ? '40px'
@@ -198,7 +220,7 @@ function GetContents({
                   setReplyWrite(false);
                 }}
               >
-                <img src={sendLine} />
+                <SendLine fill={theme} />
               </LineContainer>
               <SendContents
                 onSend={(content, fontColor) => {
@@ -207,7 +229,7 @@ function GetContents({
                 }}
                 onInputClick={() => setReplyWrite(true)}
                 placeholder={`답장을 입력해주세요.`}
-                containerHeight={replyWrite ? '67%' : '38.5%'}
+                containerHeight={replyWrite ? '74.5%' : '48%'}
               />
             </>
           )}
@@ -232,7 +254,10 @@ function GetContents({
               )}
               {detail.isSolved && (
                 <>
-                  <TakeStarImg src={takeStar} />
+                  <TakeStarImg>
+                    <img src={takeStar} />
+                    <span>답례를 받았아요</span>
+                  </TakeStarImg>
                   <ReplyButton onClick={() => removeCloseModal(detail.worryId)}>
                     확인
                   </ReplyButton>
@@ -262,6 +287,14 @@ function GetContents({
           detail={detail}
           closeModal={closeModal}
           closePageModal={handleShowDeleteModal}
+        />
+      )}
+      {showReportModal && (
+        <PageModal
+          showReportModal={true}
+          detail={detail}
+          closeModal={closeModal}
+          closePageModal={handleShowReportModal}
         />
       )}
       {showSendStarModal && (

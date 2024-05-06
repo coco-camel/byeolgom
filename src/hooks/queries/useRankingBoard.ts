@@ -2,9 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchRankings } from '../../api/rankingApi';
 
 interface ApiResponse {
-  commentAuthorId?: number;
   likes: number;
-  userId?: number;
+  userId: number;
   rank?: number;
   nickname?: string;
 }

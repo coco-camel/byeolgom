@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import ButtonContainer from '../../../components/button/ButtonContainer';
-import cancel from '/assets/images/cancel.svg';
-import { sendStarReply } from '../../../api/sendContentApi';
+import cancel from '@/cancel.svg';
+import { createChat } from '../../../api/sendContentApi';
 import { WorryDetail } from '../../../types/WorryDetail.interface';
 import { usePostArrivedStore } from '../../../store/postArrivedStore';
 import { useStateModalStore } from '../../../store/stateModalStore';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSendStarReplyMutation } from '../../../hooks/mutations/useSendStarReply';
 
 function SendStarModal({
   closeModal,
@@ -22,18 +24,58 @@ function SendStarModal({
   const { setRemovePostArrived } = usePostArrivedStore();
   const { openStateModal } = useStateModalStore();
 
-  const handleContentSubmit = async () => {
+  const { mutate: sendStarReplyMutate } = useSendStarReplyMutation();
+
+  const queryClient = useQueryClient();
+
+  const handleContentSubmit = () => {
+    const contentData = { content, fontColor };
+    const params = { worryid: detail.worryId, commentid: detail.commentId };
+    if (detail.commentId !== null) {
+      params.commentid = detail.commentId;
+    }
+    sendStarReplyMutate(
+      { params, contentData },
+      {
+        onSuccess: () => {
+          setRemovePostArrived(detail.worryId);
+          queryClient.invalidateQueries({
+            queryKey: ['worryCount'],
+          });
+          closeModal();
+          openStateModal('답례가 무사히 전달되었어요!');
+        },
+      },
+    );
+  };
+
+  const handleCreateChat = async () => {
     try {
+      const createChatData = {
+        worryId: detail.worryId,
+      };
+
+      await createChat(createChatData);
+
       const contentData = { content, fontColor };
       const params = { worryid: detail.worryId, commentid: detail.commentId };
       if (detail.commentId !== null) {
         params.commentid = detail.commentId;
       }
 
-      await sendStarReply(params, contentData);
-      setRemovePostArrived(detail.worryId);
-      closeModal();
-      openStateModal('답례가 무사히 전달되었어요!');
+      sendStarReplyMutate(
+        { params, contentData },
+        {
+          onSuccess: () => {
+            setRemovePostArrived(detail.worryId);
+            queryClient.invalidateQueries({
+              queryKey: ['worryCount'],
+            });
+            closeModal();
+            openStateModal('답례와 함께 1:1 채팅 요청을 보냈어요!');
+          },
+        },
+      );
     } catch (error) {
       console.error(error);
     }
@@ -53,11 +95,10 @@ function SendStarModal({
         </SmallNoticeText>
       </NoticeContainer>
       <ButtonContainer
-        buttons={['답례 전송', '1:1 대화 요청']}
-        width={['90px', '130px']}
-        backColor={['#E88439', '#B5B5BD']}
-        color={['#white', '#black']}
-        onClickHandlers={[handleContentSubmit, closePageModal]}
+        buttons={['답례만 전송', '답례와 함께 채팅 요청']}
+        width={['90px', '140px']}
+        onClickHandlers={[handleContentSubmit, handleCreateChat]}
+        hasHover={true}
       />
     </>
   );
@@ -67,6 +108,7 @@ export default SendStarModal;
 
 const CancelImg = styled.img`
   position: absolute;
+  top: 0;
   right: 0;
   margin-right: 5px;
   margin-top: 5px;

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getStarCount } from '../../api/count';
+import { getStarCount } from '../../api/countApi';
 
 export const useStarCount = () => {
   return useQuery({

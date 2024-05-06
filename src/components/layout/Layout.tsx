@@ -1,20 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import styled from 'styled-components';
 import Footer from './Footer';
-import background from '/assets/images/background.svg';
 import WaveBackGround from './WaveBackGround';
 import StarBackGround from './StarBackGround';
 import SendMyWorry from '../../pages/SendContent/SendMyWorry';
 import Header from './Header';
 import RankingModal from '../../pages/Ranking/RankingModal';
 import StateModal from '../modal/StateModal';
+import character from '@/character_star.svg';
+import byeolgom_logo from '@/byeolgom_logo.gif';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 function Layout() {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showRankingModal, setShowRankingModal] = useState<boolean>(false);
+  const [showFooter, setShowFooter] = useState(true);
   const { modalOpen } = useStateModalStore();
 
   const { isLoggedIn } = useAuthStore();
@@ -28,37 +30,41 @@ function Layout() {
     setShowModal(false);
   };
 
-  const handleOpenRankingModal = (): void => {
-    setShowRankingModal(true);
-  };
+  const queryClient = useQueryClient();
 
-  const handleCloseRankingModal = (): void => {
-    setShowRankingModal(false);
-  };
+  const showHeader: boolean = location.pathname === '/';
 
-  const showHeader: boolean =
-    location.pathname === '/' || location.pathname === 'login';
+  useEffect(() => {
+    const shouldShowFooter =
+      location.pathname.startsWith('/chatlist/') ||
+      location.pathname === '/howto';
+    if (shouldShowFooter) {
+      setShowFooter(false);
+    } else {
+      queryClient.invalidateQueries({
+        queryKey: ['userState'],
+      });
+      setShowFooter(true);
+    }
+  }, [location.pathname, queryClient]);
 
   return (
     <MainLayout>
       <MainContent>
-        {/* <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div>
-        <div>설명~~~</div> */}
+        <LogoImg src={byeolgom_logo} />
+        <Text>말할 수 없는 고민이 있는 현대인들을 위한</Text>
+        <div>
+          <SpanText>1:1 익명 고민공유</SpanText>
+          <Text>웹사이트</Text>
+        </div>
+        <img src={character} alt="character" />
       </MainContent>
       <MainWrap>
-        {showHeader && <Header openModal={handleOpenRankingModal} />}
+        {showHeader && <Header />}
         {showModal && <SendMyWorry closeModal={handleCloseModal} />}
         {modalOpen && <StateModal />}
-        {isLoggedIn && <Footer openModal={handleOpenModal} />}
-        <RankingModal
-          isOpen={showRankingModal}
-          onRequestClose={handleCloseRankingModal}
-          currentUser={4}
-        />
+        {isLoggedIn && showFooter && <Footer openModal={handleOpenModal} />}
+        <RankingModal />
         <div>
           <StarBackGround />
           <WaveBackGround />
@@ -70,19 +76,36 @@ function Layout() {
 }
 
 export default Layout;
+const Text = styled.span`
+  color: white;
+  padding: 3px;
+`;
 
+const SpanText = styled.span`
+  font-size: 14px;
+  font-weight: bold;
+  color: #e88439;
+`;
 const MainLayout = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 200px;
+  gap: 300px;
   height: 100vh;
 `;
 
 const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 320px;
   height: 568px;
-  @media (max-width: 640px) {
+
+  img {
+    margin: auto;
+  }
+  @media (max-width: 900px) {
     display: none;
   }
 `;
@@ -91,10 +114,10 @@ const MainWrap = styled.div`
   position: relative;
   overflow: auto;
   border-radius: 10px;
-  width: 320px;
-  height: 568px;
-  min-width: 320px;
-  background-image: url(${background});
+  width: 380px;
+  height: 720px;
+  min-width: 380px;
+  background-image: ${({ theme }) => theme.bgImage};
   background-size: cover;
   overflow: hidden;
   z-index: 0;
@@ -102,4 +125,9 @@ const MainWrap = styled.div`
     width: 100vw;
     height: 100vh;
   }
+`;
+
+const LogoImg = styled.img`
+  width: 200px;
+  margin: auto;
 `;

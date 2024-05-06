@@ -1,22 +1,49 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import locker from '/assets/images/locker.svg';
-import hoverLocker from '/assets/images/hoverLocker.svg';
-import home from '/assets/images/home.svg';
-import hoverHome from '/assets/images/hoverHome.svg';
-import rocketA from '/assets/images/rocketA.svg';
-import setting from '/assets/images/setting.svg';
-import hoverSetting from '/assets/images/hoverSetting.svg';
-import chat from '/assets/images/chat.svg';
-import hoverChat from '/assets/images/hoverChat.svg';
-import { Link } from 'react-router-dom';
+import rocketA from '@/rocketA.svg';
+import Home from '@/home.svg?react';
+import HoverHome from '@/hoverHome.svg?react';
+import Locker from '@/locker.svg?react';
+import HoverLocker from '@/hoverLocker.svg?react';
+import Chat from '@/chat.svg?react';
+import HoverChat from '@/hoverChat.svg?react';
+import Setting from '@/setting.svg?react';
+import HoverSetting from '@/hoverSetting.svg?react';
+import { Link, useLocation } from 'react-router-dom';
 import { useWorryCountStore } from '../../store/worryCountStore';
 import { useStateModalStore } from '../../store/stateModalStore';
+import { useThemeStore } from '../../store/themeStore';
+import { useUserState } from '../../hooks/queries/useUserState.ts';
+import { userStateStore } from '../../store/userStateStore.ts';
+import { useShallow } from 'zustand/react/shallow';
+import { useWorryCount } from '../../hooks/queries/useWorryCount .ts';
 
 function Footer({ openModal }: { openModal: () => void }) {
+  const location = useLocation();
   const [clickedButton, setClickedButton] = useState<string>('');
   const { worryCount } = useWorryCountStore();
   const { openStateModal } = useStateModalStore();
+  const [isDarkMode, setTheme] = useThemeStore(
+    useShallow((state) => [state.isDarkMode, state.setTheme]),
+  );
+  const setUsersState = userStateStore((state) => state.setUsersState);
+  const setWorryCountState = useWorryCountStore(
+    (state) => state.setWorryCountState,
+  );
+  const userStateQuery = useUserState();
+
+  const worryCountQuery = useWorryCount();
+
+  useEffect(() => {
+    setWorryCountState(worryCountQuery.data);
+  }, [worryCountQuery.data, setWorryCountState]);
+
+  useEffect(() => {
+    if (userStateQuery.data) {
+      setUsersState(userStateQuery.data.planet);
+      setTheme(userStateQuery.data.darkMode);
+    }
+  }, [userStateQuery.data, setUsersState, setTheme]);
 
   useEffect(() => {
     setClickedButton('home');
@@ -25,43 +52,84 @@ function Footer({ openModal }: { openModal: () => void }) {
   const handleButtonClick = (buttonName: string) => {
     if (clickedButton === buttonName) return;
     setClickedButton(buttonName);
-    if (buttonName === 'chat') {
-      alert('아직 개발 중인 기능입니다.');
-    }
   };
+
+  useEffect(() => {
+    const path = location.pathname;
+    switch (path) {
+      case '/':
+        setClickedButton('home');
+        break;
+      case '/pastcontents':
+        setClickedButton('locker');
+        break;
+      case '/chatlist':
+        setClickedButton('chat');
+        break;
+      case '/mypage':
+        setClickedButton('setting');
+        break;
+      default:
+        setClickedButton('');
+        break;
+    }
+  }, [location]);
+
+  const theme = isDarkMode ? '#eee' : '#000239';
+
+  if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
     <FooterArea>
       <FooterInner>
         <Link to={'/'}>
-          <HoverableImage
-            src={clickedButton === 'home' ? hoverHome : home}
-            onClick={() => handleButtonClick('home')}
-          />
+          {clickedButton !== 'home' && (
+            <Home fill={theme} onClick={() => handleButtonClick('home')} />
+          )}
+          {clickedButton === 'home' && (
+            <HoverHome fill={theme} onClick={() => handleButtonClick('home')} />
+          )}
         </Link>
         <Link to={'/pastcontents'}>
-          <HoverableImage
-            src={clickedButton === 'locker' ? hoverLocker : locker}
-            onClick={() => handleButtonClick('locker')}
-          />
+          {clickedButton !== 'locker' && (
+            <Locker fill={theme} onClick={() => handleButtonClick('locker')} />
+          )}
+          {clickedButton === 'locker' && (
+            <HoverLocker
+              fill={theme}
+              onClick={() => handleButtonClick('locker')}
+            />
+          )}
         </Link>
         <div></div>
-        <HoverableImage
-          src={clickedButton === 'chat' ? hoverChat : chat}
-          onClick={() => handleButtonClick('chat')}
-        />
+        <Link to={'/chatlist'}>
+          {clickedButton !== 'chat' && (
+            <Chat fill={theme} onClick={() => handleButtonClick('chat')} />
+          )}
+          {clickedButton === 'chat' && (
+            <HoverChat fill={theme} onClick={() => handleButtonClick('chat')} />
+          )}
+        </Link>
         <Link to={'/mypage'}>
-          <HoverableImage
-            src={clickedButton === 'setting' ? hoverSetting : setting}
-            onClick={() => handleButtonClick('setting')}
-          />
+          {clickedButton !== 'setting' && (
+            <Setting
+              fill={theme}
+              onClick={() => handleButtonClick('setting')}
+            />
+          )}
+          {clickedButton === 'setting' && (
+            <HoverSetting
+              fill={theme}
+              onClick={() => handleButtonClick('setting')}
+            />
+          )}
         </Link>
         <Sendwrap>
           <StyledImg
             src={rocketA}
             onClick={() =>
               worryCount === 0
-                ? openStateModal('보낼 수 있는 로켓이 없어요')
+                ? openStateModal('보낼 수 있는 로켓이 없어요', true)
                 : openModal()
             }
           />
@@ -96,14 +164,7 @@ const FooterInner = styled.div`
   width: 100%;
   padding: 15px 15px;
   gap: 20px;
-  background: #2f4768;
-`;
-
-const HoverableImage = styled.img`
-  transition: transform 0.3s ease-in-out;
-  &:hover {
-    transform: scale(1.15);
-  }
+  background: ${({ theme }) => theme.footerArea};
 `;
 
 const StyledImg = styled.img`

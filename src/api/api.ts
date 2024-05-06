@@ -1,13 +1,15 @@
 import axios from 'axios';
 
-export const instance = axios.create({
-  baseURL: import.meta.env.VITE_STARBEAR_SERVER_URL,
-});
+function createAxiosInstance() {
+  return axios.create({
+    baseURL: import.meta.env.VITE_STARBEAR_SERVER_URL,
+  });
+}
 
-export const authInstance = axios.create({
-  baseURL: import.meta.env.VITE_STARBEAR_SERVER_URL,
-});
+export const instance = createAxiosInstance();
+export const authInstance = createAxiosInstance();
 
+// 인증 요청 인터셉터
 authInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem('access_Token');
@@ -21,6 +23,7 @@ authInstance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+// 인증 응답 인터셉터
 authInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -48,13 +51,14 @@ authInstance.interceptors.response.use(
   },
 );
 
+// 액세스 토큰 갱신
 export const refreshAccessToken = async () => {
   const refreshToken = window.localStorage.getItem('refresh_Token');
   if (!refreshToken) {
     throw new Error('리프레시 토큰이 필요합니다.');
   }
   try {
-    const res = await authInstance.post(
+    const res = await instance.post(
       `/refresh`,
       {},
       {

@@ -20,14 +20,11 @@ export const ModalHeader = styled.div`
   z-index: 300;
   display: flex;
   justify-content: space-between;
-`;
-
-export const BackButton = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-  margin-top: 15px;
-  cursor: pointer;
+  .backButton {
+    margin-left: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+  }
 `;
 
 export const SendButton = styled.button`
@@ -62,7 +59,7 @@ export const WhiteBox = styled.div`
   height: 100%;
   margin-top: 50px;
   border-radius: 35px;
-  background-color: #1e2734;
+  background-color: ${({ theme }) => theme.ModalBox};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -90,7 +87,7 @@ export const ModalOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #2f4768;
+  background-color: ${({ theme }) => theme.ModalOverlay};
   z-index: 150;
 `;
 
@@ -121,7 +118,6 @@ export const StyledInput = styled.textarea`
   height: 75%;
   font-size: 16px;
   text-align: center;
-  color: '#EEEEEE';
   background-color: transparent;
   overflow: auto;
   white-space: pre-line;
@@ -134,7 +130,7 @@ export const BottomContainer = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 10px 15px;
+  padding: 15px 20px;
   display: flex;
 `;
 
@@ -209,12 +205,19 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  bottom: 19%;
+  bottom: 15%;
 `;
 
-export const TakeStarImg = styled.img`
+export const TakeStarImg = styled.div`
   position: absolute;
-  margin-top: -90px;
+  margin-top: -140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    font-size: 12px;
+    position: absolute;
+  }
 `;
 
 export const LineContainer = styled.div<{ $marginTop?: string }>`
@@ -229,9 +232,9 @@ export const ReplyButton = styled.button`
   width: 145px;
   height: 35px;
   font-size: 12px;
-  color: #2a2a2a;
+  color: ${({ theme }) => theme.contenttext};
   left: 50%;
-  background-color: #eeeeee;
+  background-color: ${({ theme }) => theme.contentSendButton};
   border-radius: 30px;
   cursor: pointer;
   &:hover {
@@ -259,7 +262,7 @@ export const StarButtonContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  top: 77%;
+  top: 82%;
 
   @media screen and (max-width: 641px) {
     top: 71%;
@@ -300,7 +303,6 @@ export const Circle = styled.div`
 `;
 
 export const StarText = styled.div`
-  color: white;
   font-size: 14px;
   margin-left: 6px;
 `;

@@ -1,43 +1,35 @@
 import styled from 'styled-components';
-import trophy from '/assets/images/trophy.svg';
-import countRocket from '/assets/images/countRocket.svg';
+import Trophy from '@/trophy.svg?react';
+import CountRocket from '@/countRocket.svg?react';
 import { useAuthStore } from '../../store/authStore';
 import { useWorryCountStore } from '../../store/worryCountStore';
-import { useEffect } from 'react';
+import { rankingStore } from '../../store/rankingStore';
+import { SkeletonDiv } from '../skeleton/skeletonStyle';
 import { useWorryCount } from '../../hooks/queries/useWorryCount ';
-import { useShallow } from 'zustand/react/shallow';
 
-interface HeaderProps {
-  openModal: () => void;
-}
-
-function Header({ openModal }: HeaderProps) {
+function Header() {
   const { isLoggedIn } = useAuthStore();
-  const [worryCount, setWorryCountState] = useWorryCountStore(
-    useShallow((state) => [state.worryCount, state.setWorryCountState]),
-  );
-
+  const { openModal } = rankingStore((state) => ({
+    openModal: state.openModal,
+  }));
+  const worryCount = useWorryCountStore((state) => state.worryCount);
   const worryCountQuery = useWorryCount();
-
-  useEffect(() => {
-    setWorryCountState(worryCountQuery.data);
-  }, [worryCountQuery.data, setWorryCountState]);
-
-  if (worryCountQuery.isPending) return <div>Loading...</div>;
-
-  if (worryCountQuery.isError) return <div>Error</div>;
 
   return (
     <HeaderArea>
       <HeaderInner>
         <button onClick={openModal}>
-          <img src={trophy} alt="Trophy" />
+          <Trophy fill="#FED56B" />
         </button>
         <WorryCount>
           {isLoggedIn ? (
             <>
-              <img src={countRocket} alt="Count Rocket" />
-              <span> x {worryCount}</span>
+              <CountRocket fill="#EEEEEE" />
+              {worryCountQuery.isPending ? (
+                <SkeletonDiv $width="30px" $height="20px" />
+              ) : (
+                <span> x {worryCount}</span>
+              )}
             </>
           ) : (
             <div></div>
@@ -55,6 +47,7 @@ const WorryCount = styled.div`
   align-items: center;
   span {
     padding-left: 10px;
+    color: #eeeeee;
   }
 `;
 

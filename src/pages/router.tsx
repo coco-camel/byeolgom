@@ -10,6 +10,10 @@ import SettingPage from './MyPage/SettingPage';
 import ChangeNickName from './MyPage/ChangeNickName';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
+import PlanetShop from './PlanetShop/PlanetShop';
+import ChatList from './Chat/ChatList';
+import ChatDetail from './Chat/ChatDetail';
+import HowTo from './HowTo/HowTo';
 
 export const router = createBrowserRouter([
   {
@@ -68,6 +72,30 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <ChangeNickName />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: '/planetshop',
+            element: (
+              <ProtectedRoute>
+                <PlanetShop />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: '/chatlist',
+            element: <ChatList />,
+          },
+          {
+            path: '/chatlist/:roomId',
+            element: <ChatDetail />,
+          },
+          {
+            path: '/howto',
+            element: (
+              <ProtectedRoute>
+                <HowTo />
               </ProtectedRoute>
             ),
           },

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getUserName } from '../../api/nickName';
+import { getUserName } from '../../api/nickNameApi';
 import { useChangeNicknameMutation } from '../../hooks/mutations/useChangeNickName';
 import { useStateModalStore } from '../../store/stateModalStore';
 import { useNavigate } from 'react-router-dom';
-import back from '/assets/images/back.svg';
+import Back from '@/back.svg?react';
+import { badWordsFilter } from '../../utills/badWords/badWords';
 
 function ChangeNickName() {
   const [nickname, setNickname] = useState('');
@@ -28,6 +29,7 @@ function ChangeNickName() {
     } else {
       setNicknameError('');
     }
+
     setNickname(e.target.value);
   };
 
@@ -38,6 +40,11 @@ function ChangeNickName() {
   const queryClient = useQueryClient();
 
   const submitNickname = () => {
+    const filteredText = badWordsFilter(nickname);
+    if (filteredText) {
+      openStateModal('바르고 고운 말 사용 부탁드려요!', true);
+      return;
+    }
     mutation.mutate(nickname, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['rankings'] });
@@ -60,7 +67,13 @@ function ChangeNickName() {
   return (
     <>
       <Header>
-        <BackButton src={back} onClick={handleBackButton} />
+        <Back
+          width={20}
+          height={20}
+          fill="#EEEEEE"
+          className="backButton"
+          onClick={handleBackButton}
+        />
         <Title>닉네임 변경</Title>
       </Header>
       <PageContainer>
@@ -109,6 +122,7 @@ const Title = styled.p`
   padding-right: 30px;
   font-size: 16px;
   font-weight: 300;
+  color: #eee;
 `;
 
 const Header = styled.div`
@@ -118,20 +132,16 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+  .backButton {
+    margin-left: 20px;
 
-export const BackButton = styled.img`
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
-
-  cursor: pointer;
+    cursor: pointer;
+  }
 `;
 
 const Description = styled.div`
   position: relative;
-
-  color: #fff;
+  color: #eee;
   margin: 20px 0;
   h1 {
     font-size: 16px;
@@ -167,7 +177,6 @@ const ButtonWrapper = styled.div`
 
 const SubmitButton = styled.button`
   background: ${(props) => (props.disabled ? '#ccc' : '#EEEEEE')};
-  color: #000;
   border: none;
   border-radius: 25px;
   padding: 10px 40px;

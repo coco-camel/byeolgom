@@ -35,7 +35,13 @@ function PageModal({
                 detail={detail}
               />
             )}
-            {showReportModal && <ReportModal />}
+            {showReportModal && (
+              <ReportModal
+                closeModal={closeModal}
+                closePageModal={closePageModal}
+                detail={detail}
+              />
+            )}
             {showSendStarModal && (
               <SendStarModal
                 closeModal={closeModal}
@@ -62,6 +68,7 @@ const slideIn = keyframes`
   }
   40% {
     transform: scale(1.05);
+    opacity: 1;
   }
   70% {
     transform: scale(0.95);
@@ -90,7 +97,7 @@ const ModalContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 999;
+  z-index: 750;
 `;
 
 const WhiteBox = styled.div`
@@ -99,6 +106,7 @@ const WhiteBox = styled.div`
   min-height: 155px;
   border-radius: 15px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   background-color: white;
 `;
@@ -110,5 +118,5 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: #00000087;
-  z-index: 995;
+  z-index: 700;
 `;

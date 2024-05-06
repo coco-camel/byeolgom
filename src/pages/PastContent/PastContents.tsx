@@ -7,12 +7,7 @@ import _ from 'lodash';
 import useObserver from '../../hooks/observer/useObserver';
 import { useWhoseContentStore } from '../../store/whoseContentStore';
 import { useShallow } from 'zustand/react/shallow';
-import {
-  Button,
-  LockerTabWrap,
-  PastContentHeader,
-  PastContentsContainer,
-} from './PastContentsStyle';
+import { Button, LockerTabWrap, PastContentHeader } from './pastContentsStyle';
 
 function PastContents() {
   const [whoseContent, setWhoseContentState] = useWhoseContentStore(
@@ -40,8 +35,8 @@ function PastContents() {
     isPending,
   } = useInfiniteQuery({
     queryKey: ['worries', whoseContent],
-    queryFn: ({ pageParam = 0 }) => getPastContent(pageParam),
-    initialPageParam: 0,
+    queryFn: ({ pageParam = 1 }) => getPastContent(pageParam),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.result.length === 0) {
         return undefined;
@@ -50,6 +45,7 @@ function PastContents() {
     },
     retry: 1,
     staleTime: 1000 * 20,
+    gcTime: 1000 * 60,
   });
 
   const pastContents = useMemo(() => {
@@ -77,9 +73,9 @@ function PastContents() {
   });
 
   return (
-    <div>
+    <>
       <PastContentHeader $content={'center'}>
-        <h1>보관함</h1>
+        <span>보관함</span>
       </PastContentHeader>
       <LockerTabWrap>
         <Button
@@ -95,15 +91,13 @@ function PastContents() {
           익명의 고민
         </Button>
       </LockerTabWrap>
-      <PastContentsContainer>
-        <PastContentsList
-          pastContents={pastContents}
-          whoseContent={whoseContent}
-          isPending={isPending}
-          ref={loadMoreRef}
-        />
-      </PastContentsContainer>
-    </div>
+      <PastContentsList
+        pastContents={pastContents}
+        whoseContent={whoseContent}
+        isPending={isPending}
+        ref={loadMoreRef}
+      />
+    </>
   );
 }
 
