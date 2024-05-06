@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client';
 import Loading from '../../components/loading/Loading';
-import { useChatInfoStore } from '../../store/chatInfoStore';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import useObserver from '../../hooks/observer/useObserver';
 import { chatRoomMessage, chatAccept, chatReject } from '../../api/chatRoomApi';
@@ -47,10 +46,13 @@ function ChatDetail() {
   const scrollContainerRef = useRef(null);
   const chatScrollRef = useRef<HTMLDivElement>(null);
 
+  const location = useLocation();
+  const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
+    location.state;
+
   const { openStateModal } = useStateModalStore();
   const { setChatAccepted, setChatDelete } = useChatListStore();
-  const { roomId, worryId, commentAuthorId, isOwner, isAccepted } =
-    useChatInfoStore();
+  const [localIsAccepted, setLocalIsAccepted] = useState<boolean>(isAccepted);
 
   // 이전 내역 이동 코드
   const targetPath = isOwner
@@ -234,6 +236,10 @@ function ChatDetail() {
   };
 
   useEffect(() => {
+    setLocalIsAccepted(isAccepted);
+  }, [isAccepted]);
+
+  useEffect(() => {
     if (chatMessages) {
       const formattedPastMessages = chatMessages.pages.flatMap(
         (page) => page.formattedPastMessages,
@@ -263,6 +269,7 @@ function ChatDetail() {
       </ChatDetailHeader>
 
       <ChatroomContainer>
+        {isPending && <Loading />}
         <ChatContainer ref={chatScrollRef}>
           {roomMessages && roomMessages.length > 0
             ? roomMessages.map((list, index) => (
@@ -271,7 +278,11 @@ function ChatDetail() {
                     <MyMessageWrapper>
                       <TimeText>{formatTime(list.createdAt)}</TimeText>
                       <MessageBubble
-                        $backColor={isDarkMode ? '#2F4768' : '#D7E5FA'}
+                        $backColor={
+                          isDarkMode
+                            ? 'rgba(0, 0, 0, 0.6)'
+                            : 'rgba(142, 180, 238, 0.6)'
+                        }
                       >
                         {list.text}
                       </MessageBubble>
@@ -279,7 +290,11 @@ function ChatDetail() {
                   ) : (
                     <MessageWrapper>
                       <MessageBubble
-                        $backColor={isDarkMode ? '#121212' : '#eee'}
+                        $backColor={
+                          isDarkMode
+                            ? 'rgba(47, 71, 104, 0.6)'
+                            : 'rgba(255,255,255,0.7)'
+                        }
                       >
                         {list.text}
                       </MessageBubble>
@@ -297,7 +312,7 @@ function ChatDetail() {
           <LoadMoreDiv ref={loadMoreRef} />
         </ChatContainer>
 
-        {isAccepted ? (
+        {localIsAccepted ? (
           <InputContainer>
             <ChatInput
               type="text"
@@ -335,7 +350,6 @@ function ChatDetail() {
             <span>1:1 대화 승인을 기다리는 중이에요...</span>
           </AcceptedContainer>
         )}
-        {isPending && <Loading />}
       </ChatroomContainer>
     </>
   );
