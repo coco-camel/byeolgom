@@ -651,4 +651,5 @@
 
 
 ![디자인상_별곰](https://github.com/BYEOL-GOM/FP-FRONT/assets/155723499/81db5958-8a46-4494-b13d-ce227bff0ca8)
+![팀워크기여_김준오](https://github.com/coco-camel/byeolgom/assets/157693710/2257aa21-8401-419a-8a33-0fb8e96a4c14)
 
